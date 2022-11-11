@@ -1,0 +1,58 @@
+@media screen and (display-mode: standalone) {
+    #toast-alert {
+        top: 52px !important;
+    }
+}
+
+.bg-alert-success {
+    background-color: #51c0a9 !important;
+    color: white;
+}
+
+.bg-alert-danger {
+    background-color: #dc3545 !important;
+    color: white;
+}
+.spinner .spinner-icon {
+    height: 35px !important;
+    width: 35px !important;
+}
+
+button[type="submit"] span,
+.spinner-border {
+    transition: all 0.2s ease-in-out;
+}
+.spinner-border {
+    margin-left: -18px;
+}
+.spinner-border.onProgress {
+    margin-left: 10px;
+}
+.role {
+    border-radius: 10px;
+    border: 1px solid rgba(222, 226, 230, 0.7);
+    padding: 15px;
+    margin: 53px 0;
+}
+.role .permission-page-name {
+    border-radius: 10px;
+    border: 1px solid rgba(222, 226, 230, 0.7);
+    padding: 5px 40px;
+    margin-top: -35px;
+    background-color: #f8f9fa;
+    width: max-content;
+    margin-bottom: 20px;
+}
+input:focus,
+.form-check-input:focus,
+button:focus,
+select:focus,
+li:focus,
+a:focus {
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+.dropdown-menu i {
+    margin-right: 13px;
+    font-size: 17px;
+}

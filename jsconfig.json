@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".", 
+        "jsx": "react",
+        "paths": {
+            "@/*": ["./src/*"]
+        } 
+    },
+    "vueCompilerOptions": {
+        "experimentalDisableTemplateSupport": true
+        },
+    "exclude": ["node_modules", "public"]
+}

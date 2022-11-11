@@ -1,0 +1,27 @@
+.form-select-label {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    display: block;
+    color: rgb(17 24 39/1);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+    margin-left: 0.2rem;
+}
+.base-form-select {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: rgb(17 24 39/1);
+    padding: 6px 10px;
+    border-radius: 0.5rem;
+    border: 1px solid rgb(209 213 219/1);
+    display: block;
+    width: 100%;
+    background-color: rgb(249 250 251/1);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    background-clip: padding-box;
+}
+.base-form-select:focus {
+    border-color: rgb(191, 194, 197);
+    outline: 0 !important;
+    box-shadow: none !important;
+}
