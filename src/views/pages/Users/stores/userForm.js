@@ -25,7 +25,15 @@ let userForm = ref({
         }
 
     },
+    clearFields()
+    {
 
+        let field;
+        for (field in this.fields)
+        {
+            this.fields[field] = '';
+        }
+    },
     setErrors(response) 
     {
         if (response.status == 422)

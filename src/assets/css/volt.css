@@ -22817,12 +22817,13 @@ main.content {
     display: flex !important;
     flex-direction: column !important;
     overflow-x: hidden !important;
+    min-height: 100vh;
 }
 
 section.main-section {
     padding-bottom: 65px;
-    padding-top: 45px;
-    min-height: calc(100vh - 70px);
+    padding-top: 30px;
+
 }
 
 .placeholder {

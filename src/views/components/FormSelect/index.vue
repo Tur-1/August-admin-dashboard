@@ -2,10 +2,19 @@
   <div class="mb-3">
     <label :for="id">{{ label }}</label>
 
-    <select class="form-select" :class="class" @input="$emit('update:modelValue', $event.target.value)" :id="id">
+    <select
+      class="form-select"
+      :class="[{ 'is-invalid': error }, props.class]"
+      @input="$emit('update:modelValue', $event.target.value)"
+      :id="id"
+    >
       <option v-if="defaultOption" value="">{{ defaultOption }}</option>
-      <option v-for="(option, index) in options" :key="index" :value="option"
-        :selected="option == modelValue ? true : false">
+      <option
+        v-for="(option, index) in options"
+        :key="index"
+        :value="option"
+        :selected="option == modelValue ? true : false"
+      >
         {{ option }}
       </option>
     </select>
@@ -16,5 +25,13 @@
 </template>
 
 <script setup>
-defineProps(["modelValue", "id", "class", "label", "error", "options", "defaultOption"]);
+const props = defineProps([
+  "modelValue",
+  "id",
+  "class",
+  "label",
+  "error",
+  "options",
+  "defaultOption",
+]);
 </script>

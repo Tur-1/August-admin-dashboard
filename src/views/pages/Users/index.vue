@@ -1,52 +1,59 @@
 <template>
-    <section class="main-section">
+  <section class="main-section">
+    <PageHeader title="Users List">
+      <ButtonLink
+        title="New User"
+        routeName="create user"
+        :withPlusIcon="true"
+      />
+    </PageHeader>
 
-        <UsersHeader />
-        <TableSettings />
-        <div class="card card-body shadow border-0 table-wrapper table-responsive">
-            <table class="table user-table table-hover align-items-center">
-                <thead>
-                    <tr>
-                        <th class="border-bottom">
-                            <div class="form-check dashboard-check">
-                                <input class="form-check-input" type="checkbox" id="userCheck55" value="">
-                                <label class="form-check-label" for="userCheck55">
-                                </label>
-                            </div>
-                        </th>
-                        <th class="border-bottom">Name</th>
-                        <th class="border-bottom">Date Created</th>
-                        <th class="border-bottom">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
+    <TableSettings @setPerPage="setPerPage" />
 
-                    <Suspense>
-                        <template #default>
-                            <UserTableRow />
-                        </template>
+    <MainTable
+      @paginationChangePage="getUsers"
+      :paginationData="users.list"
+      :showingEntries="perPage.number"
+      :totalShowingEntries="users.list.total"
+      :headNames="['Name', 'Date Created', 'Gender', 'Action']"
+    >
+      <UserTableRow v-if="!onProgress" @onUserDelete="openModal" />
 
-                        <template #fallback>
-                            <UserTableRowSkeleton />
-                        </template>
-                    </Suspense>
-                </tbody>
-            </table>
-            <UsersTableFooter />
-        </div>
-    </section>
+      <UserTableRowSkeleton v-if="onProgress" />
+    </MainTable>
+
+    <ConfirmModal
+      @onConfirm="deleteUser(userId)"
+      @onClose="useConfirmModal.close()"
+    >
+      <span>are you sure ?</span>
+    </ConfirmModal>
+  </section>
 </template>
 
 <script setup>
+import MainTable from "@/views/components/MainTable/index.vue";
+import ConfirmModal from "@/views/components/ConfirmModal/index.vue";
+import useConfirmModal from "@/views/components/ConfirmModal/useConfirmModal";
+import ButtonLink from "@/views/components/ButtonLink/index.vue";
+import TableSettings from "@/views/pages/Users/components/TableSettings.vue";
+import PageHeader from "@/views/components/PageHeader/index.vue";
+import UserTableRow from "@/views/pages/Users/components/UserTableRow.vue";
+import UserTableRowSkeleton from "@/views/pages/Users/components/UserTableRowSkeleton.vue";
 
-import TableSettings from '@/views/pages/Users/components/TableSettings.vue';
-import UsersHeader from '@/views/pages/Users/components/UsersHeader.vue';
-import UsersTableFooter from '@/views/pages/Users/components/UsersTableFooter.vue';
-import UserTableRow from '@/views/pages/Users/components/UserTableRow.vue';
-import UserTableRowSkeleton from '@/views/pages/Users/components/UserTableRowSkeleton.vue';
+import perPage from "@/views/pages/Users/stores/perPage";
+import useUsersService from "@/views/pages/Users/services/useUsersService";
+import { onMounted, ref } from "vue";
+import users from "@/views/pages/Users/stores/users";
 
+const { getUsers, onProgress, setPerPage, deleteUser } = useUsersService();
 
+onMounted(getUsers);
+let userId = ref({ id: "", index: "" });
 
+const openModal = ({ id, index }) => {
+  useConfirmModal.open();
+  userId.value.id = id;
+  userId.value.index = index;
+};
 </script>
-
- 

@@ -21,7 +21,7 @@
           ><input
             type="text"
             class="form-control"
-            placeholder="Search users"
+            :placeholder="searchPlaceholder"
             v-model="search"
           />
         </div>

@@ -2,23 +2,33 @@ import api from "@/api";
 
 
 
-
+const getUsers = (page, perPage) =>
+{
+    return api().get("/users?page=" + page, { params: { per_page: perPage } });
+}
 const storeNewUser = (fields) =>
 {
 
-    return api().post("/users/create", fields);
+    return api().post("/users/store", fields);
 }
 const updateUser = (fields, id) =>
 {
 
-    return api().post("/users/update/" + id, fields);
+    return api().put("/users/update/" + id, fields);
 }
 const getUser = (id) =>
 {
-    return api().post("/users/find/" + id);
+    return api().post("/users/show/" + id);
 }
+const deleteUser = (id) =>
+{
+    return api().delete("/users/delete/" + id);
+}
+
 export default {
     storeNewUser,
     updateUser,
-    getUser
+    getUser,
+    getUsers,
+    deleteUser
 }

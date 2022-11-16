@@ -19,11 +19,11 @@ const router = createRouter({
     {
       path: "/users/create",
       name: "create user",
-      component: () => import('@/views/pages/Users/components/create.vue')
+      component: () => import('@/views/pages/Users/components/Create.vue')
     }, {
       path: "/users/update/:id",
       name: "update user",
-      component: () => import('@/views/pages/Users/components/create.vue')
+      component: () => import('@/views/pages/Users/components/Update.vue')
     },
   ]
 })

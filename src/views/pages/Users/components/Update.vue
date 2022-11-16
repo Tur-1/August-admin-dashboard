@@ -1,12 +1,12 @@
 <template>
   <section class="main-section">
     <FormCard
-      @onSubmit="createNewUser"
-      submitButtonTitle="create"
-      title="new user"
+      @onSubmit="updateUser(route.params.id)"
+      submitButtonTitle="update"
+      title="update user"
       :onProgress="userForm.onProgress"
     >
-      <div class="row">
+      <div class="row" v-if="!onProgress">
         <div class="col-12 col-lg-6">
           <FormInput
             label="name *"
@@ -45,6 +45,11 @@
           />
         </div>
       </div>
+      <div class="row justify-content-center" v-if="onProgress">
+        <div class="spinner-border opacity-100" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
     </FormCard>
   </section>
 </template>
@@ -53,13 +58,20 @@
 import FormInput from "@/views/components/FormInput/index.vue";
 import FormSelect from "@/views/components/FormSelect/index.vue";
 import FormCard from "@/views/components/FormCard/index.vue";
-import Permissions from "@/views/pages/Users/components/Permissions.vue";
+
+import { useRoute } from "vue-router";
+import { onMounted, ref } from "vue";
+import useUsersApi from "@/views/pages/Users/api/useUsersApi";
 import useUsersService from "@/views/pages/Users/services/useUsersService";
-import { onMounted } from "vue";
 
-const { userForm, createNewUser } = useUsersService();
+const { userForm, updateUser } = useUsersService();
+const route = useRoute();
+let onProgress = ref(false);
+onMounted(async () => {
+  onProgress.value = true;
+  let user = await useUsersApi.getUser(route.params.id);
 
-onMounted(() => {
-  userForm.clearFields();
+  userForm.fields = user.data.data;
+  onProgress.value = false;
 });
 </script>
