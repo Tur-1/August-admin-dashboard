@@ -1,10 +1,10 @@
 <script setup>
 import { RouterView, useRoute } from "vue-router";
-import Navbar from "@/views/components/Navbar/index.vue";
-import MobileNavbar from "@/views/components/MobileNavbar/index.vue";
-import Sidebar from "@/views/components/Sidebar/index.vue";
-import Footer from "@/views/components/Footer/index.vue";
-import Toast from "@/views/components/Toast/index.vue";
+import Navbar from "@/layout/Navbar/index.vue";
+import MobileNavbar from "@/layout/MobileNavbar/index.vue";
+import Sidebar from "@/layout/Sidebar/index.vue";
+import Footer from "@/layout/Footer/index.vue";
+import Toast from "@/components/Toast/index.vue";
 
 const route = useRoute();
 </script>

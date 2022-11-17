@@ -10,7 +10,7 @@ const setCsrfCookie = () =>
 }
 const isAuthenticated = () =>
 {
-    return api().get('isAuthenticated');
+    return axios.get('http://localhost:8000/api/isAuthenticated');
 }
 const login = (fields) =>
 {
