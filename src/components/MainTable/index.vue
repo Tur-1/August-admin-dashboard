@@ -25,10 +25,7 @@
       v-if="paginationLinks"
       class="card-footer px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between"
     >
-      <nav
-        aria-label="Page navigation example"
-        v-show="showingEntries <= totalShowingEntries"
-      >
+      <nav aria-label="Page navigation example">
         <ul class="pagination mb-0">
           <li
             class="page-item"

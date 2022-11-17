@@ -2,40 +2,36 @@ import useUsersApi from "@/modules/Users/api/useUsersApi";
 import userForm from "@/modules/Users/stores/userForm";
 import useToastNotification from "@/components/Toast/useToastNotification";
 import useRouterService from "@/router/useRouterService";
-import { ref } from "vue";
-import users from "@/modules/Users/stores/users";
-import perPage from "@/modules/Users/stores/perPage";
+
+import usersStore from "@/modules/Users/stores/usersStore";
+import onProgress from "@/modules/Users/stores/onProgress";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
+import showingEntries from "@/modules/Users/stores/showingEntries";
 
 
 export default function useUsersService()
 {
 
-    let onProgress = ref({
-        destroy: false,
-        store: false,
-        update: false,
-        index: false
-    });
 
 
     const setPerPage = (per_page) =>
     {
-        perPage.set(per_page)
-        getUsers();
+        showingEntries.setActiveEntrie(per_page)
+        getAllUsers();
     }
 
-    const getUsers = async (url) =>
+    const getAllUsers = async (url) =>
     {
 
         onProgress.value.index = true;
 
-        let response = await useUsersApi.getUsers({ perPage: perPage.number, url: url });
+        let response = await useUsersApi.getUsers({ perPage: showingEntries.activeEntrie, url: url });
 
-        users.value.list = response.data;
-        users.value.filtered = response.data.data;
-        users.value.pagination = response.data.pagination;
+        usersStore.value.list = response.data;
+        usersStore.value.filtered = response.data.data;
+        usersStore.value.pagination = response.data.pagination;
 
+        console.log(usersStore.value.pagination);
 
         onProgress.value.index = false;
     }
@@ -87,7 +83,7 @@ export default function useUsersService()
         onProgress.value.destroy = true;
         let response = await useUsersApi.deleteUser(id);
 
-        users.value.filtered.splice(index, 1);
+        usersStore.value.filtered.splice(index, 1);
         useConfirmModal.close();
 
         useToastNotification.open(response.data.data.message);
@@ -99,11 +95,8 @@ export default function useUsersService()
         updateUser,
         storeNewUser,
         userForm,
-        getUsers,
-        users,
-        onProgress,
+        getAllUsers,
         setPerPage,
-        perPage,
         deleteUser,
 
     }

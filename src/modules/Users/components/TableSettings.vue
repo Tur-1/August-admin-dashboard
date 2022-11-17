@@ -71,14 +71,14 @@
 
 <script setup>
 import perPage from "@/modules/Users/stores/perPage";
-import users from "@/modules/Users/stores/users";
+import usersStore from "@/modules/Users/stores/usersStore";
 import { ref, watch } from "vue";
 
 defineEmits(["setPerPage"]);
 
 let search = ref("");
 watch(search, (value) => {
-  users.value.filtered = users.value.list.data.filter((user) => {
+  usersStore.value.filtered = usersStore.value.list.data.filter((user) => {
     return user.name.toLowerCase().includes(value.toLowerCase());
   });
 });

@@ -6,12 +6,7 @@
           <span class="input-group-text">
             <i class="fa-solid fa-magnifying-glass"></i>
           </span>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Search users"
-            v-model="search"
-          />
+          <input type="text" class="form-control" placeholder="Search users" />
         </div>
       </div>
       <div class="col-3 col-lg-4 d-flex justify-content-end">
@@ -38,28 +33,15 @@
             <div class="dropdown-menu dropdown-menu-end pb-0">
               <span class="small ps-3 fw-bold text-dark">Show</span>
               <a
-                @click="$emit('setPerPage', 5)"
+                v-for="entrie in props.showingEntries.entries"
+                @click="$emit('setPerPage', entrie.number)"
                 role="button"
                 class="dropdown-item d-flex align-items-center fw-bold"
-                :class="{ active: perPage.number == 5 }"
+                :class="{
+                  active: entrie.number == props.showingEntries.activeEntrie,
+                }"
               >
-                5
-              </a>
-              <a
-                class="dropdown-item fw-bold"
-                role="button"
-                @click="$emit('setPerPage', 10)"
-                :class="{ active: perPage.number == 10 }"
-              >
-                10
-              </a>
-              <a
-                class="dropdown-item fw-bold rounded-bottom"
-                role="button"
-                @click="$emit('setPerPage', 20)"
-                :class="{ active: perPage.number == 20 }"
-              >
-                20
+                {{ entrie.number }}
               </a>
             </div>
           </div>
@@ -70,10 +52,12 @@
 </template>
 
 <script setup>
-import perPage from "@/modules/Users/stores/perPage";
 import usersStore from "@/modules/Users/stores/usersStore";
 import { ref, watch } from "vue";
 
+const props = defineProps({
+  showingEntries: Object,
+});
 defineEmits(["setPerPage"]);
 
 let search = ref("");

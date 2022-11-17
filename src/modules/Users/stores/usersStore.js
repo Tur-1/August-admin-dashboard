@@ -1,10 +1,10 @@
 import { ref } from 'vue';
 
-let users = ref({
+let usersStore = ref({
     list: [],
     filtered: [],
     pagination: [],
 });
 
 
-export default users;
+export default usersStore;

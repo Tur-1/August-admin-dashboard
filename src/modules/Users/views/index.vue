@@ -8,13 +8,17 @@
       />
     </PageHeader>
 
-    <TableSettings @setPerPage="setPerPage" />
+    <!-- <TableSettings @setPerPage="setPerPage" /> -->
+    <MainTableSettings
+      :showingEntries="showingEntries"
+      @setPerPage="setPerPage"
+    />
 
     <MainTable
-      @onChangePage="getUsers"
-      :paginationLinks="users.pagination.links"
-      :showingEntries="perPage.number"
-      :totalShowingEntries="users.filtered.length"
+      @onChangePage="getAllUsers"
+      :paginationLinks="usersStore.pagination.links"
+      :showingEntries="showingEntries.activeEntrie"
+      :totalShowingEntries="usersStore.pagination.total"
       :headTitles="['Name', 'Date Created', 'Gender', 'Action']"
     >
       <UserTableRow v-if="!onProgress.index" @onUserDelete="openModal" />
@@ -33,22 +37,24 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from "vue";
 import MainTable from "@/components/MainTable/index.vue";
 import ConfirmModal from "@/components/ConfirmModal/index.vue";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import ButtonLink from "@/components/ButtonLink/index.vue";
-import TableSettings from "@/modules/Users/components/TableSettings.vue";
 import PageHeader from "@/components/PageHeader/index.vue";
 import UserTableRow from "@/modules/Users/components/UserTableRow.vue";
 import UserTableRowSkeleton from "@/modules/Users/components/UserTableRowSkeleton.vue";
-import perPage from "@/modules/Users/stores/perPage";
 import useUsersService from "@/modules/Users/services/useUsersService";
-import { onMounted, ref } from "vue";
-import users from "@/modules/Users/stores/users";
+import usersStore from "@/modules/Users/stores/usersStore";
+import onProgress from "@/modules/Users/stores/onProgress";
+import showingEntries from "@/modules/Users/stores/showingEntries";
 
-const { getUsers, onProgress, setPerPage, deleteUser } = useUsersService();
+import MainTableSettings from "@/components/MainTable/MainTableSettings.vue";
 
-onMounted(getUsers);
+const { getAllUsers, setPerPage, deleteUser } = useUsersService();
+
+onMounted(getAllUsers);
 let userId = ref({ id: "", index: "" });
 
 const openModal = ({ id, index }) => {
