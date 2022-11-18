@@ -27,6 +27,9 @@
       <span class="placeholder col-6"></span>
     </td>
     <td class="placeholder-wave">
+      <span class="placeholder col-8"></span>
+    </td>
+    <td class="placeholder-wave">
       <span class="placeholder col-6"></span>
     </td>
   </tr>

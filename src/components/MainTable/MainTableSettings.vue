@@ -6,7 +6,14 @@
           <span class="input-group-text">
             <i class="fa-solid fa-magnifying-glass"></i>
           </span>
-          <input type="text" class="form-control" placeholder="Search users" />
+          <input
+            type="text"
+            class="form-control"
+            :placeholder="inputPlaceholder"
+            :class="inputClass"
+            :value="modelValue"
+            @input="$emit('update:modelValue', $event.target.value)"
+          />
         </div>
       </div>
       <div class="col-3 col-lg-4 d-flex justify-content-end">
@@ -33,12 +40,12 @@
             <div class="dropdown-menu dropdown-menu-end pb-0">
               <span class="small ps-3 fw-bold text-dark">Show</span>
               <a
-                v-for="entrie in props.showingEntries.entries"
-                @click="$emit('setPerPage', entrie.number)"
+                v-for="entrie in props.entries"
+                @click="$emit('setShowingEntries', entrie.number)"
                 role="button"
                 class="dropdown-item d-flex align-items-center fw-bold"
                 :class="{
-                  active: entrie.number == props.showingEntries.activeEntrie,
+                  active: entrie.number == props.activeEntrie,
                 }"
               >
                 {{ entrie.number }}
@@ -52,18 +59,12 @@
 </template>
 
 <script setup>
-import usersStore from "@/modules/Users/stores/usersStore";
-import { ref, watch } from "vue";
-
 const props = defineProps({
-  showingEntries: Object,
+  entries: Object,
+  activeEntrie: Number,
+  modelValue: String,
+  inputPlaceholder: String,
+  inputClass: String,
 });
-defineEmits(["setPerPage"]);
-
-let search = ref("");
-watch(search, (value) => {
-  usersStore.value.filtered = usersStore.value.list.data.filter((user) => {
-    return user.name.toLowerCase().includes(value.toLowerCase());
-  });
-});
+const emits = defineEmits(["setShowingEntries", "update:modelValue"]);
 </script>

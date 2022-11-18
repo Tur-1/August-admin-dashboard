@@ -1,22 +1,22 @@
-const UsersRoutes = [
+const CategoriesRoutes = [
 
     {
-        path: '/users',
-        name: 'users',
-        component: () => import('@/modules/Users/views/index.vue'),
+        path: '/categories',
+        name: 'categories',
+        component: () => import('@/modules/Categories/views/index.vue'),
 
     },
     {
-        path: "/users/create",
-        name: "usersCreate",
-        component: () => import('@/modules/Users/views/Create.vue')
+        path: "/categories/create",
+        name: "categoriesCreate",
+        component: () => import('@/modules/Categories/views/Create.vue')
     }, {
-        path: "/users/:id/edit",
-        name: "usersEdit",
-        component: () => import('@/modules/Users/views/Edit.vue')
+        path: "/categories/:id/edit",
+        name: "categoriesEdit",
+        component: () => import('@/modules/Categories/views/Edit.vue')
     }
 
 ];
 
 
-export default UsersRoutes;
+export default CategoriesRoutes;

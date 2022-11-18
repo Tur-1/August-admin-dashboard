@@ -6,19 +6,11 @@ import useRouterService from "@/router/useRouterService";
 import usersStore from "@/modules/Users/stores/usersStore";
 import onProgress from "@/modules/Users/stores/onProgress";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
-import showingEntries from "@/modules/Users/stores/showingEntries";
+import entries from "@/components/MainTable/entries";
 
 
 export default function useUsersService()
 {
-
-
-
-    const setPerPage = (per_page) =>
-    {
-        showingEntries.setActiveEntrie(per_page)
-        getAllUsers();
-    }
 
     const getAllUsers = async (url) =>
     {
@@ -31,7 +23,6 @@ export default function useUsersService()
         usersStore.value.filtered = response.data.data;
         usersStore.value.pagination = response.data.pagination;
 
-        console.log(usersStore.value.pagination);
 
         onProgress.value.index = false;
     }
@@ -91,12 +82,18 @@ export default function useUsersService()
         onProgress.value.destroy = false;
 
     };
+
+    const setShowingEntries = (per_page) =>
+    {
+        entries.setActiveEntrie(per_page)
+        getAllUsers();
+    }
     return {
         updateUser,
         storeNewUser,
         userForm,
         getAllUsers,
-        setPerPage,
+        setShowingEntries,
         deleteUser,
 
     }

@@ -1,9 +1,9 @@
 import { reactive } from 'vue';
 
 
-let showingEntries = reactive({
+let entries = reactive({
     activeEntrie: 10,
-    entries: [
+    data: [
         {
             number: 5,
         },
@@ -22,4 +22,4 @@ let showingEntries = reactive({
 });
 
 
-export default showingEntries;
+export default entries;

@@ -1,3 +1,19 @@
+<script setup>
+import NoRecordsFound from "@/components/MainTable/NoRecordsFound.vue";
+const props = defineProps({
+  paginationLinks: Array,
+  entries: Number,
+  totalEntries: Number,
+  onNoRecordsFound: Boolean,
+  recordsTitle: String,
+  headTitles: {
+    type: Array,
+    require: true,
+  },
+});
+
+defineEmits(["onChangePage"]);
+</script>
 <template>
   <div class="card card-body shadow border-0 table-wrapper table-responsive">
     <table class="table user-table table-hover align-items-center">
@@ -19,13 +35,18 @@
       </thead>
       <tbody>
         <slot />
+
+        <NoRecordsFound
+          :show="onNoRecordsFound"
+          :recordsTitle="recordsTitle"
+          :colspan="headTitles.length + 1"
+        />
       </tbody>
     </table>
     <div
-      v-if="paginationLinks"
       class="card-footer px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between"
     >
-      <nav aria-label="Page navigation example">
+      <nav aria-label="Page navigation example" v-if="paginationLinks">
         <ul class="pagination mb-0">
           <li
             class="page-item"
@@ -44,29 +65,16 @@
         </ul>
       </nav>
       <div
+        v-if="entries && totalEntries"
         class="fw-normal small mt-4 mt-lg-0"
         style="display: inline-block; margin-left: auto"
       >
         Showing
-        <b>{{ showingEntries }}</b>
+        <b>{{ entries }}</b>
         out of
-        <b>{{ totalShowingEntries }}</b>
+        <b>{{ totalEntries }}</b>
         entries
       </div>
     </div>
   </div>
 </template>
-
-<script setup>
-const props = defineProps({
-  paginationLinks: Array,
-  showingEntries: Number,
-  totalShowingEntries: Number,
-  headTitles: {
-    type: Array,
-    require: true,
-  },
-});
-
-defineEmits(["onChangePage"]);
-</script>

@@ -1,3 +1,25 @@
+<script setup>
+import { ref } from "vue";
+import DropdownMenu from "@/components/DropdownMenu/index.vue";
+import usersStore from "@/modules/Users/stores/usersStore";
+import ConfirmModal from "@/components/ConfirmModal/index.vue";
+import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
+import useUsersService from "@/modules/Users/services/useUsersService";
+import onProgress from "@/modules/Users/stores/onProgress";
+
+const emits = defineEmits(["onUserDelete"]);
+
+const { deleteUser } = useUsersService();
+
+let userId = ref({ id: "", index: "" });
+
+const openModal = ({ id, index }) => {
+  useConfirmModal.open();
+  userId.value.id = id;
+  userId.value.index = index;
+};
+</script>
+
 <template>
   <transition-group name="list">
     <tr v-for="(user, index) in usersStore.filtered" :key="user.id">
@@ -32,6 +54,9 @@
         <span class="fw-normal">{{ user.gender }}</span>
       </td>
       <td>
+        <span class="fw-normal">Admin</span>
+      </td>
+      <td>
         <DropdownMenu>
           <RouterLink
             class="dropdown-item d-flex align-items-center"
@@ -42,7 +67,7 @@
           </RouterLink>
 
           <a
-            @click="$emit('onUserDelete', { id: user.id, index: index })"
+            @click="openModal({ id: user.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"
           >
@@ -53,18 +78,15 @@
       </td>
     </tr>
   </transition-group>
-  <tr v-show="usersStore.filtered.length == 0">
-    <td colspan="5" class="text-center">
-      <h5>No users Found</h5>
-    </td>
-  </tr>
-</template>
 
-<script setup>
-import DropdownMenu from "@/components/DropdownMenu/index.vue";
-import usersStore from "@/modules/Users/stores/usersStore";
-const emits = defineEmits(["onUserDelete"]);
-</script>
+  <ConfirmModal
+    :onProgress="onProgress.destroy"
+    @onConfirm="deleteUser(userId)"
+    @onClose="useConfirmModal.close()"
+  >
+    <span>are you sure ?</span>
+  </ConfirmModal>
+</template>
 <style scoped>
 .list-enter-active,
 .list-leave-active {
