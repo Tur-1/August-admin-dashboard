@@ -1,55 +1,56 @@
 <script setup>
-import { ref, watch, onMounted } from "vue";
-import MainTable from "@/components/MainTable/index.vue";
 import ButtonLink from "@/components/ButtonLink/index.vue";
 import PageHeader from "@/components/PageHeader/index.vue";
-import UserTableRow from "@/modules/Users/components/UserTableRow.vue";
-import UserTableRowSkeleton from "@/modules/Users/components/UserTableRowSkeleton.vue";
-import useUsersService from "@/modules/Users/services/useUsersService";
-import usersStore from "@/modules/Users/stores/usersStore";
+import useCategoryService from "@/modules/Categories/services/useCategoryService";
+import { onMounted } from "vue";
+import CategoryRow from "@/modules/Categories/components/CategoryRow.vue";
+import CategoryRowSkeleton from "@/modules/Categories/components/CategoryRowSkeleton.vue";
+import CategoryStore from "@/modules/Categories/stores/CategoryStore";
 import onProgress from "@/modules/Users/stores/onProgress";
 import entries from "@/components/MainTable/entries";
 import MainTableSettings from "@/components/MainTable/MainTableSettings.vue";
 
-const { getAllUsers, setShowingEntries } = useUsersService();
+const { getAllCategories, setShowingEntries } = useCategoryService();
 
-onMounted(getAllUsers);
+onMounted(getAllCategories);
 
-let search = ref("");
-watch(search, (value) => {
-  usersStore.value.filtered = usersStore.value.list.data.filter((user) => {
-    return user.name.toLowerCase().includes(value.toLowerCase());
-  });
-});
+// let search = ref("");
+// watch(search, (value) => {
+//   CategoryStore.value.filtered = CategoryStore.value.list.data.filter(
+//     (category) => {
+//       return category.name.toLowerCase().includes(value.toLowerCase());
+//     }
+//   );
+// });
 </script>
 <template>
   <section class="main-section">
-    <PageHeader title="Users List">
-      <ButtonLink title="New User" routeName="usersCreate">
+    <PageHeader title="Categories List">
+      <ButtonLink title="New Category" routeName="categoriesCreate">
         <i class="fa-solid fa-plus" />
       </ButtonLink>
     </PageHeader>
 
-    <MainTableSettings
+    <!-- <MainTableSettings
       :entries="entries.data"
       :activeEntrie="entries.activeEntrie"
       @setShowingEntries="setShowingEntries"
-      inputPlaceholder="search users"
+      inputPlaceholder="search categories"
       v-model="search"
-    />
+    /> -->
 
-    <MainTable
-      :headTitles="['Name', 'Date Created', 'Gender', 'Role', 'Action']"
+    <!-- <MainTable
+      :headTitles="['image', 'name', 'section', 'Action']"
       @onChangePage="getAllUsers"
-      :paginationLinks="usersStore.pagination.links"
+      :paginationLinks="CategoryStore.pagination.links"
       :entries="entries.activeEntrie"
-      :totalEntries="usersStore.pagination.total"
-      :onNoRecordsFound="usersStore.filtered.length == 0"
+      :totalEntries="CategoryStore.pagination.total"
+      :onNoRecordsFound="CategoryStore.filtered.length == 0"
       recordsTitle="No Users Found"
     >
-      <UserTableRow v-if="!onProgress.index" />
+      <CategoryRow v-if="!onProgress.index" />
 
-      <UserTableRowSkeleton v-if="onProgress.index" />
-    </MainTable>
+      <CategoryRowSkeleton v-if="onProgress.index" />
+    </MainTable> -->
   </section>
 </template>

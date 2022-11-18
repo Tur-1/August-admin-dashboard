@@ -17,7 +17,7 @@ export default function useUsersService()
 
         onProgress.value.index = true;
 
-        let response = await useUsersApi.getUsers({ perPage: showingEntries.activeEntrie, url: url });
+        let response = await useUsersApi.getUsers({ perPage: entries.activeEntrie, url: url });
 
         usersStore.value.list = response.data;
         usersStore.value.filtered = response.data.data;

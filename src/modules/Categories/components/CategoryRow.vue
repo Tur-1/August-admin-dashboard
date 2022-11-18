@@ -1,28 +1,12 @@
 <script setup>
 import { ref } from "vue";
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
-import usersStore from "@/modules/Users/stores/usersStore";
-import ConfirmModal from "@/components/ConfirmModal/index.vue";
-import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
-import useUsersService from "@/modules/Users/services/useUsersService";
-import onProgress from "@/modules/Users/stores/onProgress";
-
-const emits = defineEmits(["onUserDelete"]);
-
-const { deleteUser } = useUsersService();
-
-let userId = ref({ id: "", index: "" });
-
-const openModal = ({ id, index }) => {
-  useConfirmModal.open();
-  userId.value.id = id;
-  userId.value.index = index;
-};
+import CategoryStore from "@/modules/Categories/stores/CategoryStore";
 </script>
 
 <template>
   <transition-group name="list">
-    <tr v-for="(user, index) in usersStore.filtered" :key="user.id">
+    <tr v-for="(category, index) in CategoryStore.filtered" :key="category.id">
       <td>
         <div class="form-check dashboard-check">
           <input
@@ -41,33 +25,23 @@ const openModal = ({ id, index }) => {
             class="avatar rounded-circle me-3"
             alt="Avatar"
           />
-          <div class="d-block">
-            <span class="fw-bold">{{ user.name }}</span>
-            <div class="small text-gray">{{ user.email }}</div>
-          </div>
         </a>
       </td>
       <td>
-        <span class="fw-normal">{{ user.created_at }}</span>
+        <span class="fw-normal">{{ category.name }}</span>
       </td>
-      <td>
-        <span class="fw-normal">{{ user.gender }}</span>
-      </td>
-      <td>
-        <span class="fw-normal">Admin</span>
-      </td>
+
       <td>
         <DropdownMenu>
           <RouterLink
             class="dropdown-item d-flex align-items-center"
-            :to="{ name: 'usersEdit', params: { id: user.id } }"
+            :to="{ name: 'categoriesEdit', params: { id: category.id } }"
           >
             <i class="fa-solid fa-pen-to-square"></i>
             Edit
           </RouterLink>
 
           <a
-            @click="openModal({ id: user.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"
           >
@@ -78,14 +52,6 @@ const openModal = ({ id, index }) => {
       </td>
     </tr>
   </transition-group>
-
-  <ConfirmModal
-    :onProgress="onProgress.destroy"
-    @onConfirm="deleteUser(userId)"
-    @onClose="useConfirmModal.close()"
-  >
-    <span>are you sure ?</span>
-  </ConfirmModal>
 </template>
 <style scoped>
 .list-enter-active,
