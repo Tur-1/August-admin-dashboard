@@ -19,9 +19,10 @@ export default function useUsersService()
 
         let response = await useUsersApi.getUsers({ perPage: entries.activeEntrie, url: url });
 
-        usersStore.value.list = response.data;
         usersStore.value.filtered = response.data.data;
+        usersStore.value.list = response.data;
         usersStore.value.pagination = response.data.pagination;
+
 
 
         onProgress.value.index = false;
