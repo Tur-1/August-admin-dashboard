@@ -19,3 +19,7 @@
     -ms-border-radius: 0.25rem;
     -o-border-radius: 0.25rem;
 }
+.toast-body {
+    display: flex;
+    align-items: center;
+}

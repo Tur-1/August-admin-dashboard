@@ -9,14 +9,7 @@
       :id="id"
     >
       <option v-if="defaultOption" value="">{{ defaultOption }}</option>
-      <option
-        v-for="(option, index) in options"
-        :key="index"
-        :value="option"
-        :selected="option == modelValue ? true : false"
-      >
-        {{ option }}
-      </option>
+      <slot />
     </select>
     <span class="text-danger mt-1 ms-2" style="font-size: 12px" v-show="error">
       {{ error }}

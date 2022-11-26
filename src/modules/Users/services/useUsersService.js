@@ -6,7 +6,8 @@ import useRouterService from "@/router/useRouterService";
 import usersStore from "@/modules/Users/stores/usersStore";
 import onProgress from "@/modules/Users/stores/onProgress";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
-import entries from "@/components/MainTable/entries";
+
+import UsersTableEntries from "@/modules/Users/stores/UsersTableEntries";
 
 
 export default function useUsersService()
@@ -17,7 +18,7 @@ export default function useUsersService()
 
         onProgress.value.index = true;
 
-        let response = await useUsersApi.getUsers({ perPage: entries.activeEntrie, url: url });
+        let response = await useUsersApi.getUsers({ perPage: UsersTableEntries.activeEntrie, url: url });
 
         usersStore.value.filtered = response.data.data;
         usersStore.value.list = response.data;
@@ -86,8 +87,16 @@ export default function useUsersService()
 
     const setShowingEntries = (per_page) =>
     {
-        entries.setActiveEntrie(per_page)
+        UsersTableEntries.setActiveEntrie(per_page)
         getAllUsers();
+    }
+
+    const searchUsers = (value) =>
+    {
+        usersStore.value.filtered = usersStore.value.list.data.filter((user) =>
+        {
+            return user.name.toLowerCase().includes(value.toLowerCase());
+        });
     }
     return {
         updateUser,
@@ -95,7 +104,7 @@ export default function useUsersService()
         userForm,
         getAllUsers,
         setShowingEntries,
-        deleteUser,
+        deleteUser, searchUsers
 
     }
 

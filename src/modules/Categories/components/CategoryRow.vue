@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from "vue";
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
 </script>
@@ -19,10 +18,11 @@ import CategoryStore from "@/modules/Categories/stores/CategoryStore";
         </div>
       </td>
       <td>
-        <a href="#" class="d-flex align-items-center"
-          ><img
-            src="@/assets/img/team/profile-picture-1.jpg"
-            class="avatar rounded-circle me-3"
+        <a href="#" class="d-flex align-items-center">
+          <img
+            src="@/assets/img/defult-image.png"
+            class="rounded me-3"
+            style="max-width: 70px"
             alt="Avatar"
           />
         </a>
@@ -30,7 +30,11 @@ import CategoryStore from "@/modules/Categories/stores/CategoryStore";
       <td>
         <span class="fw-normal">{{ category.name }}</span>
       </td>
-
+      <td>
+        <span class="fw-normal">
+          {{ category.section?.name ?? "..." }}
+        </span>
+      </td>
       <td>
         <DropdownMenu>
           <RouterLink

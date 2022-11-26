@@ -1,50 +1,52 @@
 <template>
   <section class="main-section">
     <FormCard
-      @onSubmit="storeNewUser"
       submitTitle="create"
-      title="new user"
-      :onProgress="userForm.onProgress"
+      title="new category"
+      @onSubmit="storeNewCategory"
+      :onProgress="CategoryForm.onProgress"
     >
-      <div class="row">
-        <div class="col-12 col-lg-6">
-          <FormInput
-            label="name *"
-            v-model="userForm.fields.name"
-            id="name1"
-            type="text"
-            :error="userForm.errors.name"
+      <FormSelect
+        label="section *"
+        v-model="CategoryForm.fields.section_id"
+        :error="CategoryForm.errors.section_id?.[0]"
+        id="section"
+        defaultOption="-- select section --"
+        @change="getSectionCategories(CategoryForm.fields.section_id)"
+      >
+        <option
+          v-for="(section, index) in CategoryStore.sections"
+          :key="index"
+          :value="section.id"
+          :selected="
+            section.id == CategoryForm.fields.section_id ? true : false
+          "
+        >
+          {{ section.name }}
+        </option>
+      </FormSelect>
+
+      <div class="mb-3">
+        <label>category</label>
+
+        <select
+          v-model="CategoryForm.fields.category_id"
+          class="form-select d-none d-md-inline"
+          aria-label="Message select example 2"
+        >
+          <option value="">-- select category --</option>
+          <CategoryTree
+            v-for="category in categories"
+            :category="category"
+            :key="category.id"
           />
-          <FormInput
-            label="Email address *"
-            v-model="userForm.fields.email"
-            id="email1"
-            type="email"
-            :error="userForm.errors.email"
-          />
-          <FormInput
-            label="Password *"
-            v-model="userForm.fields.password"
-            id="Password1"
-            type="password"
-            :error="userForm.errors.password"
-          />
-          <FormInput
-            label="phone *"
-            v-model="userForm.fields.phone_number"
-            id="phone1"
-            type="number"
-            :error="userForm.errors.phone_number"
-          />
-          <FormSelect
-            label="Gender *"
-            v-model="userForm.fields.gender"
-            :error="userForm.errors.gender"
-            id="gender"
-            :options="['Male', 'Female']"
-          />
-        </div>
+        </select>
       </div>
+      <FormInput
+        label="Name *"
+        v-model="CategoryForm.fields.name"
+        id="categoryName"
+      />
     </FormCard>
   </section>
 </template>
@@ -53,12 +55,21 @@
 import FormInput from "@/components/FormInput/index.vue";
 import FormSelect from "@/components/FormSelect/index.vue";
 import FormCard from "@/components/FormCard/index.vue";
-import useUsersService from "@/modules/Users/services/useUsersService";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
+import useCategoryService from "@/modules/Categories/services/useCategoryService";
+import CategoryTree from "@/modules/Categories/components/CategoryTree.vue";
+import CategoryForm from "@/modules/Categories/stores/CategoryForm";
 
-const { userForm, storeNewUser } = useUsersService();
+import CategoryStore from "@/modules/Categories/stores/CategoryStore";
 
-onMounted(() => {
-  userForm.clearFields();
-});
+const { getCategoriesBySection, storeNewCategory, getAllCategories } =
+  useCategoryService();
+
+let categories = ref([]);
+
+onMounted(getAllCategories);
+
+const getSectionCategories = async (section_id) => {
+  categories.value = await getCategoriesBySection(section_id);
+};
 </script>

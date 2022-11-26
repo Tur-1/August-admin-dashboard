@@ -8,44 +8,39 @@ import UserTableRowSkeleton from "@/modules/Users/components/UserTableRowSkeleto
 import useUsersService from "@/modules/Users/services/useUsersService";
 import usersStore from "@/modules/Users/stores/usersStore";
 import onProgress from "@/modules/Users/stores/onProgress";
-import entries from "@/components/MainTable/entries";
+import UsersTableEntries from "@/modules/Users/stores/UsersTableEntries";
 import MainTableSettings from "@/components/MainTable/MainTableSettings.vue";
 
-const { getAllUsers, setShowingEntries } = useUsersService();
+const { getAllUsers, setShowingEntries, searchUsers } = useUsersService();
 
 onMounted(getAllUsers);
 
 let search = ref("");
 watch(search, (value) => {
-  usersStore.value.filtered = usersStore.value.list.data.filter((user) => {
-    return user.name.toLowerCase().includes(value.toLowerCase());
-  });
+  searchUsers(value);
 });
 </script>
 <template>
   <section class="main-section">
     <PageHeader title="Users List">
-      <ButtonLink title="New User" routeName="usersCreate">
-        <i class="fa-solid fa-plus" />
-      </ButtonLink>
+      <ButtonLink title="New User" routeName="usersCreate" />
     </PageHeader>
 
     <MainTableSettings
-      :entries="entries.data"
-      :activeEntrie="entries.activeEntrie"
       @setShowingEntries="setShowingEntries"
       inputPlaceholder="search users"
       v-model="search"
+      :entries="UsersTableEntries"
     />
 
     <MainTable
       :headTitles="['Name', 'Date Created', 'Gender', 'Role', 'Action']"
       @onChangePage="getAllUsers"
       :paginationLinks="usersStore.pagination.links"
-      :entries="entries.activeEntrie"
+      :entries="UsersTableEntries.activeEntrie"
       :totalEntries="usersStore.pagination.total"
-      :onNoRecordsFound="usersStore.filtered.length == 0"
-      recordsTitle="No Users Found"
+      :showNoRecordsFound="usersStore.filtered.length == 0 && !onProgress.index"
+      noRecordsFoundTitle="No Users Found"
     >
       <UserTableRow v-if="!onProgress.index" />
 

@@ -4,8 +4,8 @@ const props = defineProps({
   paginationLinks: Array,
   entries: Number,
   totalEntries: Number,
-  onNoRecordsFound: Boolean,
-  recordsTitle: String,
+  showNoRecordsFound: Boolean,
+  noRecordsFoundTitle: String,
   headTitles: {
     type: Array,
     require: true,
@@ -37,8 +37,8 @@ defineEmits(["onChangePage"]);
         <slot />
 
         <NoRecordsFound
-          :show="onNoRecordsFound"
-          :recordsTitle="recordsTitle"
+          :show="showNoRecordsFound"
+          :recordsTitle="noRecordsFoundTitle"
           :colspan="headTitles.length + 1"
         />
       </tbody>

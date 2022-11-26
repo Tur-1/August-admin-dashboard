@@ -1,0 +1,58 @@
+.select-box {
+    min-width: 200px;
+    position: relative;
+    z-index: 9999;
+}
+.select-box .select-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 7px;
+    min-height: 38px;
+    width: 100%;
+    color: #6b7280;
+    white-space: nowrap;
+    background-color: #ffffff;
+    border: 0.0625rem solid #d1d5db;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 7%);
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+.select-box .select-items {
+    max-height: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    overflow: hidden;
+    min-width: 100%;
+    list-style: none;
+    position: absolute;
+    top: 40px;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 7%);
+    border: 0.0625rem solid #d1d5db;
+    padding: 0;
+    color: #111827;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+}
+.select-box .select-items.show {
+    visibility: visible;
+    max-height: 300px;
+}
+.select-box .select-items .select-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.select-box .select-items .select-item:hover,
+.select-box .select-items .select-item.active {
+    background-color: #e5e7eb63;
+}

@@ -1,12 +1,10 @@
 import { reactive } from 'vue';
 
-let userForm = reactive({
+let CategoryForm = reactive({
     fields: {
-        email: '',
+        category_id: '',
+        section_id: '',
         name: '',
-        phone_number: '',
-        password: '',
-        gender: '',
     },
     errors: {},
     onProgress: false,
@@ -34,4 +32,4 @@ let userForm = reactive({
 })
 
 
-export default userForm;
+export default CategoryForm;
