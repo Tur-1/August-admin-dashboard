@@ -4,7 +4,7 @@ import useToastNotification from "@/components/Toast/useToastNotification";
 import useRouterService from "@/router/useRouterService";
 
 import usersStore from "@/modules/Users/stores/usersStore";
-import onProgress from "@/modules/Users/stores/onProgress";
+import UsersOnProgress from "@/modules/Users/stores/UsersOnProgress";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 
 import UsersTableEntries from "@/modules/Users/stores/UsersTableEntries";
@@ -16,7 +16,7 @@ export default function useUsersService()
     const getAllUsers = async (url) =>
     {
 
-        onProgress.value.index = true;
+        UsersOnProgress.value.index = true;
 
         let response = await useUsersApi.getUsers({ perPage: UsersTableEntries.activeEntrie, url: url });
 
@@ -26,7 +26,7 @@ export default function useUsersService()
 
 
 
-        onProgress.value.index = false;
+        UsersOnProgress.value.index = false;
     }
     const storeNewUser = async () =>
     {
@@ -73,7 +73,7 @@ export default function useUsersService()
     };
     const deleteUser = async ({ id, index }) =>
     {
-        onProgress.value.destroy = true;
+        UsersOnProgress.value.destroy = true;
         let response = await useUsersApi.deleteUser(id);
 
         usersStore.value.filtered.splice(index, 1);
@@ -81,7 +81,7 @@ export default function useUsersService()
 
         useToastNotification.open(response.data.data.message);
 
-        onProgress.value.destroy = false;
+        UsersOnProgress.value.destroy = false;
 
     };
 

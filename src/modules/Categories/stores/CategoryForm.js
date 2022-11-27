@@ -5,6 +5,7 @@ let CategoryForm = reactive({
         category_id: '',
         section_id: '',
         name: '',
+        image: {},
     },
     errors: {},
     onProgress: false,

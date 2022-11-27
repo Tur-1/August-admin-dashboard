@@ -7,7 +7,7 @@ import UserTableRow from "@/modules/Users/components/UserTableRow.vue";
 import UserTableRowSkeleton from "@/modules/Users/components/UserTableRowSkeleton.vue";
 import useUsersService from "@/modules/Users/services/useUsersService";
 import usersStore from "@/modules/Users/stores/usersStore";
-import onProgress from "@/modules/Users/stores/onProgress";
+import UsersOnProgress from "@/modules/Users/stores/UsersOnProgress";
 import UsersTableEntries from "@/modules/Users/stores/UsersTableEntries";
 import MainTableSettings from "@/components/MainTable/MainTableSettings.vue";
 
@@ -19,6 +19,8 @@ let search = ref("");
 watch(search, (value) => {
   searchUsers(value);
 });
+
+let headTitles = ["Name", "email", "Date Created", "Gender", "Role", "Action"];
 </script>
 <template>
   <section class="main-section">
@@ -34,17 +36,19 @@ watch(search, (value) => {
     />
 
     <MainTable
-      :headTitles="['Name', 'Date Created', 'Gender', 'Role', 'Action']"
+      :headTitles="headTitles"
       @onChangePage="getAllUsers"
       :paginationLinks="usersStore.pagination.links"
       :entries="UsersTableEntries.activeEntrie"
       :totalEntries="usersStore.pagination.total"
-      :showNoRecordsFound="usersStore.filtered.length == 0 && !onProgress.index"
+      :showNoRecordsFound="
+        usersStore.filtered.length == 0 && !UsersOnProgress.index
+      "
       noRecordsFoundTitle="No Users Found"
     >
-      <UserTableRow v-if="!onProgress.index" />
+      <UserTableRow v-if="!UsersOnProgress.index" />
 
-      <UserTableRowSkeleton v-if="onProgress.index" />
+      <UserTableRowSkeleton v-if="UsersOnProgress.index" />
     </MainTable>
   </section>
 </template>

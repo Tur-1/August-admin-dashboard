@@ -5,7 +5,7 @@ import usersStore from "@/modules/Users/stores/usersStore";
 import ConfirmModal from "@/components/ConfirmModal/index.vue";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import useUsersService from "@/modules/Users/services/useUsersService";
-import onProgress from "@/modules/Users/stores/onProgress";
+import UsersOnProgress from "@/modules/Users/stores/UsersOnProgress";
 
 const emits = defineEmits(["onUserDelete"]);
 
@@ -35,17 +35,18 @@ const openModal = ({ id, index }) => {
         </div>
       </td>
       <td>
-        <a href="#" class="d-flex align-items-center"
-          ><img
+        <a href="#" class="d-flex align-items-center">
+          <img
             src="@/assets/img/team/profile-picture-1.jpg"
             class="avatar rounded-circle me-3"
             alt="Avatar"
           />
-          <div class="d-block">
-            <span class="fw-bold">{{ user.name }}</span>
-            <div class="small text-gray">{{ user.email }}</div>
-          </div>
+
+          <span class="fw-bold">{{ user.name }}</span>
         </a>
+      </td>
+      <td>
+        <span class="fw-normal">{{ user.email }}</span>
       </td>
       <td>
         <span class="fw-normal">{{ user.created_at }}</span>
@@ -80,7 +81,7 @@ const openModal = ({ id, index }) => {
   </transition-group>
 
   <ConfirmModal
-    :onProgress="onProgress.destroy"
+    :onProgress="UsersOnProgress.destroy"
     @onConfirm="deleteUser(userId)"
     @onClose="useConfirmModal.close()"
   >

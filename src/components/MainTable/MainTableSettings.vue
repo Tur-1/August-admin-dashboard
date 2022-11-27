@@ -38,7 +38,7 @@
                 role="button"
                 class="dropdown-item d-flex align-items-center fw-bold"
                 :class="{
-                  active: entrie.number == entries.activeEntrie,
+                  active: entrie.active,
                 }"
               >
                 {{ entrie.number }}
@@ -49,6 +49,7 @@
       </div>
     </div>
   </div>
+  <!-- == entries.activeEntrie -->
 </template>
 
 <script setup>

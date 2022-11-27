@@ -1,10 +1,12 @@
 import useCategoryApi from "@/modules/Categories/api/useCategoryApi";
 
-import onProgress from "@/modules/Categories/stores/onProgress";
+import CategoriesOnProgress from "@/modules/Categories/stores/CategoriesOnProgress";
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
 
 import CategoriesTableEntries from "@/modules/Categories/stores/CategoriesTableEntries";
 import CategoryForm from "@/modules/Categories/stores/CategoryForm";
+import useRouterService from "@/router/useRouterService";
+import FormData from "form-data";
 
 
 export default function useCategoryService()
@@ -36,7 +38,7 @@ export default function useCategoryService()
     const getAllCategories = async (url = null) =>
     {
 
-        onProgress.value.index = true;
+        CategoriesOnProgress.value.index = true;
 
         let response = await useCategoryApi.getAllCategories({
             perPage: CategoriesTableEntries.activeEntrie,
@@ -48,8 +50,7 @@ export default function useCategoryService()
         CategoryStore.value.pagination = response.data.pagination;
         CategoryStore.value.sections = getSections();
 
-        console.log(response.data.data);
-        onProgress.value.index = false;
+        CategoriesOnProgress.value.index = false;
 
         return response.data;
     }
@@ -58,7 +59,7 @@ export default function useCategoryService()
 
         let response = await useCategoryApi.getCategoriesBySection(section_id);
 
-        console.log(response.data);
+
         return response.data;
     }
     const setShowingEntries = (per_page) =>
@@ -77,26 +78,30 @@ export default function useCategoryService()
         );
     }
 
-    const storeNewCategory = async () =>
+    const storeNewCategory = async (formdata) =>
     {
         CategoryForm.onProgress = true;
         CategoryForm.clearErrors();
 
         try
         {
+            // formdata.append('name', CategoryForm.fields.name)
+            // formdata.append('category_id', CategoryForm.fields.category_id)
+            // formdata.append('section_id', CategoryForm.fields.section_id)
+
             let response = await useCategoryApi.storeNewCategory(CategoryForm.fields);
 
             CategoryForm.clearFields();
 
-            useRouterService.redirectBack();
+            // useRouterService.redirectBack();
 
-            useToastNotification.open(response.data.data.message);
+            // useToastNotification.open(response.data.data.message);
 
             console.log(response.data);
 
         } catch (error)
         {
-            console.log(error.response);
+            console.log(error);
             // CategoryForm.setErrors(error.response);
         }
         CategoryForm.onProgress = false;

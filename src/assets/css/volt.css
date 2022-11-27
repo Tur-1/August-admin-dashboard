@@ -22818,6 +22818,7 @@ main.content {
     flex-direction: column !important;
     overflow-x: hidden !important;
     min-height: 100vh;
+    position: relative;
 }
 
 section.main-section {
