@@ -2,7 +2,7 @@ import { reactive } from "vue";
 
 
 
-const useSelectBox = reactive({
+const useListBox = reactive({
     isOpen: false,
     toggle()
     {
@@ -19,7 +19,8 @@ const useSelectBox = reactive({
     {
 
         this.isOpen = false;
+
     }
 });
 
-export default useSelectBox;
+export default useListBox;

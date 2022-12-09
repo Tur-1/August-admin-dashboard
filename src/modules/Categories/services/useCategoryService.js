@@ -1,40 +1,32 @@
 import useCategoryApi from "@/modules/Categories/api/useCategoryApi";
-
 import CategoriesOnProgress from "@/modules/Categories/stores/CategoriesOnProgress";
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
-
 import CategoriesTableEntries from "@/modules/Categories/stores/CategoriesTableEntries";
 import CategoryForm from "@/modules/Categories/stores/CategoryForm";
 import useRouterService from "@/router/useRouterService";
-import FormData from "form-data";
+import { useLoadingSpinner } from "@/components/LoadingSpinner";
+import useToastNotification from "@/components/Toast/useToastNotification";
+import { FilterSections } from "@/modules/Categories/helpers";
+import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
+import { useRoute } from "vue-router";
 
 
 export default function useCategoryService()
 {
-    const getSections = () =>
+
+    const getAllSections = async () =>
     {
-        return CategoryStore.value.list.data.filter((category) =>
-        {
-            return category.section == null;
-        });
+        useLoadingSpinner.show();
+
+        let response = await useCategoryApi.getSections();
+
+        CategoryStore.value.sections = response.data;
+
+        useLoadingSpinner.hide();
+
+        return response.data;
     }
-    const filterBySection = (sectionId) =>
-    {
 
-        CategoryStore.value.filtered = CategoryStore.value.list.data.filter((category) =>
-        {
-            if (sectionId !== null)
-            {
-                return category.section_id == sectionId;
-            } else
-            {
-                return category;
-            }
-
-        });
-
-
-    }
     const getAllCategories = async (url = null) =>
     {
 
@@ -48,7 +40,7 @@ export default function useCategoryService()
         CategoryStore.value.list = response.data;
         CategoryStore.value.filtered = response.data.data;
         CategoryStore.value.pagination = response.data.pagination;
-        CategoryStore.value.sections = getSections();
+        CategoryStore.value.sections = FilterSections();
 
         CategoriesOnProgress.value.index = false;
 
@@ -62,59 +54,121 @@ export default function useCategoryService()
 
         return response.data;
     }
-    const setShowingEntries = (per_page) =>
-    {
-        CategoriesTableEntries.setActiveEntrie(per_page)
-        getAllCategories();
-    }
 
-    const searchCategories = (value) =>
-    {
-        CategoryStore.value.filtered = CategoryStore.value.list.data.filter(
-            (category) =>
-            {
-                return category.name.toLowerCase().includes(value.toLowerCase());
-            }
-        );
-    }
-
-    const storeNewCategory = async (formdata) =>
+    const storeNewCategory = async (formData) =>
     {
         CategoryForm.onProgress = true;
         CategoryForm.clearErrors();
 
+
         try
         {
-            // formdata.append('name', CategoryForm.fields.name)
-            // formdata.append('category_id', CategoryForm.fields.category_id)
-            // formdata.append('section_id', CategoryForm.fields.section_id)
+            let field;
+            for (field in CategoryForm.fields)
+            {
+                formData.append(field, CategoryForm.fields[field]);
+            }
 
-            let response = await useCategoryApi.storeNewCategory(CategoryForm.fields);
 
+            let response = await useCategoryApi.storeNewCategory(formData);
+            console.log(response.data);
             CategoryForm.clearFields();
 
-            // useRouterService.redirectBack();
+            useRouterService.redirectBack();
 
-            // useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.data.message);
 
-            console.log(response.data);
 
         } catch (error)
         {
-            console.log(error);
-            // CategoryForm.setErrors(error.response);
+
+            CategoryForm.setErrors(error.response);
         }
         CategoryForm.onProgress = false;
 
     };
+    const updateCategory = async (formData) =>
+    {
+        CategoryForm.onProgress = true;
+        CategoryForm.clearErrors();
+
+
+        try
+        {
+            let field;
+            for (field in CategoryForm.fields)
+            {
+                formData.append(field, CategoryForm.fields[field]);
+            }
+
+
+            let response = await useCategoryApi.storeNewCategory(formData);
+
+            CategoryForm.clearFields();
+
+            useRouterService.redirectBack();
+
+            useToastNotification.open(response.data.data.message);
+
+
+        } catch (error)
+        {
+
+            CategoryForm.setErrors(error.response);
+        }
+        CategoryForm.onProgress = false;
+
+    };
+    const destroyCategory = async (category) =>
+    {
+        CategoriesOnProgress.value.destroy = true;
+
+        let response = await useCategoryApi.deleteCategory(category.id);
+
+        CategoryStore.value.filtered.splice(category.index, 1);
+        useConfirmModal.close();
+
+        useToastNotification.open(response.data.data.message);
+
+        CategoriesOnProgress.value.destroy = false;
+    }
+    const showCategory = async () =>
+    {
+        useLoadingSpinner.show();
+
+        const route = useRoute();
+
+        let response = await useCategoryApi.getCategory(route.params.id);
+
+        CategoryForm.fields = response.data.data;
+        await getAllSections();
+        await getSectionCategories(CategoryForm.fields.section_id);
+        useLoadingSpinner.hide();
+
+    };
+    const getSectionCategories = async (section_id) =>
+    {
+
+        useLoadingSpinner.show();
+        if (section_id)
+        {
+            CategoryStore.value.list = await getCategoriesBySection(section_id);
+        } else
+        {
+            CategoryStore.value.list = [];
+        }
+
+        useLoadingSpinner.hide();
+    };
     return {
         getAllCategories,
-        setShowingEntries,
-        filterBySection,
-        searchCategories,
         getCategoriesBySection,
         storeNewCategory,
-
+        getAllSections,
+        destroyCategory,
+        showCategory,
+        getCategoriesBySection,
+        updateCategory
     }
 
 }

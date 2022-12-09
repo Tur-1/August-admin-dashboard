@@ -14,6 +14,15 @@ const CategoriesRoutes = [
         path: "/categories/:id/edit",
         name: "categoriesEdit",
         component: () => import('@/modules/Categories/views/Edit.vue')
+    },
+    {
+        path: "/categories/section/create",
+        name: "sectionCreate",
+        component: () => import('@/modules/Categories/views/SectionCreate.vue')
+    }, {
+        path: "/categories/section/:id/edit",
+        name: "sectionEdit",
+        component: () => import('@/modules/Categories/views/SectionEdit.vue')
     }
 
 ];

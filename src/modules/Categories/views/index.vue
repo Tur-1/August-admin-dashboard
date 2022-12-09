@@ -12,25 +12,30 @@ import CategoriesTableEntries from "@/modules/Categories/stores/CategoriesTableE
 import MainTableSettings from "@/components/MainTable/MainTableSettings.vue";
 import MainTable from "@/components/MainTable/index.vue";
 
-const { getAllCategories, setShowingEntries, searchCategories } =
-  useCategoryService();
+import {
+  SearchCategories,
+  SetShowingEntries,
+} from "@/modules/Categories/helpers";
+
+const { getAllCategories } = useCategoryService();
 
 onMounted(getAllCategories);
 
 let search = ref("");
 
 watch(search, (value) => {
-  searchCategories(value);
+  SearchCategories(value);
 });
 </script>
 <template>
   <section class="main-section">
     <PageHeader title="Categories List">
       <ButtonLink title="New Category" routeName="categoriesCreate" />
+      <ButtonLink title="New Section" routeName="sectionCreate" class="ms-2" />
     </PageHeader>
 
     <MainTableSettings
-      @setShowingEntries="setShowingEntries"
+      @setShowingEntries="SetShowingEntries"
       inputPlaceholder="search categories"
       v-model="search"
       :entries="CategoriesTableEntries"

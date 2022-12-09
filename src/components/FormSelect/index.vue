@@ -9,7 +9,15 @@
       :id="id"
     >
       <option v-if="defaultOption" value="">{{ defaultOption }}</option>
-      <slot />
+      <slot v-if="!props.options" />
+      <option
+        v-if="props.options"
+        v-for="(option, index) in props.options"
+        :key="index"
+        :value="option"
+      >
+        {{ option }}
+      </option>
     </select>
     <span class="text-danger mt-1 ms-2" style="font-size: 12px" v-show="error">
       {{ error }}

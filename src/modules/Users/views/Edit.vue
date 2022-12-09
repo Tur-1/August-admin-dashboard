@@ -6,7 +6,7 @@
       title="update user"
       :onProgress="userForm.onProgress"
     >
-      <div class="row" v-if="!onProgress">
+      <div class="row">
         <div class="col-12 col-lg-6">
           <FormInput
             label="name *"
@@ -45,15 +45,6 @@
           />
         </div>
       </div>
-      <div
-        class="row justify-content-center align-content-center align-items-center"
-        style="min-height: 500px"
-        v-if="onProgress"
-      >
-        <div class="spinner-border opacity-100" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
     </FormCard>
   </section>
 </template>
@@ -67,15 +58,17 @@ import { useRoute } from "vue-router";
 import { onMounted, ref } from "vue";
 import useUsersApi from "@/modules/Users/api/useUsersApi";
 import useUsersService from "@/modules/Users/services/useUsersService";
+import { useLoadingSpinner } from "@/components/LoadingSpinner";
 
 const { userForm, updateUser } = useUsersService();
 const route = useRoute();
-let onProgress = ref(false);
+
 onMounted(async () => {
-  onProgress.value = true;
+  useLoadingSpinner.show();
   let user = await useUsersApi.getUser(route.params.id);
 
-  userForm.value.fields = user.data.data;
-  onProgress.value = false;
+  userForm.fields = user.data.data;
+
+  useLoadingSpinner.hide();
 });
 </script>

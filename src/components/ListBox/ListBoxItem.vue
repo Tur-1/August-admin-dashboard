@@ -1,8 +1,8 @@
 <template>
   <li
-    class="select-item"
+    class="list-item"
     :class="{ active: active }"
-    @click="closeOnClick ? useSelectBox.toggle() : ''"
+    @click="useListBox.toggle()"
   >
     <span v-if="label">{{ label }}</span>
     <slot v-if="!label" />
@@ -11,8 +11,7 @@
 </template>
 
 <script setup>
-import useSelectBox from "@/components/SelectBox/useSelectBox";
-
+import useListBox from "@/components/ListBox/useListBox";
 const props = defineProps({
   label: String,
   active: Boolean,

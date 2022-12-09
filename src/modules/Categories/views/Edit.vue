@@ -1,81 +1,79 @@
+<script setup>
+import FormInput from "@/components/FormInput/index.vue";
+import FormSelect from "@/components/FormSelect/index.vue";
+import FormCard from "@/components/FormCard/index.vue";
+import { onMounted, ref } from "vue";
+import useCategoryService from "@/modules/Categories/services/useCategoryService";
+import CategoryTree from "@/modules/Categories/components/CategoryTree.vue";
+import CategoryForm from "@/modules/Categories/stores/CategoryForm";
+import ImageUpload from "@/components/ImageUpload/index.vue";
+import CategoryStore from "@/modules/Categories/stores/CategoryStore";
+
+const { showCategory, storeNewCategory, getCategoriesBySection } =
+  useCategoryService();
+
+onMounted(showCategory);
+
+const formData = new FormData();
+</script>
 <template>
   <section class="main-section">
     <FormCard
-      @onSubmit="updateUser(route.params.id)"
-      submitTitle="update"
-      title="update user"
-      :onProgress="userForm.onProgress"
+      submitTitle="create"
+      title="new category"
+      @onSubmit="storeNewCategory(formData)"
+      :onProgress="CategoryForm.onProgress"
     >
-      <div class="row" v-if="!onProgress">
-        <div class="col-12 col-lg-6">
-          <FormInput
-            label="name *"
-            v-model="userForm.fields.name"
-            id="name1"
-            type="text"
-            :error="userForm.errors.name"
-          />
-          <FormInput
-            label="Email address *"
-            v-model="userForm.fields.email"
-            id="email1"
-            type="email"
-            :error="userForm.errors.email"
-          />
-          <FormInput
-            label="Password *"
-            v-model="userForm.fields.password"
-            id="Password1"
-            type="password"
-            :error="userForm.errors.password"
-          />
-          <FormInput
-            label="phone *"
-            v-model="userForm.fields.phone_number"
-            id="phone1"
-            type="number"
-            :error="userForm.errors.phone_number"
-          />
+      <div class="row">
+        <div class="col-lg-6 col-12">
           <FormSelect
-            label="Gender *"
-            v-model="userForm.fields.gender"
-            :error="userForm.errors.gender"
-            id="gender"
-            :options="['Male', 'Female']"
+            label="section *"
+            v-model="CategoryForm.fields.section_id"
+            :error="CategoryForm.errors.section_id?.[0]"
+            id="section"
+            defaultOption="-- select section --"
+            @change="getCategoriesBySection(CategoryForm.fields.section_id)"
+          >
+            <option
+              v-for="(section, index) in CategoryStore.sections"
+              :key="index"
+              :value="section.id"
+              :selected="CategoryForm.fields.section_id == section.id"
+            >
+              {{ section.name }}
+            </option>
+          </FormSelect>
+
+          <FormSelect
+            label="category *"
+            v-model="CategoryForm.fields.parent_id"
+            :error="CategoryForm.errors.parent_id?.[0]"
+            id="category"
+            defaultOption="-- select category --"
+          >
+            <CategoryTree
+              v-for="category in CategoryStore.list"
+              :category="category"
+              :key="category.id"
+              :selected="CategoryForm.fields.parent_id == category.id"
+            />
+          </FormSelect>
+
+          <FormInput
+            label="Name *"
+            v-model="CategoryForm.fields.name"
+            id="categoryName"
+            :error="CategoryForm.errors.name?.[0]"
           />
         </div>
-      </div>
-      <div
-        class="row justify-content-center align-content-center align-items-center"
-        style="min-height: 500px"
-        v-if="onProgress"
-      >
-        <div class="spinner-border opacity-100" role="status">
-          <span class="visually-hidden">Loading...</span>
+        <div class="col-lg-6 col-12">
+          <ImageUpload
+            :error="CategoryForm.errors.image?.[0]"
+            @onUploadImage="(image) => formData.append('image', image)"
+            :imageUrl="CategoryForm.fields.image_url"
+          />
         </div>
       </div>
     </FormCard>
   </section>
 </template>
-
-<script setup>
-import FormInput from "@/components/FormInput/index.vue";
-import FormSelect from "@/components/FormSelect/index.vue";
-import FormCard from "@/components/FormCard/index.vue";
-
-import { useRoute } from "vue-router";
-import { onMounted, ref } from "vue";
-import useUsersApi from "@/modules/Users/api/useUsersApi";
-import useUsersService from "@/modules/Users/services/useUsersService";
-
-const { userForm, updateUser } = useUsersService();
-const route = useRoute();
-let onProgress = ref(false);
-onMounted(async () => {
-  onProgress.value = true;
-  let user = await useUsersApi.getUser(route.params.id);
-
-  userForm.fields = user.data.data;
-  onProgress.value = false;
-});
-</script>

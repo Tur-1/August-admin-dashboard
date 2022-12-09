@@ -1,14 +1,26 @@
+import { useLoadingSpinner } from '@/components/LoadingSpinner';
 import { reactive } from 'vue';
 
 let CategoryForm = reactive({
     fields: {
-        category_id: '',
+        parent_id: '',
         section_id: '',
         name: '',
-        image: {},
+
     },
     errors: {},
     onProgress: false,
+    showProgress()
+    {
+        this.onProgress = true;
+
+        useLoadingSpinner.show();
+    },
+    hideProgress()
+    {
+        useLoadingSpinner.hide();
+        this.onProgress = false;
+    },
     clearErrors()
     {
         this.errors = {};

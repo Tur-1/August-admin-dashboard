@@ -1,9 +1,9 @@
-.select-box {
+.list-box {
     min-width: 200px;
     position: relative;
     z-index: 9999;
 }
-.select-box .select-label {
+.list-box .list-label {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -19,10 +19,10 @@
     cursor: pointer;
     font-size: 0.875rem;
 }
-.select-box .select-items {
+.list-box .list-items {
     max-height: 0;
-    visibility: hidden;
-    transition: all 0.3s;
+    opacity: 0;
+    transition: max-height 0.3s ease-in-out, opacity 0.2s ease-in-out;
     overflow: hidden;
     min-width: 100%;
     list-style: none;
@@ -34,16 +34,13 @@
     border: 0.0625rem solid #d1d5db;
     padding: 0;
     color: #111827;
-    -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
-    -ms-transition: all 0.3s;
-    -o-transition: all 0.3s;
 }
-.select-box .select-items.show {
-    visibility: visible;
-    max-height: 300px;
+
+.list-box .list-items.show {
+    opacity: 1;
+    max-height: 400px;
 }
-.select-box .select-items .select-item {
+.list-box .list-items .list-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -52,7 +49,7 @@
     font-size: 0.875rem;
 }
 
-.select-box .select-items .select-item:hover,
-.select-box .select-items .select-item.active {
+.list-box .list-items .list-item:hover,
+.list-box .list-items .list-item.active {
     background-color: #e5e7eb63;
 }
