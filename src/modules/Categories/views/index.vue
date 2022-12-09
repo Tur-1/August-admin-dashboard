@@ -44,7 +44,7 @@ watch(search, (value) => {
     </MainTableSettings>
 
     <MainTable
-      :headTitles="['image', 'name', 'section', 'Action']"
+      :fields="['image', 'name', 'section', 'Action']"
       @onChangePage="getAllCategories"
       :paginationLinks="CategoryStore.pagination.links"
       :entries="CategoriesTableEntries.activeEntrie"

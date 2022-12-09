@@ -6,7 +6,7 @@ const props = defineProps({
   totalEntries: Number,
   showNoRecordsFound: Boolean,
   noRecordsFoundTitle: String,
-  headTitles: {
+  fields: {
     type: Array,
     require: true,
   },
@@ -30,12 +30,10 @@ defineEmits(["onChangePage"]);
               <label class="form-check-label" for="userCheck55"> </label>
             </div>
           </th>
-          <th class="border-bottom" v-for="title in headTitles">{{ title }}</th>
+          <th class="border-bottom" v-for="field in fields">{{ field }}</th>
         </tr>
       </thead>
       <tbody>
-        <slot />
-
         <NoRecordsFound
           :show="showNoRecordsFound"
           :recordsTitle="noRecordsFoundTitle"

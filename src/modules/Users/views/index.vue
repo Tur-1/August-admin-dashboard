@@ -20,7 +20,7 @@ watch(search, (value) => {
   searchUsers(value);
 });
 
-let headTitles = ["Name", "email", "Date Created", "Gender", "Role", "Action"];
+let fields = ["Name", "email", "Date Created", "Gender", "Role", "Action"];
 </script>
 <template>
   <section class="main-section">
@@ -36,7 +36,7 @@ let headTitles = ["Name", "email", "Date Created", "Gender", "Role", "Action"];
     />
 
     <MainTable
-      :headTitles="headTitles"
+      :fields="fields"
       @onChangePage="getAllUsers"
       :paginationLinks="usersStore.pagination.links"
       :entries="UsersTableEntries.activeEntrie"

@@ -37,6 +37,7 @@ export default function useCategoryService()
             url: url
         });
 
+        console.log(response.data);
         CategoryStore.value.list = response.data;
         CategoryStore.value.filtered = response.data.data;
         CategoryStore.value.pagination = response.data.pagination;
