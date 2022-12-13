@@ -1,35 +1,43 @@
 <script setup>
-import FormInput from "@/components/FormInput/index.vue";
-import FormCard from "@/components/FormCard/index.vue";
+import {
+  FormFileUpload,
+  BaseForm,
+  FormInput,
+  FormStore,
+} from "@/components/BaseForm";
 import useSectionService from "@/modules/Categories/services/useSectionService";
-import CategoryForm from "@/modules/Categories/stores/CategoryForm";
-import ImageUpload from "@/components/ImageUpload/index.vue";
+import { onMounted } from "vue";
 
 const { storeNewSection } = useSectionService();
 const formData = new FormData();
+
+onMounted(() => {
+  FormStore.setFields({
+    name: "",
+  });
+});
 </script>
 <template>
   <section class="main-section">
-    <FormCard
+    <BaseForm
       submitTitle="create"
       title="new section"
       @onSubmit="storeNewSection(formData)"
-      :onProgress="CategoryForm.onProgress"
     >
       <div class="row d-flex justify-content-center">
         <div class="col-lg-6 col-12">
           <FormInput
             label="Name *"
-            v-model="CategoryForm.fields.name"
+            v-model="FormStore.fields.name"
             id="sectionName"
-            :error="CategoryForm.errors.name?.[0]"
+            :error="FormStore.errors.name?.[0]"
           />
-          <ImageUpload
-            :error="CategoryForm.errors.image?.[0]"
+          <FormFileUpload
+            :error="FormStore.errors.image?.[0]"
             @onUploadImage="(image) => formData.append('image', image)"
           />
         </div>
       </div>
-    </FormCard>
+    </BaseForm>
   </section>
 </template>

@@ -5,7 +5,7 @@ function FilterSections()
 {
     return CategoryStore.value.list.data.filter((category) =>
     {
-        return category.section == null;
+        return category.section == null
     });
 }
 export default FilterSections

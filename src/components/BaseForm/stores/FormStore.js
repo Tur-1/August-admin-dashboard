@@ -1,13 +1,8 @@
 import { useLoadingSpinner } from '@/components/LoadingSpinner';
 import { reactive } from 'vue';
 
-let CategoryForm = reactive({
-    fields: {
-        parent_id: '',
-        section_id: '',
-        name: '',
-
-    },
+let FormStore = reactive({
+    fields: {},
     errors: {},
     onProgress: false,
     showProgress()
@@ -16,6 +11,7 @@ let CategoryForm = reactive({
 
         useLoadingSpinner.show();
     },
+
     hideProgress()
     {
         useLoadingSpinner.hide();
@@ -24,6 +20,11 @@ let CategoryForm = reactive({
     clearErrors()
     {
         this.errors = {};
+    },
+
+    setFields(fields)
+    {
+        this.fields = fields;
     },
     clearFields()
     {
@@ -39,10 +40,9 @@ let CategoryForm = reactive({
         if (response.status == 422)
         {
             this.errors = response.data.errors;
-
         }
     }
 })
 
 
-export default CategoryForm;
+export default FormStore;

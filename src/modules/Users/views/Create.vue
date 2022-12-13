@@ -1,6 +1,6 @@
 <template>
   <section class="main-section">
-    <FormCard
+    <BaseForm
       @onSubmit="storeNewUser"
       submitTitle="create"
       title="new user"
@@ -45,14 +45,14 @@
           />
         </div>
       </div>
-    </FormCard>
+    </BaseForm>
   </section>
 </template>
 
 <script setup>
 import FormInput from "@/components/FormInput/index.vue";
 import FormSelect from "@/components/FormSelect/index.vue";
-import FormCard from "@/components/FormCard/index.vue";
+import BaseForm from "@/components/BaseForm/index.vue";
 import useUsersService from "@/modules/Users/services/useUsersService";
 
 import { onMounted } from "vue";

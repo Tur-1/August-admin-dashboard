@@ -1,15 +1,12 @@
 import useCategoryApi from "@/modules/Categories/api/useCategoryApi";
 
-import CategoriesOnProgress from "@/modules/Categories/stores/CategoriesOnProgress";
-import CategoryStore from "@/modules/Categories/stores/CategoryStore";
-
-import CategoriesTableEntries from "@/modules/Categories/stores/CategoriesTableEntries";
-import CategoryForm from "@/modules/Categories/stores/CategoryForm";
 import useRouterService from "@/router/useRouterService";
-import FormData from "form-data";
+
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import useToastNotification from "@/components/Toast/useToastNotification";
 import { useRoute } from "vue-router";
+import { FormStore } from "@/components/BaseForm";
+import { appendFormData } from "@/helpers";
 
 
 export default function useSectionService()
@@ -17,21 +14,16 @@ export default function useSectionService()
 
     const storeNewSection = async (formData) =>
     {
-        CategoryForm.showProgress();
-        CategoryForm.clearErrors();
+        FormStore.showProgress();
+        FormStore.clearErrors();
 
         try
         {
-            let field;
-            for (field in CategoryForm.fields)
-            {
-                formData.append(field, CategoryForm.fields[field]);
-            }
-
+            appendFormData(formData, FormStore.fields);
 
             let response = await useCategoryApi.storeNewSection(formData);
 
-            CategoryForm.clearFields();
+            FormStore.clearFields();
 
             useRouterService.redirectBack();
 
@@ -41,12 +33,12 @@ export default function useSectionService()
 
         } catch (error)
         {
-            CategoryForm.setErrors(error.response);
+            FormStore.setErrors(error.response);
         }
-        CategoryForm.hideProgress();
+        FormStore.hideProgress();
 
     };
-    const getSection = async () =>
+    const showSection = async () =>
     {
         useLoadingSpinner.show();
 
@@ -54,58 +46,41 @@ export default function useSectionService()
 
         let response = await useCategoryApi.getCategory(route.params.id);
 
-
-        CategoryForm.fields.id = response.data.data.id;
-        CategoryForm.fields.name = response.data.data.name;
-        CategoryForm.fields.image_url = response.data.data.image_url;
+        FormStore.setFields(response.data.data);
 
         useLoadingSpinner.hide();
 
     };
     const updateSection = async (formData) =>
     {
-
-
-
-        CategoryForm.showProgress();
-        CategoryForm.clearErrors();
+        FormStore.showProgress();
+        FormStore.clearErrors();
 
         try
         {
-            let field;
-            for (field in CategoryForm.fields)
-            {
-                formData.append(field, CategoryForm.fields[field]);
-            }
 
+            appendFormData(formData, FormStore.fields);
 
             let response = await useCategoryApi.updateSection({
-                id: CategoryForm.fields.id,
+                id: FormStore.fields.id,
                 formData: formData
             });
 
-
-
-            console.log(response.data);
-
-            CategoryForm.fields = response.data.data.category;
-
+            FormStore.setFields(response.data.data.category);
             useToastNotification.open(response.data.data.message);
-
-
 
         } catch (error)
         {
 
-            CategoryForm.setErrors(error.response);
+            FormStore.setErrors(error.response);
         }
-        CategoryForm.hideProgress();
+        FormStore.hideProgress();
 
     };
     return {
 
         storeNewSection,
-        getSection,
+        showSection,
         updateSection
     }
 

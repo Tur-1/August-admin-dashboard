@@ -5,6 +5,7 @@ let CategoryStore = ref({
     filtered: [],
     pagination: [],
     sections: [],
+    sectionCategories: [],
 });
 
 

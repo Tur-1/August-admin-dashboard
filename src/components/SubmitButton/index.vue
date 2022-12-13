@@ -9,7 +9,9 @@
     <div
       class="spinner-border spinner-border-sm opacity-0"
       role="status"
-      :class="{ 'opacity-100 onProgress': onProgress }"
+      :class="{
+        'opacity-100 onProgress': FormStore.onProgress,
+      }"
     >
       <span class="visually-hidden">Loading...</span>
     </div>
@@ -17,6 +19,8 @@
 </template>
 
 <script setup>
+import { FormStore } from "@/components/BaseForm";
+
 const props = defineProps({
   class: String,
   title: {

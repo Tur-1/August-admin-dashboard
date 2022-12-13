@@ -104,8 +104,8 @@ export default function useUsersService()
         userForm,
         getAllUsers,
         setShowingEntries,
-        deleteUser, searchUsers
-
+        deleteUser,
+        searchUsers
     }
 
 }

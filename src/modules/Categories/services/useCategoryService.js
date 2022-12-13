@@ -2,13 +2,14 @@ import useCategoryApi from "@/modules/Categories/api/useCategoryApi";
 import CategoriesOnProgress from "@/modules/Categories/stores/CategoriesOnProgress";
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
 import CategoriesTableEntries from "@/modules/Categories/stores/CategoriesTableEntries";
-import CategoryForm from "@/modules/Categories/stores/CategoryForm";
 import useRouterService from "@/router/useRouterService";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import useToastNotification from "@/components/Toast/useToastNotification";
 import { FilterSections } from "@/modules/Categories/helpers";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { useRoute } from "vue-router";
+import { FormStore } from "@/components/BaseForm";
+import { appendFormData } from "@/helpers";
 
 
 export default function useCategoryService()
@@ -37,7 +38,7 @@ export default function useCategoryService()
             url: url
         });
 
-        console.log(response.data);
+
         CategoryStore.value.list = response.data;
         CategoryStore.value.filtered = response.data.data;
         CategoryStore.value.pagination = response.data.pagination;
@@ -50,31 +51,34 @@ export default function useCategoryService()
     const getCategoriesBySection = async (section_id) =>
     {
 
-        let response = await useCategoryApi.getCategoriesBySection(section_id);
 
 
-        return response.data;
+        useLoadingSpinner.show();
+        if (section_id)
+        {
+            let response = await useCategoryApi.getCategoriesBySection(section_id);
+            CategoryStore.value.sectionCategories = response.data;
+        } else
+        {
+            CategoryStore.value.sectionCategories = [];
+        }
+
+        useLoadingSpinner.hide();
+
     }
 
     const storeNewCategory = async (formData) =>
     {
-        CategoryForm.onProgress = true;
-        CategoryForm.clearErrors();
-
+        FormStore.showProgress();
+        FormStore.clearErrors();
 
         try
         {
-            let field;
-            for (field in CategoryForm.fields)
-            {
-                formData.append(field, CategoryForm.fields[field]);
-            }
-
+            appendFormData(formData, FormStore.fields);
 
             let response = await useCategoryApi.storeNewCategory(formData);
-            console.log(response.data);
-            CategoryForm.clearFields();
 
+            FormStore.clearFields();
             useRouterService.redirectBack();
 
             useToastNotification.open(response.data.data.message);
@@ -82,32 +86,30 @@ export default function useCategoryService()
 
         } catch (error)
         {
-
-            CategoryForm.setErrors(error.response);
+            FormStore.setErrors(error.response);
         }
-        CategoryForm.onProgress = false;
+
+        FormStore.hideProgress();
 
     };
     const updateCategory = async (formData) =>
     {
-        CategoryForm.onProgress = true;
-        CategoryForm.clearErrors();
-
+        FormStore.showProgress();
+        FormStore.clearErrors();
 
         try
         {
-            let field;
-            for (field in CategoryForm.fields)
-            {
-                formData.append(field, CategoryForm.fields[field]);
-            }
+            appendFormData(formData, FormStore.fields);
 
 
-            let response = await useCategoryApi.storeNewCategory(formData);
+            let response = await useCategoryApi.updateCategory({
+                formData: formData,
+                id: FormStore.fields.id
+            });
 
-            CategoryForm.clearFields();
 
-            useRouterService.redirectBack();
+            FormStore.setFields(response.data.data.category);
+
 
             useToastNotification.open(response.data.data.message);
 
@@ -115,9 +117,10 @@ export default function useCategoryService()
         } catch (error)
         {
 
-            CategoryForm.setErrors(error.response);
+            console.log(error.response);
+            FormStore.setErrors(error.response);
         }
-        CategoryForm.onProgress = false;
+        FormStore.hideProgress();
 
     };
     const destroyCategory = async (category) =>
@@ -136,34 +139,24 @@ export default function useCategoryService()
     const showCategory = async () =>
     {
         useLoadingSpinner.show();
+        FormStore.clearErrors();
+
 
         const route = useRoute();
 
         let response = await useCategoryApi.getCategory(route.params.id);
 
-        CategoryForm.fields = response.data.data;
+        FormStore.setFields(response.data.data);
+
         await getAllSections();
-        await getSectionCategories(CategoryForm.fields.section_id);
+        await getCategoriesBySection(FormStore.fields.section_id);
         useLoadingSpinner.hide();
 
-    };
-    const getSectionCategories = async (section_id) =>
-    {
 
-        useLoadingSpinner.show();
-        if (section_id)
-        {
-            CategoryStore.value.list = await getCategoriesBySection(section_id);
-        } else
-        {
-            CategoryStore.value.list = [];
-        }
-
-        useLoadingSpinner.hide();
     };
+
     return {
         getAllCategories,
-        getCategoriesBySection,
         storeNewCategory,
         getAllSections,
         destroyCategory,

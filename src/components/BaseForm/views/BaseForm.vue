@@ -6,7 +6,7 @@
       >
         <h3 class="h5 mb-0">{{ title }}</h3>
 
-        <SubmitButton :title="submitTitle" :onProgress="onProgress" />
+        <SubmitButton :title="submitTitle" />
       </div>
       <div class="card-body p-0 p-md-4">
         <slot />
@@ -18,6 +18,6 @@
 <script setup>
 import SubmitButton from "@/components/SubmitButton/index.vue";
 
-defineProps(["title", "submitTitle", "onProgress"]);
+defineProps(["title", "submitTitle"]);
 defineEmits(["onSubmit"]);
 </script>

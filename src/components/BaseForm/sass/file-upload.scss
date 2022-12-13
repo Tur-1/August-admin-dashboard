@@ -7,7 +7,7 @@
     height: 100%;
 }
 .upload-image-box .upload-image-label {
-    border: 1px dashed #161d27;
+    border: 1px solid #161d27;
     cursor: pointer;
     height: 100%;
     width: 100%;
@@ -18,9 +18,6 @@
     align-items: center;
     background-color: #f3f6fd;
     padding: 10px;
-}
-.upload-image-box .upload-image-label.is-invalid {
-    border: 1px dashed #e11d48 !important;
 }
 
 .upload-image-box .upload-image-label .image-preview {

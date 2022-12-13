@@ -34,10 +34,11 @@ defineEmits(["onChangePage"]);
         </tr>
       </thead>
       <tbody>
+        <slot />
         <NoRecordsFound
           :show="showNoRecordsFound"
           :recordsTitle="noRecordsFoundTitle"
-          :colspan="headTitles.length + 1"
+          :colspan="fields.length + 1"
         />
       </tbody>
     </table>

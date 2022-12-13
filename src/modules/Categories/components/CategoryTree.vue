@@ -1,4 +1,6 @@
 <script setup>
+import { FormStore } from "@/components/BaseForm";
+
 const porps = defineProps({
   category: Object,
   dash: {
@@ -11,16 +13,18 @@ const porps = defineProps({
 
 <template>
   <option :value="category.id" :selected="selected">
-    <div class="catgory-item">
-      <i class="fas fa-share fa-flip-vertical me-1"></i>
-      {{ category.name }}
-    </div>
+    <template v-for="d in dash">
+      {{ "-" }}
+    </template>
+
+    <span>{{ category.name }}</span>
   </option>
   <CategoryTree
     v-if="category.children"
     :dash="dash + 1"
     v-for="category in category.children"
     :category="category"
+    :selected="FormStore.fields.parent_id == category.id"
   />
 </template>
 
