@@ -1,7 +1,7 @@
 <template>
   <tr v-show="show">
     <td :colspan="colspan" class="text-center">
-      <h5>{{ recordsTitle }}</h5>
+      <h5>{{ recordsTitle ?? "No Records Found" }}</h5>
     </td>
   </tr>
 </template>

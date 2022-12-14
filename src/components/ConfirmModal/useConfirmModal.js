@@ -3,7 +3,11 @@ import { reactive } from "vue";
 
 const useConfirmModal = reactive({
     isOpen: false,
-
+    isOnProgress: false,
+    onProgress(BooleanValue)
+    {
+        this.isOnProgress = BooleanValue;
+    },
 
     open()
     {

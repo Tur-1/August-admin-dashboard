@@ -1,18 +1,21 @@
 <script setup>
-import NoRecordsFound from "@/components/MainTable/NoRecordsFound.vue";
+import { NoRecordsFound } from "@/components/MainTable";
+import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
+import ConfirmModal from "@/components/ConfirmModal/index.vue";
 const props = defineProps({
   paginationLinks: Array,
-  entries: Number,
-  totalEntries: Number,
+  results: Number,
+  totalResults: Number,
   showNoRecordsFound: Boolean,
   noRecordsFoundTitle: String,
+  confirmTitle: String,
   fields: {
     type: Array,
     require: true,
   },
 });
 
-defineEmits(["onChangePage"]);
+defineEmits(["onChangePage", "onDelete"]);
 </script>
 <template>
   <div class="card card-body shadow border-0 table-wrapper table-responsive">
@@ -64,16 +67,23 @@ defineEmits(["onChangePage"]);
         </ul>
       </nav>
       <div
-        v-if="entries && totalEntries"
+        v-if="results && totalResults"
         class="fw-normal small mt-4 mt-lg-0"
         style="display: inline-block; margin-left: auto"
       >
         Showing
-        <b>{{ entries }}</b>
+        <b>{{ results }}</b>
         out of
-        <b>{{ totalEntries }}</b>
+        <b>{{ totalResults }}</b>
         entries
       </div>
     </div>
+
+    <ConfirmModal
+      @onConfirm="$emit('onDelete')"
+      @onClose="useConfirmModal.close()"
+    >
+      <span>{{ confirmTitle ?? "are you sure ?" }}</span>
+    </ConfirmModal>
   </div>
 </template>

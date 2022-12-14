@@ -2,30 +2,35 @@
 import ButtonLink from "@/components/ButtonLink/index.vue";
 import PageHeader from "@/components/PageHeader/index.vue";
 import useCategoryService from "@/modules/Categories/services/useCategoryService";
-import { onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import CategoryRow from "@/modules/Categories/components/CategoryRow.vue";
 import SectionFilter from "@/modules/Categories/components/SectionFilter.vue";
 import CategoryRowSkeleton from "@/modules/Categories/components/CategoryRowSkeleton.vue";
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
-import CategoriesOnProgress from "@/modules/Categories/stores/CategoriesOnProgress";
 import CategoriesTableEntries from "@/modules/Categories/stores/CategoriesTableEntries";
-import MainTableSettings from "@/components/MainTable/MainTableSettings.vue";
-import MainTable from "@/components/MainTable/index.vue";
+import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
+import { MainTable, TableSettings } from "@/components/MainTable";
 
 import {
   SearchCategories,
   SetShowingEntries,
 } from "@/modules/Categories/helpers";
 
-const { getAllCategories } = useCategoryService();
-
-onMounted(getAllCategories);
+const { getAllCategories, destroyCategory } = useCategoryService();
 
 let search = ref("");
 
 watch(search, (value) => {
   SearchCategories(value);
 });
+
+let category = ref({ id: "", index: "" });
+
+const openModal = ({ id, index }) => {
+  useConfirmModal.open();
+  category.value.id = id;
+  category.value.index = index;
+};
 </script>
 <template>
   <section class="main-section">
@@ -34,29 +39,32 @@ watch(search, (value) => {
       <ButtonLink title="New Section" routeName="sectionCreate" class="ms-2" />
     </PageHeader>
 
-    <MainTableSettings
+    <TableSettings
       @setShowingEntries="SetShowingEntries"
       inputPlaceholder="search categories"
       v-model="search"
       :entries="CategoriesTableEntries"
     >
       <SectionFilter />
-    </MainTableSettings>
+    </TableSettings>
 
     <MainTable
       :fields="['image', 'name', 'section', 'Action']"
       @onChangePage="getAllCategories"
-      :paginationLinks="CategoryStore.pagination.links"
-      :entries="CategoriesTableEntries.activeEntrie"
-      :totalEntries="CategoryStore.pagination.total"
-      :showNoRecordsFound="
-        CategoryStore.filtered.length == 0 && !CategoriesOnProgress.index
-      "
-      noRecordsFoundTitle="No Categories Found"
+      @onDelete="destroyCategory(category)"
+      :pagination-links="CategoryStore.pagination.links"
+      :results="CategoryStore.pagination.per_page"
+      :total-results="CategoryStore.pagination.total"
+      no-records-found-title="No Categories Found"
+      :showNoRecordsFound="CategoryStore.filtered.length == 0"
     >
-      <CategoryRow v-if="!CategoriesOnProgress.index" />
+      <Suspense>
+        <CategoryRow @onDelete="openModal" />
 
-      <CategoryRowSkeleton v-if="CategoriesOnProgress.index" />
+        <template #fallback>
+          <CategoryRowSkeleton />
+        </template>
+      </Suspense>
     </MainTable>
   </section>
 </template>

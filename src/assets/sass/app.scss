@@ -1,5 +1,7 @@
 @import "./global.scss";
 
+@import "@/layout/Header/header.scss";
+@import "@/layout/Sidebar/sidebar.scss";
 @import "@/components/Toast/toast.scss";
 @import "@/components/ListBox/list-box.scss";
 @import "@/components/LoadingSpinner/loading-spinner.scss";

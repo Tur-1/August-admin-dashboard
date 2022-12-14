@@ -2,7 +2,7 @@
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
 import { ref } from "vue";
 import { ListBox, ListBoxItem } from "@/components/ListBox";
-// import { filterCategoriesBySection } from "@/modules/Categories/helpers";
+import { filterCategoriesBySection } from "@/modules/Categories/helpers";
 
 let selectedSection = ref("All");
 

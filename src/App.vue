@@ -1,7 +1,6 @@
 <script setup>
 import { RouterView, useRoute } from "vue-router";
-import Navbar from "@/layout/Navbar/index.vue";
-import MobileNavbar from "@/layout/MobileNavbar/index.vue";
+import Header from "@/layout/Header/index.vue";
 import Sidebar from "@/layout/Sidebar/index.vue";
 import Footer from "@/layout/Footer/index.vue";
 import Toast from "@/components/Toast/index.vue";
@@ -11,7 +10,18 @@ const route = useRoute();
 </script>
 
 <template>
-  <MobileNavbar />
+  <Sidebar />
+  <main class="main">
+    <Header />
+    <div class="container-fluid">
+      <RouterView :key="route.path" />
+    </div>
+    <Footer />
+    <Toast />
+    <LoadingSpinner />
+  </main>
+</template>
+<!-- <MobileNavbar />
   <Sidebar />
   <main class="content">
     <Navbar />
@@ -19,5 +29,4 @@ const route = useRoute();
     <Footer />
     <Toast />
     <LoadingSpinner />
-  </main>
-</template>
+  </main> -->

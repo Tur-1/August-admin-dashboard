@@ -125,7 +125,7 @@ export default function useCategoryService()
     };
     const destroyCategory = async (category) =>
     {
-        CategoriesOnProgress.value.destroy = true;
+        useConfirmModal.onProgress(true)
 
         let response = await useCategoryApi.deleteCategory(category.id);
 
@@ -134,7 +134,7 @@ export default function useCategoryService()
 
         useToastNotification.open(response.data.data.message);
 
-        CategoriesOnProgress.value.destroy = false;
+        useConfirmModal.onProgress(false)
     }
     const showCategory = async () =>
     {

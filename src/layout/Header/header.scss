@@ -1,0 +1,14 @@
+@media (min-width: 992px) {
+    header .dropdown-menu-center {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+header {
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    align-items: center;
+    position: relative;
+}

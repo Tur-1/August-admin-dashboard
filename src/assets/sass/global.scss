@@ -1,3 +1,6 @@
+body {
+    height: 100vh;
+}
 @media screen and (display-mode: standalone) {
     #toast-alert {
         top: 52px !important;
@@ -55,4 +58,46 @@ a:focus {
 .dropdown-menu i {
     margin-right: 13px;
     font-size: 17px;
+}
+
+/* Assign grid instructions to our parent grid container */
+#app {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-areas:
+        "sidenav main"
+        "sidenav main"
+        "sidenav main";
+    height: 100%;
+}
+
+/* Give every child element its grid name */
+
+aside {
+    grid-area: sidenav;
+
+    background-color: #1f2937;
+    color: #fff !important;
+    overflow-y: auto;
+}
+
+main {
+    grid-area: main;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-x: hidden !important;
+    position: relative;
+}
+
+header,
+footer {
+    border-radius: 7px;
+    margin: 5px 10px;
+}
+footer {
+    margin-top: auto;
+}
+
+.closeSide {
+    grid-column: 50px !important;
 }

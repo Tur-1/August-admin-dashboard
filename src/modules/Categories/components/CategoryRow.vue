@@ -1,25 +1,15 @@
 <script setup>
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
-import CategoryStore from "@/modules/Categories/stores/CategoryStore";
-import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
-import ConfirmModal from "@/components/ConfirmModal/index.vue";
-
-import CategoriesOnProgress from "@/modules/Categories/stores/CategoriesOnProgress";
 import useCategoryService from "@/modules/Categories/services/useCategoryService";
-import { ref } from "vue";
+import CategoryStore from "@/modules/Categories/stores/CategoryStore";
 
-const emits = defineEmits(["onCategoryDelete"]);
+const emits = defineEmits(["onDelete"]);
 
-const { destroyCategory } = useCategoryService();
+const defultImage = "./src/assets/img/defult-image.png";
 
-let category = ref({ id: "", index: "" });
+const { getAllCategories } = useCategoryService();
 
-const openModal = ({ id, index }) => {
-  useConfirmModal.open();
-
-  category.value.id = id;
-  category.value.index = index;
-};
+await getAllCategories();
 </script>
 
 <template>
@@ -39,15 +29,7 @@ const openModal = ({ id, index }) => {
       <td>
         <a href="#" class="d-flex align-items-center">
           <img
-            v-if="!category.image_url"
-            src="@/assets/img/defult-image.png"
-            class="rounded me-3"
-            style="max-width: 70px"
-            alt="Avatar"
-          />
-          <img
-            v-if="category.image_url"
-            :src="category.image_url"
+            :src="category.image_url ?? defultImage"
             class="rounded me-3"
             style="max-width: 70px"
             alt="Avatar"
@@ -76,7 +58,7 @@ const openModal = ({ id, index }) => {
           </RouterLink>
 
           <a
-            @click="openModal({ id: category.id, index: index })"
+            @click="$emit('onDelete', { id: category.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"
           >
@@ -87,14 +69,6 @@ const openModal = ({ id, index }) => {
       </td>
     </tr>
   </transition-group>
-
-  <ConfirmModal
-    :onProgress="CategoriesOnProgress.destroy"
-    @onConfirm="destroyCategory(category)"
-    @onClose="useConfirmModal.close()"
-  >
-    <span>are you sure ?</span>
-  </ConfirmModal>
 </template>
 <style scoped>
 .list-enter-active,

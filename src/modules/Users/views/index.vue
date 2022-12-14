@@ -9,7 +9,7 @@ import useUsersService from "@/modules/Users/services/useUsersService";
 import usersStore from "@/modules/Users/stores/usersStore";
 import UsersOnProgress from "@/modules/Users/stores/UsersOnProgress";
 import UsersTableEntries from "@/modules/Users/stores/UsersTableEntries";
-import MainTableSettings from "@/components/MainTable/MainTableSettings.vue";
+import MainTableSettings from "@/components/MainTable/TableSettings.vue";
 
 const { getAllUsers, setShowingEntries, searchUsers } = useUsersService();
 
