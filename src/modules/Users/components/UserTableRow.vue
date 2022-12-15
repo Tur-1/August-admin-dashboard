@@ -1,23 +1,13 @@
 <script setup>
-import { ref } from "vue";
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import usersStore from "@/modules/Users/stores/usersStore";
-import ConfirmModal from "@/components/ConfirmModal/index.vue";
-import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import useUsersService from "@/modules/Users/services/useUsersService";
-import UsersOnProgress from "@/modules/Users/stores/UsersOnProgress";
 
-const emits = defineEmits(["onUserDelete"]);
+const emits = defineEmits(["onDelete"]);
 
-const { deleteUser } = useUsersService();
+const { getAllUsers } = useUsersService();
 
-let userId = ref({ id: "", index: "" });
-
-const openModal = ({ id, index }) => {
-  useConfirmModal.open();
-  userId.value.id = id;
-  userId.value.index = index;
-};
+await getAllUsers();
 </script>
 
 <template>
@@ -68,7 +58,7 @@ const openModal = ({ id, index }) => {
           </RouterLink>
 
           <a
-            @click="openModal({ id: user.id, index: index })"
+            @click="$emit('onDelete', { id: user.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"
           >
@@ -79,14 +69,6 @@ const openModal = ({ id, index }) => {
       </td>
     </tr>
   </transition-group>
-
-  <ConfirmModal
-    :onProgress="UsersOnProgress.destroy"
-    @onConfirm="deleteUser(userId)"
-    @onClose="useConfirmModal.close()"
-  >
-    <span>are you sure ?</span>
-  </ConfirmModal>
 </template>
 <style scoped>
 .list-enter-active,

@@ -1,13 +1,13 @@
 import useUsersApi from "@/modules/Users/api/useUsersApi";
-import userForm from "@/modules/Users/stores/userForm";
 import useToastNotification from "@/components/Toast/useToastNotification";
 import useRouterService from "@/router/useRouterService";
-
+import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import usersStore from "@/modules/Users/stores/usersStore";
 import UsersOnProgress from "@/modules/Users/stores/UsersOnProgress";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
-
+import { FormStore } from "@/components/BaseForm";
 import UsersTableEntries from "@/modules/Users/stores/UsersTableEntries";
+import { useRoute } from "vue-router";
 
 
 export default function useUsersService()
@@ -30,14 +30,14 @@ export default function useUsersService()
     }
     const storeNewUser = async () =>
     {
-        userForm.onProgress = true;
-        userForm.clearErrors();
+        FormStore.showProgress();
+        FormStore.clearErrors();
 
         try
         {
-            let response = await useUsersApi.storeNewUser(userForm.fields);
+            let response = await useUsersApi.storeNewUser(FormStore.fields);
 
-            userForm.clearFields();
+            FormStore.clearFields();
 
             useRouterService.redirectBack();
 
@@ -46,34 +46,38 @@ export default function useUsersService()
         } catch (error)
         {
 
-            userForm.setErrors(error.response);
+            FormStore.setErrors(error.response);
         }
-        userForm.onProgress = false;
+        FormStore.hideProgress();
 
     };
     const updateUser = async (id) =>
     {
-        userForm.onProgress = true;
-        userForm.clearErrors();
+        FormStore.showProgress();
+        FormStore.clearErrors();
 
         try
         {
-            let response = await useUsersApi.updateUser(userForm.fields, id);
 
-            userForm.fields = response.data.data.user;
+            let response = await useUsersApi.updateUser(FormStore.fields, id);
+
+
+            FormStore.setFields(response.data.data.user);
+
 
             useToastNotification.open(response.data.data.message);
         } catch (error)
         {
 
-            userForm.setErrors(error.response);
+            FormStore.setErrors(error.response);
         }
-        userForm.onProgress = false;
+
+        FormStore.hideProgress();
 
     };
     const deleteUser = async ({ id, index }) =>
     {
-        UsersOnProgress.value.destroy = true;
+        useConfirmModal.onProgress(true)
         let response = await useUsersApi.deleteUser(id);
 
         usersStore.value.filtered.splice(index, 1);
@@ -81,7 +85,21 @@ export default function useUsersService()
 
         useToastNotification.open(response.data.data.message);
 
-        UsersOnProgress.value.destroy = false;
+        useConfirmModal.onProgress(false)
+
+    };
+    const showUser = async () =>
+    {
+        useLoadingSpinner.show();
+        FormStore.clearErrors();
+
+        const route = useRoute();
+
+        let response = await useUsersApi.getUser(route.params.id);
+
+        FormStore.setFields(response.data.data);
+
+        useLoadingSpinner.hide();
 
     };
 
@@ -101,11 +119,11 @@ export default function useUsersService()
     return {
         updateUser,
         storeNewUser,
-        userForm,
         getAllUsers,
         setShowingEntries,
         deleteUser,
-        searchUsers
+        searchUsers,
+        showUser
     }
 
 }

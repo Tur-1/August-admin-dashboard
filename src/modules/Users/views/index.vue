@@ -1,19 +1,18 @@
 <script setup>
-import { ref, watch, onMounted } from "vue";
-import MainTable from "@/components/MainTable/index.vue";
+import { ref, watch } from "vue";
+
 import ButtonLink from "@/components/ButtonLink/index.vue";
 import PageHeader from "@/components/PageHeader/index.vue";
 import UserTableRow from "@/modules/Users/components/UserTableRow.vue";
 import UserTableRowSkeleton from "@/modules/Users/components/UserTableRowSkeleton.vue";
 import useUsersService from "@/modules/Users/services/useUsersService";
 import usersStore from "@/modules/Users/stores/usersStore";
-import UsersOnProgress from "@/modules/Users/stores/UsersOnProgress";
 import UsersTableEntries from "@/modules/Users/stores/UsersTableEntries";
-import MainTableSettings from "@/components/MainTable/TableSettings.vue";
+import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
+import { MainTable, TableSettings } from "@/components/MainTable";
 
-const { getAllUsers, setShowingEntries, searchUsers } = useUsersService();
-
-onMounted(getAllUsers);
+const { deleteUser, setShowingEntries, searchUsers, getAllUsers } =
+  useUsersService();
 
 let search = ref("");
 watch(search, (value) => {
@@ -21,6 +20,14 @@ watch(search, (value) => {
 });
 
 let fields = ["Name", "email", "Date Created", "Gender", "Role", "Action"];
+
+let user = ref({ id: "", index: "" });
+
+const openModal = ({ id, index }) => {
+  useConfirmModal.open();
+  user.value.id = id;
+  user.value.index = index;
+};
 </script>
 <template>
   <section class="main-section">
@@ -28,7 +35,7 @@ let fields = ["Name", "email", "Date Created", "Gender", "Role", "Action"];
       <ButtonLink title="New User" routeName="usersCreate" />
     </PageHeader>
 
-    <MainTableSettings
+    <TableSettings
       @setShowingEntries="setShowingEntries"
       inputPlaceholder="search users"
       v-model="search"
@@ -38,17 +45,20 @@ let fields = ["Name", "email", "Date Created", "Gender", "Role", "Action"];
     <MainTable
       :fields="fields"
       @onChangePage="getAllUsers"
-      :paginationLinks="usersStore.pagination.links"
-      :entries="UsersTableEntries.activeEntrie"
-      :totalEntries="usersStore.pagination.total"
-      :showNoRecordsFound="
-        usersStore.filtered.length == 0 && !UsersOnProgress.index
-      "
-      noRecordsFoundTitle="No Users Found"
+      @onDelete="deleteUser(user)"
+      :pagination-links="usersStore.pagination.links"
+      :results="usersStore.pagination.per_page"
+      :total-results="usersStore.pagination.total"
+      no-records-found-title="No Users Found"
+      :showNoRecordsFound="usersStore.filtered.length == 0"
     >
-      <UserTableRow v-if="!UsersOnProgress.index" />
+      <Suspense>
+        <UserTableRow @onDelete="openModal" />
 
-      <UserTableRowSkeleton v-if="UsersOnProgress.index" />
+        <template #fallback>
+          <UserTableRowSkeleton />
+        </template>
+      </Suspense>
     </MainTable>
   </section>
 </template>

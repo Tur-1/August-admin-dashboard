@@ -4,42 +4,41 @@
       @onSubmit="updateUser(route.params.id)"
       submitTitle="update"
       title="update user"
-      :onProgress="userForm.onProgress"
     >
       <div class="row">
         <div class="col-12 col-lg-6">
           <FormInput
             label="name *"
-            v-model="userForm.fields.name"
+            v-model="FormStore.fields.name"
             id="name1"
             type="text"
-            :error="userForm.errors.name?.[0]"
+            :error="FormStore.errors.name?.[0]"
           />
           <FormInput
             label="Email address *"
-            v-model="userForm.fields.email"
+            v-model="FormStore.fields.email"
             id="email1"
             type="email"
-            :error="userForm.errors.email?.[0]"
+            :error="FormStore.errors.email?.[0]"
           />
           <FormInput
             label="Password *"
-            v-model="userForm.fields.password"
+            v-model="FormStore.fields.password"
             id="Password1"
             type="password"
-            :error="userForm.errors.password?.[0]"
+            :error="FormStore.errors.password?.[0]"
           />
           <FormInput
             label="phone *"
-            v-model="userForm.fields.phone_number"
+            v-model="FormStore.fields.phone_number"
             id="phone1"
             type="number"
-            :error="userForm.errors.phone_number?.[0]"
+            :error="FormStore.errors.phone_number?.[0]"
           />
           <FormSelect
             label="Gender *"
-            v-model="userForm.fields.gender"
-            :error="userForm.errors.gender?.[0]"
+            v-model="FormStore.fields.gender"
+            :error="FormStore.errors.gender?.[0]"
             id="gender"
             :options="['Male', 'Female']"
           />
@@ -50,25 +49,18 @@
 </template>
 
 <script setup>
-import FormInput from "@/components/FormInput/index.vue";
-import FormSelect from "@/components/FormSelect/index.vue";
-import BaseForm from "@/components/BaseForm/index.vue";
+import {
+  FormStore,
+  BaseForm,
+  FormInput,
+  FormSelect,
+} from "@/components/BaseForm";
 
-import { useRoute } from "vue-router";
-import { onMounted, ref } from "vue";
-import useUsersApi from "@/modules/Users/api/useUsersApi";
+import { onMounted } from "vue";
 import useUsersService from "@/modules/Users/services/useUsersService";
-import { useLoadingSpinner } from "@/components/LoadingSpinner";
-
-const { userForm, updateUser } = useUsersService();
+import { useRoute } from "vue-router";
 const route = useRoute();
+const { updateUser, showUser } = useUsersService();
 
-onMounted(async () => {
-  useLoadingSpinner.show();
-  let user = await useUsersApi.getUser(route.params.id);
-
-  userForm.fields = user.data.data;
-
-  useLoadingSpinner.hide();
-});
+onMounted(showUser);
 </script>

@@ -14,6 +14,7 @@
         v-if="props.options"
         v-for="(option, index) in props.options"
         :key="index"
+        :selected="modelValue == option"
         :value="option"
       >
         {{ option }}
