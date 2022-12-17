@@ -1,7 +1,7 @@
 import { reactive } from 'vue';
 
 
-let UsersTableEntries = reactive({
+let TableEntries = reactive({
     activeEntrie: 10,
     data: [
         {
@@ -31,8 +31,7 @@ let UsersTableEntries = reactive({
             }
         }
     },
-
 });
 
 
-export default UsersTableEntries;
+export default TableEntries;

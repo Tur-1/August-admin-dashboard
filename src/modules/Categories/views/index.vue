@@ -2,21 +2,22 @@
 import ButtonLink from "@/components/ButtonLink/index.vue";
 import PageHeader from "@/components/PageHeader/index.vue";
 import useCategoryService from "@/modules/Categories/services/useCategoryService";
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import CategoryRow from "@/modules/Categories/components/CategoryRow.vue";
 import SectionFilter from "@/modules/Categories/components/SectionFilter.vue";
 import CategoryRowSkeleton from "@/modules/Categories/components/CategoryRowSkeleton.vue";
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
-import CategoriesTableEntries from "@/modules/Categories/stores/CategoriesTableEntries";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { MainTable, TableSettings } from "@/components/MainTable";
 
 import {
   SearchCategories,
-  SetShowingEntries,
+  setShowingEntries,
 } from "@/modules/Categories/helpers";
 
 const { getAllCategories, destroyCategory } = useCategoryService();
+
+onMounted(getAllCategories);
 
 let search = ref("");
 
@@ -31,6 +32,8 @@ const openModal = ({ id, index }) => {
   category.value.id = id;
   category.value.index = index;
 };
+
+const fields = ["image", "name", "section", "Action"];
 </script>
 <template>
   <section class="main-section">
@@ -40,16 +43,16 @@ const openModal = ({ id, index }) => {
     </PageHeader>
 
     <TableSettings
-      @setShowingEntries="SetShowingEntries"
+      @onChangeEntries="setShowingEntries"
       inputPlaceholder="search categories"
       v-model="search"
-      :entries="CategoriesTableEntries"
+      :activeEntries="CategoryStore.pagination.per_page"
     >
       <SectionFilter />
     </TableSettings>
 
     <MainTable
-      :fields="['image', 'name', 'section', 'Action']"
+      :fields="fields"
       @onChangePage="getAllCategories"
       @onDelete="destroyCategory(category)"
       :pagination-links="CategoryStore.pagination.links"

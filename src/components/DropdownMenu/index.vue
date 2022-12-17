@@ -2,8 +2,9 @@
   <div class="btn-group">
     <button
       type="button"
-      class="btn btn-sm fs-6 px-1 py-0 dropdown-toggle"
+      class="btn btn-sm fs-6 px-1 py-0 dropdown-toggle shadow"
       id="dropdownMenuLink"
+      style="border: 1px solid rgb(31 41 55 / 7%)"
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >

@@ -2,9 +2,10 @@ import api from "@/api";
 
 
 
-const getUsers = ({ perPage, url }) =>
+const getUsers = (obj) =>
 {
-    return api().get(url ?? "/users", { params: { per_page: perPage } });
+
+    return api().get(obj.url ?? "/users", { params: { records: obj.records, search: obj.search } });
 }
 const storeNewUser = (fields) =>
 {

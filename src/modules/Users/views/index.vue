@@ -1,22 +1,19 @@
 <script setup>
 import { ref, watch } from "vue";
-
 import ButtonLink from "@/components/ButtonLink/index.vue";
 import PageHeader from "@/components/PageHeader/index.vue";
 import UserTableRow from "@/modules/Users/components/UserTableRow.vue";
 import UserTableRowSkeleton from "@/modules/Users/components/UserTableRowSkeleton.vue";
 import useUsersService from "@/modules/Users/services/useUsersService";
 import usersStore from "@/modules/Users/stores/usersStore";
-import UsersTableEntries from "@/modules/Users/stores/UsersTableEntries";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { MainTable, TableSettings } from "@/components/MainTable";
 
-const { deleteUser, setShowingEntries, searchUsers, getAllUsers } =
-  useUsersService();
+const { deleteUser, setShowingEntries, getAllUsers } = useUsersService();
 
 let search = ref("");
 watch(search, (value) => {
-  searchUsers(value);
+  getAllUsers({ search: value });
 });
 
 let fields = ["Name", "email", "Date Created", "Gender", "Role", "Action"];
@@ -36,10 +33,10 @@ const openModal = ({ id, index }) => {
     </PageHeader>
 
     <TableSettings
-      @setShowingEntries="setShowingEntries"
+      @onChangeEntries="setShowingEntries"
       inputPlaceholder="search users"
       v-model="search"
-      :entries="UsersTableEntries"
+      :activeEntries="usersStore.pagination.per_page"
     />
 
     <MainTable

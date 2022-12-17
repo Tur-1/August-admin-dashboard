@@ -1,7 +1,6 @@
 <script setup>
 import { NoRecordsFound } from "@/components/MainTable";
-import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
-import ConfirmModal from "@/components/ConfirmModal/index.vue";
+import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
 const props = defineProps({
   paginationLinks: Array,
   results: Number,
@@ -57,7 +56,7 @@ defineEmits(["onChangePage", "onDelete"]);
           >
             <a
               role="button"
-              @click="$emit('onChangePage', link.url)"
+              @click="$emit('onChangePage', { url: link.url })"
               class="page-link"
               href="#"
             >

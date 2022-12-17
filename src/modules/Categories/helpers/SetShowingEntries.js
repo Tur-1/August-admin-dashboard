@@ -1,11 +1,13 @@
+import TableEntries from "@/components/MainTable/TableEntries";
 import useCategoryService from "@/modules/Categories/services/useCategoryService";
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
 
 
-function setShowingEntries(per_page) 
+
+function setShowingEntries(records) 
 {
     const { getAllCategories } = useCategoryService();
-    CategoriesTableEntries.setActiveEntrie(per_page)
+    TableEntries.setActiveEntrie(records)
     getAllCategories();
 
 }

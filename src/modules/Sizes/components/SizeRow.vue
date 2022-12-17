@@ -1,20 +1,18 @@
 <script setup>
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
-import useCategoryService from "@/modules/Categories/services/useCategoryService";
-import CategoryStore from "@/modules/Categories/stores/CategoryStore";
+import SizesStore from "@/modules/Sizes/stores/SizesStore";
+import useSizesService from "@/modules/Sizes/services/useSizesService";
 
 const emits = defineEmits(["onDelete"]);
 
-const defultImage = "./src/assets/img/defult-image.png";
+const { getAllSizes } = useSizesService();
 
-const { getAllCategories } = useCategoryService();
-
-await getAllCategories();
+await getAllSizes();
 </script>
 
 <template>
   <transition-group name="list">
-    <tr v-for="(category, index) in CategoryStore.filtered" :key="category.id">
+    <tr v-for="(user, index) in SizesStore.filtered" :key="user.id">
       <td>
         <div class="form-check dashboard-check">
           <input
@@ -29,36 +27,27 @@ await getAllCategories();
       <td>
         <a href="#" class="d-flex align-items-center">
           <img
-            :src="category.image_url ?? defultImage"
-            class="rounded me-3"
-            style="max-width: 70px"
+            src="@/assets/img/team/profile-picture-1.jpg"
+            class="avatar rounded-circle me-3"
             alt="Avatar"
           />
+
+          <span class="fw-bold">{{ size.name }}</span>
         </a>
       </td>
-      <td>
-        <span class="fw-normal">{{ category.name }}</span>
-      </td>
-      <td>
-        <span class="fw-normal">
-          {{ category.section_name ?? "..." }}
-        </span>
-      </td>
+
       <td>
         <DropdownMenu>
           <RouterLink
             class="dropdown-item d-flex align-items-center"
-            :to="{
-              name: category.is_section ? 'sectionEdit' : 'categoriesEdit',
-              params: { id: category.id },
-            }"
+            :to="{ name: 'sizesEdit', params: { id: size.id } }"
           >
             <i class="fa-solid fa-pen-to-square"></i>
             Edit
           </RouterLink>
 
           <a
-            @click="$emit('onDelete', { id: category.id, index: index })"
+            @click="$emit('onDelete', { id: size.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"
           >

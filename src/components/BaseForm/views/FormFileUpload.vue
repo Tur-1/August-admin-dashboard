@@ -13,8 +13,12 @@
           alt=""
         />
         <div class="upload-image-warrapr">
-          <img src="@/assets/img/upload.png" alt="" />
-          <p>Drag your Photes to start uploading .</p>
+          <img
+            src="@/assets/img/upload.png"
+            alt=""
+            v-show="!props.imageUrl && !imagePreviewUrl"
+          />
+          <p class="mt-3">Drag your Photes to start uploading .</p>
           <h6><span>OR</span></h6>
           <label for="image"
             ><span class="btn btn-primary">Browes Files</span>
@@ -47,7 +51,9 @@ const props = defineProps({
     type: String,
     default: "250px",
   },
-  imageUrl: String,
+  imageUrl: {
+    type: String,
+  },
   error: String,
 });
 const emits = defineEmits(["onUploadImage"]);

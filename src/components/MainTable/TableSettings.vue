@@ -1,7 +1,7 @@
 <template>
-  <div class="table-settings mb-4">
-    <div class="d-flex justify-content-between align-items-center flex-wrap">
-      <div class="d-flex">
+  <div class="row mb-4 w-100">
+    <div class="col-lg-9 col-md-7">
+      <div class="d-flex flex-wrap">
         <div class="input-group me-2 me-lg-3 fmxw-300">
           <span class="input-group-text">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -15,11 +15,11 @@
             @input="$emit('update:modelValue', $event.target.value)"
           />
         </div>
-
         <slot />
       </div>
-
-      <div class="btn-group">
+    </div>
+    <div class="col">
+      <div class="btn-group d-flex justify-content-end">
         <div class="dropdown me-1">
           <button
             class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-1"
@@ -33,12 +33,12 @@
           <div class="dropdown-menu dropdown-menu-end pb-0">
             <span class="small ps-3 fw-bold text-dark">Show</span>
             <a
-              v-for="entrie in entries.data"
-              @click="$emit('setShowingEntries', entrie.number)"
+              v-for="entrie in TableEntries.data"
+              @click="$emit('onChangeEntries', entrie.number)"
               role="button"
               class="dropdown-item d-flex align-items-center fw-bold"
               :class="{
-                active: entrie.active,
+                active: activeEntries == entrie.number,
               }"
             >
               {{ entrie.number }}
@@ -48,15 +48,16 @@
       </div>
     </div>
   </div>
-  <!-- == entries.activeEntrie -->
 </template>
 
 <script setup>
+import TableEntries from "@/components/MainTable/TableEntries";
+
 const props = defineProps({
-  entries: Object,
   modelValue: String,
   inputPlaceholder: String,
   inputClass: String,
+  activeEntries: Number,
 });
-const emits = defineEmits(["setShowingEntries", "update:modelValue"]);
+const emits = defineEmits(["onChangeEntries", "update:modelValue"]);
 </script>

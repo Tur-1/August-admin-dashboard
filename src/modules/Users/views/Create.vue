@@ -1,11 +1,6 @@
 <template>
   <section class="main-section">
-    <BaseForm
-      @onSubmit="storeNewUser"
-      submitTitle="create"
-      title="new user"
-      :onProgress="FormStore.onProgress"
-    >
+    <BaseForm @onSubmit="storeNewUser" submitTitle="create" title="new user">
       <div class="row">
         <div class="col-12 col-lg-6">
           <FormInput

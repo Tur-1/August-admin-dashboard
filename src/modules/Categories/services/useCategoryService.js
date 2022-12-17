@@ -1,5 +1,4 @@
 import useCategoryApi from "@/modules/Categories/api/useCategoryApi";
-import CategoriesOnProgress from "@/modules/Categories/stores/CategoriesOnProgress";
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
 import CategoriesTableEntries from "@/modules/Categories/stores/CategoriesTableEntries";
 import useRouterService from "@/router/useRouterService";
@@ -10,6 +9,7 @@ import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { useRoute } from "vue-router";
 import { FormStore } from "@/components/BaseForm";
 import { appendFormData } from "@/helpers";
+import TableEntries from "@/components/MainTable/TableEntries";
 
 
 export default function useCategoryService()
@@ -31,20 +31,16 @@ export default function useCategoryService()
     const getAllCategories = async (url = null) =>
     {
 
-        CategoriesOnProgress.value.index = true;
-
         let response = await useCategoryApi.getAllCategories({
-            perPage: CategoriesTableEntries.activeEntrie,
+            records: TableEntries.activeEntrie,
             url: url
         });
 
 
         CategoryStore.value.list = response.data;
         CategoryStore.value.filtered = response.data.data;
-        CategoryStore.value.pagination = response.data.pagination;
+        CategoryStore.value.pagination = response.data.meta.pagination;
         CategoryStore.value.sections = FilterSections();
-
-        CategoriesOnProgress.value.index = false;
 
         return response.data;
     }

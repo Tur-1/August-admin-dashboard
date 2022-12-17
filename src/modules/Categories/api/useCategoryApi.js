@@ -2,9 +2,9 @@ import api from "@/api";
 
 
 
-const getAllCategories = ({ perPage, url }) =>
+const getAllCategories = ({ records: records, url: url }) =>
 {
-    return api().get(url ?? "categories", { params: { per_page: perPage } });
+    return api().get(url ?? "categories", { params: { records: records } });
 }
 const getSections = () =>
 {

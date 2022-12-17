@@ -3,30 +3,31 @@ import useToastNotification from "@/components/Toast/useToastNotification";
 import useRouterService from "@/router/useRouterService";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import usersStore from "@/modules/Users/stores/usersStore";
-import UsersOnProgress from "@/modules/Users/stores/UsersOnProgress";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
-import UsersTableEntries from "@/modules/Users/stores/UsersTableEntries";
 import { useRoute } from "vue-router";
+import TableEntries from "@/components/MainTable/TableEntries";
 
 
 export default function useUsersService()
 {
 
-    const getAllUsers = async (url) =>
+    const getAllUsers = async ({ url, search } = {}) =>
     {
 
-        UsersOnProgress.value.index = true;
 
-        let response = await useUsersApi.getUsers({ perPage: UsersTableEntries.activeEntrie, url: url });
+        console.log(url);
+        let response = await useUsersApi.getUsers({
+            records: TableEntries.activeEntrie,
+            url: url,
+            search: search
+        });
 
         usersStore.value.filtered = response.data.data;
         usersStore.value.list = response.data;
         usersStore.value.pagination = response.data.pagination;
 
 
-
-        UsersOnProgress.value.index = false;
     }
     const storeNewUser = async () =>
     {
@@ -103,26 +104,20 @@ export default function useUsersService()
 
     };
 
-    const setShowingEntries = (per_page) =>
+    const setShowingEntries = (records) =>
     {
-        UsersTableEntries.setActiveEntrie(per_page)
+        TableEntries.setActiveEntrie(records)
         getAllUsers();
+
     }
 
-    const searchUsers = (value) =>
-    {
-        usersStore.value.filtered = usersStore.value.list.data.filter((user) =>
-        {
-            return user.name.toLowerCase().includes(value.toLowerCase());
-        });
-    }
+
     return {
         updateUser,
         storeNewUser,
         getAllUsers,
         setShowingEntries,
         deleteUser,
-        searchUsers,
         showUser
     }
 

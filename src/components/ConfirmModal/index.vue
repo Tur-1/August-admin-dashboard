@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
+import { useConfirmModal } from "@/components/ConfirmModal";
 const props = defineProps(["id"]);
 const emits = defineEmits(["onClose", "onConfirm"]);
 </script>

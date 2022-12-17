@@ -3,6 +3,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Dashboard from '@/modules/Dashboard/index.vue'
 import UsersRoutes from '@/modules/Users/routes'
 import CategoriesRoutes from '@/modules/Categories/routes'
+import ColorsRoutes from '@/modules/colors/routes'
+import BrandsRoutes from '@/modules/Brands/routes'
+import SizesRoutes from '@/modules/Sizes/routes'
 
 
 
@@ -16,6 +19,9 @@ const router = createRouter({
     },
     ...UsersRoutes,
     ...CategoriesRoutes,
+    ...ColorsRoutes,
+    ...BrandsRoutes,
+    ...SizesRoutes
 
   ]
 })
