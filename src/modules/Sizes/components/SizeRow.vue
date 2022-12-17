@@ -12,7 +12,7 @@ await getAllSizes();
 
 <template>
   <transition-group name="list">
-    <tr v-for="(user, index) in SizesStore.filtered" :key="user.id">
+    <tr v-for="(size, index) in SizesStore.filtered" :key="size.id">
       <td>
         <div class="form-check dashboard-check">
           <input
@@ -25,15 +25,7 @@ await getAllSizes();
         </div>
       </td>
       <td>
-        <a href="#" class="d-flex align-items-center">
-          <img
-            src="@/assets/img/team/profile-picture-1.jpg"
-            class="avatar rounded-circle me-3"
-            alt="Avatar"
-          />
-
-          <span class="fw-bold">{{ size.name }}</span>
-        </a>
+        <span class="fw-bold">{{ size.name }}</span>
       </td>
 
       <td>

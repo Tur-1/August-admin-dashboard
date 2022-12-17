@@ -47,7 +47,10 @@ defineEmits(["onChangePage", "onDelete"]);
     <div
       class="card-footer px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between"
     >
-      <nav aria-label="Page navigation example" v-if="paginationLinks">
+      <nav
+        aria-label="Page navigation example"
+        v-if="paginationLinks && results > 12"
+      >
         <ul class="pagination mb-0">
           <li
             class="page-item"

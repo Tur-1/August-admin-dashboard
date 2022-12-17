@@ -15,8 +15,6 @@ export default function useUsersService()
     const getAllUsers = async ({ url, search } = {}) =>
     {
 
-
-        console.log(url);
         let response = await useUsersApi.getUsers({
             records: TableEntries.activeEntrie,
             url: url,
