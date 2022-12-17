@@ -63,6 +63,15 @@
           </template>
         </SidebarLink>
         <SidebarLink
+          toRoute="coupons"
+          title="coupons"
+          :activeRouteNames="['couponsCreate', 'couponsEdit', 'coupons']"
+        >
+          <template #icon>
+            <i class="fa-solid fa-tags"></i>
+          </template>
+        </SidebarLink>
+        <SidebarLink
           toRoute="sizes"
           title="sizes"
           :activeRouteNames="['sizesCreate', 'sizesEdit', 'sizes']"

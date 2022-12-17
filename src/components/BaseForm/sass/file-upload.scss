@@ -19,7 +19,10 @@
     background-color: #f3f6fd;
     padding: 10px;
 }
-
+.upload-image-box .upload-image-label.is-invalid {
+    border-color: #e11d48 !important;
+    background-position: right 10px top 10px !important;
+}
 .upload-image-box .upload-image-label .image-preview {
     border-radius: 10px;
 }

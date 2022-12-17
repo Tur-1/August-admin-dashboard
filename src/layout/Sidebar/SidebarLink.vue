@@ -1,13 +1,4 @@
 <template>
-  <!-- <li
-    class="nav-item mb-2"
-    :class="{ active: props.activeRouteNames.includes(route.name) }"
-  >
-    <RouterLink :to="{ name: props.toRoute }" class="nav-link">
-      <slot />
-      <span class="sidebar-text">{{ props.title }}</span>
-    </RouterLink>
-  </li> -->
   <li
     class="sidenav-item mb-2"
     :class="{ active: props.activeRouteNames.includes(route.name) }"

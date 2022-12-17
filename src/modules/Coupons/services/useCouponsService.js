@@ -1,8 +1,8 @@
-import useSizesApi from "@/modules/Sizes/api/useSizesApi";
+import useCouponsApi from "@/modules/Coupons/api/useCouponsApi";
 import useToastNotification from "@/components/Toast/useToastNotification";
 
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
-import SizesStore from "@/modules/Sizes/stores/SizesStore";
+import CouponsStore from "@/modules/Coupons/stores/CouponsStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
@@ -10,31 +10,31 @@ import useRouterService from "@/router/useRouterService";
 
 
 
-export default function useSizesService()
+export default function useCouponsService()
 {
 
-    const getAllSizes = async ({ url } = {}) =>
+    const getAllCoupons = async ({ url } = {}) =>
     {
 
 
-        let response = await useSizesApi.getSizes({
+        let response = await useCouponsApi.getCoupons({
             url: url,
         });
 
-        SizesStore.value.filtered = response.data.data;
-        SizesStore.value.list = response.data;
-        SizesStore.value.pagination = response.data.pagination;
+        CouponsStore.value.filtered = response.data.data;
+        CouponsStore.value.list = response.data;
+        CouponsStore.value.pagination = response.data.meta.pagination;
 
 
     }
-    const storeNewSize = async () =>
+    const storeNewCoupon = async () =>
     {
         FormStore.showProgress();
         FormStore.clearErrors();
 
         try
         {
-            let response = await useSizesApi.storeNewSize(FormStore.fields);
+            let response = await useCouponsApi.storeNewCoupon(FormStore.fields);
 
             FormStore.clearFields();
 
@@ -50,7 +50,7 @@ export default function useSizesService()
         FormStore.hideProgress();
 
     };
-    const updateSize = async (id) =>
+    const updateCoupon = async (id) =>
     {
         FormStore.showProgress();
         FormStore.clearErrors();
@@ -58,10 +58,10 @@ export default function useSizesService()
         try
         {
 
-            let response = await useSizesApi.updateSize(FormStore.fields, id);
+            let response = await useCouponsApi.updateCoupon(FormStore.fields, id);
 
 
-            FormStore.setFields(response.data.data.size);
+            FormStore.setFields(response.data.data.coupon);
 
 
             useToastNotification.open(response.data.data.message);
@@ -74,12 +74,12 @@ export default function useSizesService()
         FormStore.hideProgress();
 
     };
-    const deleteSize = async ({ id, index }) =>
+    const deleteCoupon = async ({ id, index }) =>
     {
         useConfirmModal.onProgress(true)
-        let response = await useSizesApi.deleteSize(id);
+        let response = await useCouponsApi.deleteCoupon(id);
 
-        SizesStore.value.filtered.splice(index, 1);
+        CouponsStore.value.filtered.splice(index, 1);
         useConfirmModal.close();
 
         useToastNotification.open(response.data.data.message);
@@ -87,16 +87,16 @@ export default function useSizesService()
         useConfirmModal.onProgress(false)
 
     };
-    const showSize = async () =>
+    const showCoupon = async () =>
     {
         useLoadingSpinner.show();
         FormStore.clearErrors();
 
         const route = useRoute();
 
-        let response = await useSizesApi.getSize(route.params.id);
+        let response = await useCouponsApi.getCoupon(route.params.id);
 
-        FormStore.setFields(response.data.data.size);
+        FormStore.setFields(response.data.data.coupon);
 
         useLoadingSpinner.hide();
 
@@ -106,11 +106,11 @@ export default function useSizesService()
 
 
     return {
-        updateSize,
-        storeNewSize,
-        getAllSizes,
-        deleteSize,
-        showSize
+        updateCoupon,
+        storeNewCoupon,
+        getAllCoupons,
+        deleteCoupon,
+        showCoupon
     }
 
 }

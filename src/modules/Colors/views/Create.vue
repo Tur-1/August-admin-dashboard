@@ -12,6 +12,7 @@ import { onMounted } from "vue";
 const { storeNewColor } = useColorsService();
 
 onMounted(() => {
+  FormStore.clearErrors();
   FormStore.setFields({
     name: "",
   });

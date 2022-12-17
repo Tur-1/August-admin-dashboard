@@ -12,6 +12,7 @@ import { onMounted } from "vue";
 const { storeNewBrand } = useBrandsService();
 
 onMounted(() => {
+  FormStore.clearErrors();
   FormStore.setFields({
     name: "",
   });

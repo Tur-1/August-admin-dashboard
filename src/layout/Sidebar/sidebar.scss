@@ -7,11 +7,11 @@
     padding: 0 !important;
 }
 .sidenav-items .sidenav-item {
-    padding: 0.5rem 1rem;
     display: flex;
     border-radius: 7px;
     margin-bottom: 5px;
     cursor: pointer;
+    width: 100%;
 }
 .sidenav-items .sidenav-item.active,
 .sidenav-items .sidenav-item:hover {
@@ -19,6 +19,7 @@
 }
 .sidenav-items .sidenav-item .sidenav-link {
     color: #fff !important;
+    padding: 0.5rem 1rem;
     width: 100%;
 }
 .sidenav-items .sidenav-item .sidenav-link .sidebar-icon {

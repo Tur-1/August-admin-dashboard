@@ -25,6 +25,7 @@ import { onMounted } from "vue";
 const { storeNewSize } = useSizesService();
 
 onMounted(() => {
+  FormStore.clearErrors();
   FormStore.setFields({
     name: "",
   });

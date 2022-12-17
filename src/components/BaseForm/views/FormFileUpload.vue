@@ -3,7 +3,7 @@
     <div class="upload-image-box shadow">
       <label
         for="image"
-        class="upload-image-label"
+        class="upload-image-label form-control"
         :class="{ 'is-invalid': error }"
       >
         <img
