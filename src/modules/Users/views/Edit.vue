@@ -43,6 +43,7 @@
             :options="['Male', 'Female']"
           />
         </div>
+        <Permissions />
       </div>
     </BaseForm>
   </section>
@@ -59,6 +60,8 @@ import {
 import { onMounted } from "vue";
 import useUsersService from "@/modules/Users/services/useUsersService";
 import { useRoute } from "vue-router";
+import Permissions from "@/modules/Users/components/Permissions.vue";
+
 const route = useRoute();
 const { updateUser, showUser } = useUsersService();
 

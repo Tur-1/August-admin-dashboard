@@ -1,10 +1,11 @@
 import { ref } from 'vue';
 
-let BrandsStore = ref({
+let RolesStore = ref({
     list: [],
     filtered: [],
     pagination: [],
+    permissions: [],
 });
 
 
-export default BrandsStore;
+export default RolesStore;

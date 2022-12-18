@@ -4,6 +4,8 @@ let usersStore = ref({
     list: [],
     filtered: [],
     pagination: [],
+    roles: [],
+    rolePermissions: [],
 });
 
 

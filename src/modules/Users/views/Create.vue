@@ -40,6 +40,7 @@
           />
         </div>
       </div>
+      <Permissions />
     </BaseForm>
   </section>
 </template>
@@ -52,18 +53,22 @@ import {
   FormSelect,
 } from "@/components/BaseForm";
 import useUsersService from "@/modules/Users/services/useUsersService";
+import Permissions from "@/modules/Users/components/Permissions.vue";
 
 import { onMounted } from "vue";
 
-const { storeNewUser } = useUsersService();
+const { storeNewUser, getAllRoles } = useUsersService();
 
-onMounted(() => {
+onMounted(async () => {
+  await getAllRoles();
   FormStore.setFields({
     email: "",
     name: "",
     phone_number: "",
     password: "",
     gender: "",
+    role_id: "",
+    permissions: [],
   });
 });
 </script>

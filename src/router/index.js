@@ -7,6 +7,7 @@ import ColorsRoutes from '@/modules/colors/routes'
 import BrandsRoutes from '@/modules/Brands/routes'
 import SizesRoutes from '@/modules/Sizes/routes'
 import CouponsRoutes from '@/modules/Coupons/routes'
+import RolesRoutes from '@/modules/Roles/routes'
 
 
 
@@ -23,7 +24,8 @@ const router = createRouter({
     ...ColorsRoutes,
     ...BrandsRoutes,
     ...SizesRoutes,
-    ...CouponsRoutes
+    ...CouponsRoutes,
+    ...RolesRoutes
 
   ]
 })

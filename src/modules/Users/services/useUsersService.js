@@ -7,10 +7,31 @@ import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
 import TableEntries from "@/components/MainTable/TableEntries";
+import useRolesApi from "@/modules/Roles/api/useRolesApi";
 
 
 export default function useUsersService()
 {
+    const getAllRoles = async () =>
+    {
+        useLoadingSpinner.show();
+
+        let response = await useRolesApi.getAllRoles();
+
+        usersStore.value.roles = response.data;
+
+        useLoadingSpinner.hide();
+    }
+    const getRolePermissions = async (role_id) =>
+    {
+        useLoadingSpinner.show();
+
+        let response = await useRolesApi.getRolePermission(role_id);
+
+        usersStore.value.rolePermissions = response.data;
+
+        useLoadingSpinner.hide();
+    }
 
     const getAllUsers = async ({ url, search } = {}) =>
     {
@@ -98,6 +119,9 @@ export default function useUsersService()
 
         FormStore.setFields(response.data.data);
 
+        // load roles
+        await getAllRoles();
+
         useLoadingSpinner.hide();
 
     };
@@ -111,10 +135,12 @@ export default function useUsersService()
 
 
     return {
+        getAllRoles,
         updateUser,
         storeNewUser,
         getAllUsers,
         setShowingEntries,
+        getRolePermissions,
         deleteUser,
         showUser
     }

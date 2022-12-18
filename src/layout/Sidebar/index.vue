@@ -32,6 +32,16 @@
           </template>
         </SidebarLink>
         <SidebarLink
+          toRoute="roles"
+          title="Roles"
+          :activeRouteNames="['rolesCreate', 'rolesEdit', 'roles']"
+        >
+          <template #icon>
+            <i class="fa-solid fa-users-rectangle"></i>
+          </template>
+        </SidebarLink>
+
+        <SidebarLink
           toRoute="categories"
           title="Categories"
           :activeRouteNames="[
