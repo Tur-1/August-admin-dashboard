@@ -2,7 +2,7 @@ import useUsersApi from "@/modules/Users/api/useUsersApi";
 import useToastNotification from "@/components/Toast/useToastNotification";
 import useRouterService from "@/router/useRouterService";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
-import usersStore from "@/modules/Users/stores/usersStore";
+import UsersStore from "@/modules/Users/stores/UsersStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
@@ -18,19 +18,26 @@ export default function useUsersService()
 
         let response = await useRolesApi.getAllRoles();
 
-        usersStore.value.roles = response.data;
+        UsersStore.value.roles = response.data;
 
         useLoadingSpinner.hide();
     }
     const getRolePermissions = async (role_id) =>
     {
-        useLoadingSpinner.show();
+        if (role_id)
+        {
+            useLoadingSpinner.show();
 
-        let response = await useRolesApi.getRolePermission(role_id);
+            let response = await useRolesApi.getRolePermission(role_id);
 
-        usersStore.value.rolePermissions = response.data;
+            UsersStore.value.rolePermissions = response.data;
 
-        useLoadingSpinner.hide();
+            useLoadingSpinner.hide();
+        } else
+        {
+            UsersStore.value.rolePermissions = [];
+        }
+
     }
 
     const getAllUsers = async ({ url, search } = {}) =>
@@ -42,9 +49,9 @@ export default function useUsersService()
             search: search
         });
 
-        usersStore.value.filtered = response.data.data;
-        usersStore.value.list = response.data;
-        usersStore.value.pagination = response.data.pagination;
+        UsersStore.value.filtered = response.data.data;
+        UsersStore.value.list = response.data;
+        UsersStore.value.pagination = response.data.pagination;
 
 
     }
@@ -100,7 +107,7 @@ export default function useUsersService()
         useConfirmModal.onProgress(true)
         let response = await useUsersApi.deleteUser(id);
 
-        usersStore.value.filtered.splice(index, 1);
+        UsersStore.value.filtered.splice(index, 1);
         useConfirmModal.close();
 
         useToastNotification.open(response.data.data.message);
@@ -117,10 +124,12 @@ export default function useUsersService()
 
         let response = await useUsersApi.getUser(route.params.id);
 
+
         FormStore.setFields(response.data.data);
 
-        // load roles
+
         await getAllRoles();
+        await getRolePermissions(response.data.data.role_id);
 
         useLoadingSpinner.hide();
 

@@ -1,6 +1,6 @@
 <script setup>
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
-import usersStore from "@/modules/Users/stores/usersStore";
+import UsersStore from "@/modules/Users/stores/UsersStore";
 import useUsersService from "@/modules/Users/services/useUsersService";
 
 const emits = defineEmits(["onDelete"]);
@@ -12,7 +12,7 @@ await getAllUsers();
 
 <template>
   <transition-group name="list">
-    <tr v-for="(user, index) in usersStore.filtered" :key="user.id">
+    <tr v-for="(user, index) in UsersStore.filtered" :key="user.id">
       <td>
         <div class="form-check dashboard-check">
           <input

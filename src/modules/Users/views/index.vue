@@ -5,7 +5,7 @@ import PageHeader from "@/components/PageHeader/index.vue";
 import UserTableRow from "@/modules/Users/components/UserTableRow.vue";
 import UserTableRowSkeleton from "@/modules/Users/components/UserTableRowSkeleton.vue";
 import useUsersService from "@/modules/Users/services/useUsersService";
-import usersStore from "@/modules/Users/stores/usersStore";
+import UsersStore from "@/modules/Users/stores/UsersStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { MainTable, TableSettings } from "@/components/MainTable";
 
@@ -36,18 +36,18 @@ const openModal = ({ id, index }) => {
       @onChangeEntries="setShowingEntries"
       inputPlaceholder="search users"
       v-model="search"
-      :activeEntries="usersStore.pagination.per_page"
+      :activeEntries="UsersStore.pagination.per_page"
     />
 
     <MainTable
       :fields="fields"
       @onChangePage="getAllUsers"
       @onDelete="deleteUser(user)"
-      :pagination-links="usersStore.pagination.links"
-      :results="usersStore.pagination.per_page"
-      :total-results="usersStore.pagination.total"
+      :pagination-links="UsersStore.pagination.links"
+      :results="UsersStore.pagination.per_page"
+      :total-results="UsersStore.pagination.total"
       no-records-found-title="No Users Found"
-      :showNoRecordsFound="usersStore.filtered.length == 0"
+      :showNoRecordsFound="UsersStore.filtered.length == 0"
     >
       <Suspense>
         <UserTableRow @onDelete="openModal" />

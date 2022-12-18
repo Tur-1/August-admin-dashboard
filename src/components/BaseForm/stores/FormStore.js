@@ -26,6 +26,15 @@ let FormStore = reactive({
     {
         this.fields = fields;
     },
+    appendFields(fields)
+    {
+
+        let field;
+        for (field in fields)
+        {
+            this.fields[field] = fields[field];
+        }
+    },
     clearFields()
     {
 

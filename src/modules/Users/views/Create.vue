@@ -68,7 +68,7 @@ onMounted(async () => {
     password: "",
     gender: "",
     role_id: "",
-    permissions: [],
+    permissionsIds: [],
   });
 });
 </script>
