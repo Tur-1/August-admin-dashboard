@@ -16,7 +16,7 @@ watch(search, (value) => {
   getAllUsers({ search: value });
 });
 
-let fields = ["Name", "email", "Date Created", "Gender", "Role", "Action"];
+let fields = ["Name", "email", "Gender", "Role", "Action"];
 
 let user = ref({ id: "", index: "" });
 

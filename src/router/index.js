@@ -8,6 +8,8 @@ import BrandsRoutes from '@/modules/Brands/routes'
 import SizesRoutes from '@/modules/Sizes/routes'
 import CouponsRoutes from '@/modules/Coupons/routes'
 import RolesRoutes from '@/modules/Roles/routes'
+import ReviewsRoutes from '@/modules/Reviews/routes'
+import ProductsRoutes from '@/modules/Products/routes'
 
 
 
@@ -25,7 +27,9 @@ const router = createRouter({
     ...BrandsRoutes,
     ...SizesRoutes,
     ...CouponsRoutes,
-    ...RolesRoutes
+    ...RolesRoutes,
+    ...ReviewsRoutes,
+    ...ProductsRoutes
 
   ]
 })

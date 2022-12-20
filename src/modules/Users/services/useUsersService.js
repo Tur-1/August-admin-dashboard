@@ -51,7 +51,7 @@ export default function useUsersService()
 
         UsersStore.value.filtered = response.data.data;
         UsersStore.value.list = response.data;
-        UsersStore.value.pagination = response.data.pagination;
+        UsersStore.value.pagination = response.data.meta.pagination;
 
 
     }

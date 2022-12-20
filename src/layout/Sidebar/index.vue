@@ -40,7 +40,15 @@
             <i class="fa-solid fa-users-rectangle"></i>
           </template>
         </SidebarLink>
-
+        <SidebarLink
+          toRoute="products"
+          title="products"
+          :activeRouteNames="['productsCreate', 'productsEdit', 'products']"
+        >
+          <template #icon>
+            <i class="fa-solid fa-cart-plus"></i>
+          </template>
+        </SidebarLink>
         <SidebarLink
           toRoute="categories"
           title="Categories"
@@ -70,6 +78,15 @@
         >
           <template #icon>
             <i class="fa-regular fa-copyright"></i>
+          </template>
+        </SidebarLink>
+        <SidebarLink
+          toRoute="reviews"
+          title="reviews"
+          :activeRouteNames="['reviewsCreate', 'reviewsEdit', 'reviews']"
+        >
+          <template #icon>
+            <i class="fa-regular fa-comment-dots"></i>
           </template>
         </SidebarLink>
         <SidebarLink

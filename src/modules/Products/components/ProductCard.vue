@@ -1,6 +1,6 @@
 <script setup>
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
-import ColorsStore from "@/modules/Colors/stores/ColorsStore";
+import colorsStore from "@/modules/Colors/stores/ColorsStore.js";
 import useColorsService from "@/modules/Colors/services/useColorsService";
 import { ref } from "vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
@@ -25,7 +25,7 @@ const defultImage = "./src/assets/img/defult-image.png";
     <figure
       class="card border-1 m-3"
       style="width: 170px; min-height: 130px"
-      v-for="(color, index) in ColorsStore.filtered"
+      v-for="(color, index) in colorsStore.filtered"
       :key="color.id"
     >
       <div
@@ -73,7 +73,7 @@ const defultImage = "./src/assets/img/defult-image.png";
   <div class="container">
     <div class="row">
       <div class="d-flex justify-content-center align-items-center">
-        <div v-show="ColorsStore.filtered.length == 0">
+        <div v-show="colorsStore.filtered.length == 0">
           <h5 class="text-center">No Colors Found</h5>
         </div>
       </div>

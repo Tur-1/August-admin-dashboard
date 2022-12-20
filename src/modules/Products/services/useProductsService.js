@@ -1,8 +1,8 @@
 
 import useToastNotification from "@/components/Toast/useToastNotification";
 import useRouterService from "@/router/useRouterService";
-import ColorsStore from "@/modules/Colors/stores/ColorsStore";
-import useColorsApi from "@/modules/Colors/api/useColorsApi";
+import ProductsStore from "@/modules/Products/stores/ProductsStore";
+import useProductsApi from "@/modules/Products/api/useProductsApi";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
@@ -10,23 +10,23 @@ import { useRoute } from "vue-router";
 import { appendFormData } from "@/helpers";
 
 
-export default function useColorsService()
+export default function useProductsService()
 {
 
-    const getAllColors = async () =>
+    const getAllProducts = async () =>
     {
 
-        let response = await useColorsApi.getAllColors();
+        let response = await useProductsApi.getAllProducts();
 
-        ColorsStore.value.filtered = response.data.data;
-        ColorsStore.value.list = response.data;
-        ColorsStore.value.pagination = response.data.pagination;
+        ProductsStore.value.filtered = response.data.data;
+        ProductsStore.value.list = response.data;
+        ProductsStore.value.pagination = response.data.pagination;
 
 
 
 
     }
-    const storeNewColor = async (formData) =>
+    const storeNewProduct = async (formData) =>
     {
         FormStore.showProgress();
         FormStore.clearErrors();
@@ -35,7 +35,7 @@ export default function useColorsService()
         {
             appendFormData(formData, FormStore.fields);
 
-            let response = await useColorsApi.storeNewColor(formData);
+            let response = await useProductsApi.storeNewProduct(formData);
 
             FormStore.clearFields();
 
@@ -51,7 +51,22 @@ export default function useColorsService()
         FormStore.hideProgress();
 
     };
-    const updateColor = async (formData) =>
+    const showProduct = async () =>
+    {
+        useLoadingSpinner.show();
+        FormStore.clearErrors();
+
+        const route = useRoute();
+
+        let response = await useProductsApi.getProduct(route.params.id);
+
+        FormStore.setFields(response.data.data.Product);
+
+        useLoadingSpinner.hide();
+
+    };
+
+    const updateProduct = async (formData) =>
     {
         FormStore.showProgress();
         FormStore.clearErrors();
@@ -61,12 +76,12 @@ export default function useColorsService()
         {
 
             appendFormData(formData, FormStore.fields);
-            let response = await useColorsApi.updateColor({
+            let response = await useProductsApi.updateProduct({
                 id: FormStore.fields.id,
                 fields: formData
             });
 
-            FormStore.setFields(response.data.data.color);
+            FormStore.setFields(response.data.data.Product);
 
             useToastNotification.open(response.data.data.message);
         } catch (error)
@@ -78,12 +93,12 @@ export default function useColorsService()
         FormStore.hideProgress();
 
     };
-    const deleteColor = async ({ id, index }) =>
+    const deleteProduct = async ({ id, index }) =>
     {
         useConfirmModal.onProgress(true)
-        let response = await useColorsApi.deleteColor(id);
+        let response = await useProductsApi.deleteProduct(id);
 
-        ColorsStore.value.filtered.splice(index, 1);
+        ProductsStore.value.filtered.splice(index, 1);
         useConfirmModal.close();
 
         useToastNotification.open(response.data.data.message);
@@ -91,29 +106,15 @@ export default function useColorsService()
         useConfirmModal.onProgress(false)
 
     };
-    const showColor = async () =>
-    {
-        useLoadingSpinner.show();
-        FormStore.clearErrors();
-
-        const route = useRoute();
-
-        let response = await useColorsApi.getColor(route.params.id);
-
-        FormStore.setFields(response.data.data.color);
-
-        useLoadingSpinner.hide();
-
-    };
 
 
 
     return {
-        updateColor,
-        storeNewColor,
-        getAllColors,
-        deleteColor,
-        showColor
+        updateProduct,
+        storeNewProduct,
+        getAllProducts,
+        deleteProduct,
+        showProduct
     }
 
 }
