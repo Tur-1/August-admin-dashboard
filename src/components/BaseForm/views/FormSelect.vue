@@ -1,6 +1,6 @@
 <template>
   <div class="mb-3">
-    <label :for="id">{{ label }}</label>
+    <label class="form-input-label" v-if="label" :for="id">{{ label }}</label>
 
     <select
       class="form-select"

@@ -1,5 +1,5 @@
 .form-input-label {
-    font-size: 0.875rem;
+    font-size: 13px;
     line-height: 1.25rem;
     display: block;
     color: rgb(17 24 39/1);
@@ -7,19 +7,24 @@
     font-weight: 500;
     margin-left: 0.2rem;
 }
-.form-input {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    color: rgb(17 24 39/1);
-    padding: 6px 10px;
-    border-radius: 0.5rem;
-    border: 1px solid rgb(209 213 219/1);
-    display: block;
-    width: 100%;
-    background-color: rgb(249 250 251/1);
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    background-clip: padding-box;
-}
-.form-input:focus {
-    border-color: rgb(191, 194, 197);
+// .form-input {
+//     font-size: 0.875rem;
+//     line-height: 1.25rem;
+//     color: rgb(17 24 39/1);
+//     padding: 6px 10px;
+//     border-radius: 0.5rem;
+//     border: 1px solid rgb(209 213 219/1);
+//     display: block;
+//     width: 100%;
+//     background-color: rgb(249 250 251/1);
+//     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+//     background-clip: padding-box;
+// }
+// .form-input:focus {
+//     border-color: rgb(191, 194, 197);
+// }
+
+.form-input::placeholder {
+    color: #8a8a8a;
+    font-size: 13px;
 }

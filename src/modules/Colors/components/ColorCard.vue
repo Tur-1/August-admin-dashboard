@@ -4,7 +4,7 @@ import ColorsStore from "@/modules/Colors/stores/ColorsStore";
 import useColorsService from "@/modules/Colors/services/useColorsService";
 import { ref } from "vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
-
+import defultImage from "@/assets/img/defult-image.png";
 const { getAllColors, deleteColor } = useColorsService();
 
 await getAllColors();
@@ -16,8 +16,6 @@ const openModal = ({ id, index }) => {
   color.value.id = id;
   color.value.index = index;
 };
-
-const defultImage = "./src/assets/img/defult-image.png";
 </script>
 
 <template>

@@ -22,6 +22,10 @@ let FormStore = reactive({
         this.errors = {};
     },
 
+    addValuesToField()
+    {
+
+    },
     setFields(fields)
     {
         this.fields = fields;
