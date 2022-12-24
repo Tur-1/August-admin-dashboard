@@ -39,7 +39,7 @@ const formData = new FormData();
 
           <FormFileUpload
             :error="FormStore.errors.image?.[0]"
-            @onUploadImage="(image) => formData.append('image', image)"
+            @onUpload="(image) => formData.append('image', image)"
           />
         </div>
       </div>

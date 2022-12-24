@@ -1,6 +1,6 @@
 <template>
   <div class="col-12 col-lg-6">
-    <div class="card border-0 shadow p-2 pb-4 mb-4">
+    <div class="card border-0 shadow p-0 pb-4 mb-4">
       <div class="card-body p-0 p-md-4">
         <div class="table-responsive">
           <table class="table table-centered table-nowrap mb-0 rounded">

@@ -1,6 +1,6 @@
 <template>
   <RouterLink
-    :to="{ name: routeName }"
+    :to="{ name: routeName, params: params }"
     :class="class"
     class="btn btn-sm btn-gray-800 d-inline-flex align-items-center"
   >
@@ -17,6 +17,7 @@ const props = defineProps({
     type: String,
     require: true,
   },
+  params: Object,
   title: {
     type: String,
     require: true,

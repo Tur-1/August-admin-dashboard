@@ -13,9 +13,26 @@ export const isNull = (value) =>
 export const appendFormData = (formData, fields) =>
 {
     let field;
+
+
     for (field in fields)
     {
-        formData.append(field, fields[field]);
+        if (Array.isArray(fields[field]))
+        {
+
+            fields[field].forEach((element, index) =>
+            {
+                formData.append(`${ field }[]`, JSON.stringify(element));
+
+            });
+
+
+
+        } else
+        {
+            formData.append(field, fields[field]);
+        }
+
     }
 
     return formData;

@@ -8,8 +8,8 @@ const getAllProducts = () =>
 }
 const storeNewProduct = (fields) =>
 {
-
-    return api().post("/products/store", fields);
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
+    return api().post("products/store", fields, config);
 }
 const updateProduct = ({ fields, id }) =>
 {

@@ -2,10 +2,16 @@ import api from "@/api";
 
 
 
-const getAllBrands = () =>
+const getAll = () =>
 {
     return api().get('brands');
 }
+
+const getAllBrands = () =>
+{
+    return api().get('brands-get-all');
+}
+
 const storeNewBrand = (fields) =>
 {
 
@@ -29,6 +35,7 @@ export default {
     storeNewBrand,
     updateBrand,
     getBrand,
+    getAll,
     getAllBrands,
     deleteBrand
 }

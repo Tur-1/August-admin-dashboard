@@ -1,12 +1,11 @@
 <script setup>
 import {
   FormStore,
-  BaseForm,
+  FormFileUpload,
   FormInput,
   FormSelect,
 } from "@/components/BaseForm";
 import CategoryTree from "@/modules/Categories/components/CategoryTree.vue";
-import ProductImages from "@/modules/Products/components/ProductImages.vue";
 import SizeOptions from "@/modules/Products/components/SizeOptions.vue";
 import useProductsService from "@/modules/Products/services/useProductsService";
 import ProductAttributesStore from "@/modules/Products/stores/ProductAttributesStore";
@@ -14,23 +13,30 @@ import SubmitButton from "@/components/SubmitButton/index.vue";
 import { LightEditor } from "@hannanmiah/light-editor";
 // import "@hannanmiah/light-editor/dist/style.css";
 import { onMounted } from "vue";
+import useCategoryService from "@/modules/Categories/services/useCategoryService";
+import useProductAttributesService from "@/modules/Products/services/useProductAttributesService";
 
 const { storeNewProduct } = useProductsService();
+const { getColors, getBrands, getSections, getCategories, getSizeOptions } =
+  useProductAttributesService();
+
+const formData = new FormData();
 
 onMounted(() => {
   FormStore.clearErrors();
   FormStore.setFields({
     name: "",
     details: "",
+    brand_id: "",
+    color_id: "",
+    category_id: "",
     info_and_care: "",
-    images: [
-      {
-        id: null,
-        product_id: null,
-        image_url: null,
-        is_main_image: null,
-      },
-    ],
+    shipping_cost: "",
+    price: "",
+    discount_type: "",
+    discount_amount: "",
+    discount_starts_at: "",
+    discount_expires_at: "",
     sizeOptions: [
       {
         id: null,
@@ -39,9 +45,19 @@ onMounted(() => {
       },
     ],
   });
+
+  try {
+    Promise.all([getColors(), getBrands(), getSections(), getSizeOptions()]);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
-const formData = new FormData();
+const appendImages = (images) => {
+  images.forEach((image, index) => {
+    formData.append(`images[${index}]`, image);
+  });
+};
 </script>
 <template>
   <section class="main-section">
@@ -71,7 +87,6 @@ const formData = new FormData();
               <FormSelect
                 label="brands *"
                 v-model="FormStore.fields.brand_id"
-                @change="getbrandPermissions(FormStore.fields.brand_id)"
                 :error="FormStore.errors.brand_id?.[0]"
                 id="brands"
                 defaultOption="-- select brand --"
@@ -86,9 +101,8 @@ const formData = new FormData();
               </FormSelect>
               <FormSelect
                 label="colors *"
-                v-model="FormStore.fields.brand_id"
-                @change="getbrandPermissions(FormStore.fields.brand_id)"
-                :error="FormStore.errors.brand_id?.[0]"
+                v-model="FormStore.fields.color_id"
+                :error="FormStore.errors.color_id?.[0]"
                 id="colors"
                 defaultOption="-- select color --"
               >
@@ -108,7 +122,7 @@ const formData = new FormData();
                 :error="FormStore.errors.section_id?.[0]"
                 id="section"
                 defaultOption="-- select section --"
-                @change="getCategoriesBySection(FormStore.fields.section_id)"
+                @change="getCategories(FormStore.fields.section_id)"
               >
                 <option
                   v-for="(section, index) in ProductAttributesStore.sections"
@@ -201,7 +215,9 @@ const formData = new FormData();
       <div class="row">
         <SizeOptions />
 
-        <ProductImages />
+        <div class="col-12 col-lg-6">
+          <FormFileUpload @onUpload="appendImages" />
+        </div>
       </div>
     </form>
   </section>

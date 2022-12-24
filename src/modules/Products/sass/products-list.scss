@@ -1,0 +1,93 @@
+.product-list {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.product-input-group {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    border: 1px solid;
+    border: 0.0625rem solid #d1d5db;
+}
+.product-list-card {
+    border: 1px solid #eee;
+    position: relative;
+}
+.product-list-card-delete-btn {
+    position: absolute;
+    right: 2px;
+    top: 15px;
+    background-color: transparent;
+    border: none;
+}
+.product-list-card-delete-btn i {
+    color: red;
+    font-size: 25px;
+}
+.product-list-card-body {
+    padding-top: 12px;
+}
+.product-list-card-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    border: 0.2px solid #cccccc61;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.card-group-first {
+    display: flex;
+    align-items: center;
+}
+.product-list-card-group .product-list-card-group-label {
+    background-color: rgb(238 238 238 / 38%);
+    padding: 5px 10px;
+    color: #474747;
+}
+.product-list-card-group .product-list-card-group-label:first-child {
+    margin-right: 10px;
+}
+.product-list-card-body .input-group {
+    border-radius: 0px !important;
+    background-color: transparent !important;
+    padding: 0;
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    -ms-border-radius: 0px !important;
+    -o-border-radius: 0px !important;
+}
+.product-list-card-body .input-group input {
+    border-left: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0px !important;
+    border: 0.2px solid #cccccc61;
+}
+
+.product-list-card-body .input-group .product-list-card-input-group-text {
+    border-right: none !important;
+    border-radius: 0px !important;
+}
+.product-list-card-body .input-group .input-group-text {
+    box-shadow: none !important;
+    background-color: transparent !important;
+    border-radius: 0px !important;
+    border: 0.2px solid #cccccc61;
+}
+.transparent-border-left {
+    border-left: 1px solid #fff0;
+}
+.product-input-group-text {
+    background-color: #ccc;
+    padding: 4px 7px;
+    margin-right: 17px;
+}
+.product-list-card-badge-soft-warning {
+    color: #f1b44c;
+    background-color: rgba(241, 180, 76, 0.18);
+    padding: 4px 10px;
+    border-radius: 9px;
+}

@@ -1,86 +1,109 @@
 <script setup>
-import DropdownMenu from "@/components/DropdownMenu/index.vue";
-import colorsStore from "@/modules/Colors/stores/ColorsStore.js";
-import useColorsService from "@/modules/Colors/services/useColorsService";
+import defultImage from "@/assets/img/defult-image.png";
+import useProductsService from "@/modules/Products/services/useProductsService";
+import ProductsStore from "@/modules/Products/stores/ProductsStore";
+import ButtonLink from "@/components/ButtonLink/index.vue";
 import { ref } from "vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
 
-const { getAllColors, deleteColor } = useColorsService();
+const { getAllProducts, deleteProduct } = useProductsService();
 
-await getAllColors();
+await getAllProducts();
 
-let color = ref({ id: "", index: "" });
+let product = ref({ id: "", index: "" });
 
 const openModal = ({ id, index }) => {
   useConfirmModal.open();
-  color.value.id = id;
-  color.value.index = index;
+  product.value.id = id;
+  product.value.index = index;
 };
-
-const defultImage = "./src/assets/img/defult-image.png";
 </script>
 
 <template>
   <transition-group name="list">
-    <figure
-      class="card border-1 m-3"
-      style="width: 170px; min-height: 130px"
-      v-for="(color, index) in colorsStore.filtered"
-      :key="color.id"
+    <div
+      class="product-list-card"
+      v-for="(product, index) in ProductsStore.filtered"
+      :key="product.id"
     >
-      <div
-        style="min-height: 100px"
-        class="card-header bg-white text-center p-0 overflow-hidden d-flex justify-content-center align-items-center h-100 w-100"
+      <button
+        type="button"
+        class="product-list-card-delete-btn"
+        @click="openModal({ id: product.id, index: index })"
       >
-        <img
-          height="76"
-          :src="color.image_url ?? defultImage"
-          class="img-fluid"
-          alt="Logo"
+        <i class="fa-solid fa-circle-xmark"></i>
+      </button>
+      <div class="product-list-card-image">
+        <img :src="defultImage" />
+      </div>
+      <div class="product-list-card-body">
+        <div class="input-group mb-2">
+          <span class="input-group-text product-list-card-input-group-text">
+            <i class="fas fa-box" />
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            :value="product.name"
+            disabled
+          />
+        </div>
+
+        <div class="input-group mb-2">
+          <span class="input-group-text product-list-card-input-group-text"
+            ><i class="fa-solid fa-coins"></i
+          ></span>
+          <input
+            type="text"
+            disabled
+            :value="product.price"
+            class="form-control"
+            aria-label="Amount (to the nearest dollar)"
+          />
+          <span class="input-group-text transparent-border-left">SAR</span>
+        </div>
+        <div class="product-list-card-group">
+          <div class="card-group-first">
+            <span class="product-list-card-group-label"> stock </span>
+            <span> {{ product.stock }} </span>
+          </div>
+        </div>
+
+        <div class="m-2 d-flex align-items-center justify-content-between">
+          <span class="pe-2" style="font-size: 12px">PUBLISHED</span>
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              :value="product.status"
+              :checked="product.status"
+              role="switch"
+              id="flexSwitchCheckChecked"
+            />
+          </div>
+        </div>
+        <ButtonLink
+          title="view details"
+          routeName="productsEdit"
+          :params="{ id: product.id }"
+          class="w-100 rounded-0 justify-content-center"
+          icon="fa-regular fa-eye"
         />
       </div>
-
-      <figcaption class="p-2 d-flex justify-content-between align-items-center">
-        <div class="colorname">
-          <h6 class="card-title m-0">{{ color.name }}</h6>
-          <small style="font-size: 12px">5 items</small>
-        </div>
-        <DropdownMenu>
-          <RouterLink
-            class="dropdown-item d-flex align-items-center"
-            :to="{
-              name: 'colorsEdit',
-              params: { id: color.id },
-            }"
-          >
-            <i class="fa-solid fa-pen-to-square"></i>
-            Edit
-          </RouterLink>
-
-          <a
-            @click="openModal({ id: color.id, index: index })"
-            role="button"
-            class="dropdown-item d-flex align-items-center text-danger"
-          >
-            <i class="fa-solid fa-trash-can"></i>
-            Delete
-          </a>
-        </DropdownMenu>
-      </figcaption>
-    </figure>
+    </div>
   </transition-group>
 
   <div class="container">
     <div class="row">
       <div class="d-flex justify-content-center align-items-center">
-        <div v-show="colorsStore.filtered.length == 0">
+        <div v-show="ProductsStore.filtered.length == 0">
           <h5 class="text-center">No Colors Found</h5>
         </div>
       </div>
     </div>
   </div>
   <ConfirmModal
-    @onConfirm="deleteColor(color)"
+    @onConfirm="deleteProduct(product)"
     @onClose="useConfirmModal.close()"
   >
     <span>are you sure ?</span>

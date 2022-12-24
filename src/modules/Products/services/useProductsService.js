@@ -31,6 +31,8 @@ export default function useProductsService()
         FormStore.showProgress();
         FormStore.clearErrors();
 
+
+
         try
         {
             appendFormData(formData, FormStore.fields);
@@ -60,7 +62,8 @@ export default function useProductsService()
 
         let response = await useProductsApi.getProduct(route.params.id);
 
-        FormStore.setFields(response.data.data.Product);
+        console.log(response.data.data.product);
+        FormStore.setFields(response.data.data.product);
 
         useLoadingSpinner.hide();
 

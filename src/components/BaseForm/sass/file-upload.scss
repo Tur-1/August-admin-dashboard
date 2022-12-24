@@ -50,3 +50,91 @@
     background-color: #f3f6fd;
     padding: 0 10px;
 }
+.image-container {
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    margin: 15px 4px;
+}
+
+.image-card {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 19%) !important;
+}
+.image-card img {
+    scale: 1.2;
+    height: 100%;
+    width: 100%;
+}
+.image-card .image-card-delete-btn {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: transparent;
+    border: none;
+}
+.image-card .image-card-delete-btn i {
+    color: #ffffff;
+    font-size: 40px;
+}
+.image-card-footer {
+    margin-top: 7px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.image-card-footer .form-check {
+    display: flex;
+    align-items: center;
+}
+.image-card-footer label {
+    font-size: 11px;
+}
+.image-card-footer button {
+    background: transparent;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+}
+.full-screen-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999999999;
+}
+
+.full-screen-image img {
+    max-width: 650px;
+    max-height: 650px;
+}
+.full-screen-image button {
+    background: transparent;
+    border: none;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+.full-screen-image button i {
+    font-size: 50px;
+    color: #d7d7d7;
+}
+
+.full-screen-image button i:hover {
+    color: #ffffff;
+}
+.full-screen-image.show {
+    display: flex;
+}

@@ -1,15 +1,29 @@
 <template>
-  <figure v-for="i in 12" class="card border-1 m-3" style="min-width: 170px">
-    <div class="card-header placeholder-wave p-0" style="height: 130px">
-      <span class="card-img-top rounded-0 placeholder h-100" alt="..." />
+  <div class="product-list-card" v-for="i in 6">
+    <div
+      class="product-list-card-image placeholder-wave"
+      style="width: 318px; height: 340px"
+    >
+      <span src="..." class="placeholder w-100 h-100 rounded-0" />
     </div>
+    <div class="product-list-card-body placeholder-wave">
+      <span class="placeholder col-1 p-3 m-2"> </span>
+      <span class="placeholder col-10 p-3"> </span>
+      <span class="placeholder col-1 p-3 m-2"> </span>
+      <span class="placeholder col-9 p-3 me-1"> </span>
+      <span class="placeholder col-1 p-3"> </span>
 
-    <figcaption class="p-2 d-flex justify-content-between align-items-center">
-      <div class="d-flex flex-column m-2 placeholder-wave">
-        <span class="placeholder mb-2" style="width: 90px"></span>
+      <span class="placeholder col-1 p-3 m-2"> </span>
+      <span class="placeholder col-10 p-3"> </span>
 
-        <span class="placeholder" style="width: 50px"></span>
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="placeholder col-3 p-3 m-2"> </span>
+        <span class="placeholder col-2 p-3 me-2"> </span>
       </div>
-    </figcaption>
-  </figure>
+      <button
+        type="button"
+        class="w-100 btn btn-sm btn-gray-800 rounded-0 placeholder"
+      ></button>
+    </div>
+  </div>
 </template>

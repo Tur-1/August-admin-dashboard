@@ -16,13 +16,11 @@ export default function useColorsService()
     const getAllColors = async () =>
     {
 
-        let response = await useColorsApi.getAllColors();
+        let response = await useColorsApi.getAll();
 
         ColorsStore.value.filtered = response.data.data;
         ColorsStore.value.list = response.data;
         ColorsStore.value.pagination = response.data.pagination;
-
-
 
 
     }

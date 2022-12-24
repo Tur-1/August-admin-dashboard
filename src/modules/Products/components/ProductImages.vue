@@ -4,7 +4,7 @@
       <div class="card-header p-2">
         <button
           @click="addField"
-          class="btn btn-gray-800 d-flex align-items-center justify-content-between btn-sm"
+          class="btn btn-gray-800 d-flex float-end align-items-center justify-content-between btn-sm"
           type="button"
         >
           <i class="fas fa-plus me-2" />
@@ -16,7 +16,7 @@
           <transition-group name="list">
             <div
               class="col-lg-4 mb-5"
-              v-for="(image, index) in FormStore.fields.images"
+              v-for="(image, index) in images"
               :key="index"
             >
               <div class="card">
@@ -42,13 +42,12 @@
                   >
                     <div class="form-check d-flex flex-row align-items-center">
                       <input
-                        wire:key="0"
-                        wire:change="changeMainImage(0,)"
+                        name="is_main_image"
+                        :value="image.is_main_image"
                         class="form-check-input me-1"
                         type="radio"
-                        name="images[0][is_main_image]"
-                        id="is-main-image-"
-                        value=""
+                        :id="'is-main-image-' + index"
+                        @change="changeMainImage(index)"
                       />
                       <label class="form-check-label m-1" for="is-main-image-">
                         <span> main image</span>
@@ -74,25 +73,49 @@
 
 <script setup>
 import { FormStore } from "@/components/BaseForm";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 
 import defultImage from "@/assets/img/defult-image.png";
 
-const addField = () => {
-  FormStore.fields.images.push({
-    id: null,
-    product_id: null,
+const props = defineProps(["formData"]);
+
+const images = ref([
+  {
+    file: null,
     image_url: null,
-    is_main_image: null,
+    is_main_image: false,
+  },
+]).value;
+const addField = () => {
+  images.push({
+    file: null,
+    image_url: null,
+    is_main_image: false,
   });
 };
+
 const removeField = (index) => {
-  FormStore.fields.images.splice(index, 1);
+  images.splice(index, 1);
 };
-let imagePreviewUrl = ref("");
+
 const onFileChange = (e, index) => {
   const file = e.target.files[0];
-  FormStore.fields.images[index].image_url = URL.createObjectURL(file);
+
+  images[index].image_url = URL.createObjectURL(file);
+  images[index].file = file;
+
+  props.formData.append(`images[${index}]`, JSON.stringify(images[index]));
+};
+
+const changeMainImage = (ind) => {
+  images.forEach((element, index) => {
+    element.is_main_image = false;
+    if (index == ind) {
+      element.is_main_image = true;
+    }
+  });
+
+  props.formData.append(`images[${ind}]`, images[ind].is_main_image);
 };
 </script>
 <style scoped>

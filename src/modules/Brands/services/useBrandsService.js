@@ -16,7 +16,7 @@ export default function useBrandsService()
     const getAllBrands = async () =>
     {
 
-        let response = await useBrandsApi.getAllBrands();
+        let response = await useBrandsApi.getAll();
 
         BrandsStore.value.filtered = response.data.data;
         BrandsStore.value.list = response.data;

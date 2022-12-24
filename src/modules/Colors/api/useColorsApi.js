@@ -2,10 +2,15 @@ import api from "@/api";
 
 
 
-const getAllColors = () =>
+const getAll = () =>
 {
     return api().get('colors');
 }
+const getAllColors = () =>
+{
+    return api().get('colors-get-all');
+}
+
 const storeNewColor = (fields) =>
 {
 
@@ -29,6 +34,7 @@ export default {
     storeNewColor,
     updateColor,
     getColor,
+    getAll,
     getAllColors,
     deleteColor
 }

@@ -7,6 +7,12 @@ const getSizes = (obj) =>
 
     return api().get(obj.url ?? "/sizes");
 }
+
+const getAllSizes = (obj) =>
+{
+
+    return api().get("/sizes-get-all");
+}
 const storeNewSize = (fields) =>
 {
 
@@ -31,5 +37,6 @@ export default {
     updateSize,
     getSize,
     getSizes,
-    deleteSize
+    deleteSize,
+    getAllSizes
 }
