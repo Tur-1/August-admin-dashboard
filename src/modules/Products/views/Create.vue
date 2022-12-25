@@ -29,6 +29,7 @@ onMounted(() => {
     details: "",
     brand_id: "",
     color_id: "",
+    section_id: "",
     category_id: "",
     info_and_care: "",
     shipping_cost: "",
@@ -37,7 +38,7 @@ onMounted(() => {
     discount_amount: "",
     discount_starts_at: "",
     discount_expires_at: "",
-    sizeOptions: [
+    sizes: [
       {
         id: null,
         size_id: null,
@@ -128,6 +129,7 @@ const appendImages = (images) => {
                   v-for="(section, index) in ProductAttributesStore.sections"
                   :key="index"
                   :value="section.id"
+                  :selected="FormStore.fields.section_id == section.id"
                 >
                   {{ section.name }}
                 </option>

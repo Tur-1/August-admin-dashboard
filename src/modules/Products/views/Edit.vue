@@ -16,13 +16,13 @@ import { onMounted } from "vue";
 import useCategoryService from "@/modules/Categories/services/useCategoryService";
 import useProductAttributesService from "@/modules/Products/services/useProductAttributesService";
 
-const { storeNewProduct, showProduct } = useProductsService();
+const { updateProduct, showProduct } = useProductsService();
 const { getColors, getBrands, getSections, getCategories, getSizeOptions } =
   useProductAttributesService();
 
 const formData = new FormData();
 
-onMounted(() => {
+onMounted(async () => {
   FormStore.clearErrors();
 
   try {
@@ -47,16 +47,16 @@ const appendImages = (images) => {
 <template>
   <section class="main-section">
     <form
-      @submit.prevent="storeNewProduct(formData)"
+      @submit.prevent="updateProduct(formData)"
       enctype="multipart/form-data"
     >
       <div class="card border-0 shadow p-2 pb-4 mb-4">
         <div
           class="card-header mx-lg-4 p-0 py-3 py-lg-3 mb-4 mb-md-0 d-flex justify-content-between"
         >
-          <h3 class="h5 mb-0">new product</h3>
+          <h3 class="h5 mb-0">update product</h3>
 
-          <SubmitButton title="create" />
+          <SubmitButton title="update" />
         </div>
         <div class="card-body p-0 p-md-4">
           <div class="row">
@@ -113,6 +113,7 @@ const appendImages = (images) => {
                   v-for="(section, index) in ProductAttributesStore.sections"
                   :key="index"
                   :value="section.id"
+                  :selected="FormStore.fields.section_id == section.id"
                 >
                   {{ section.name }}
                 </option>
@@ -129,6 +130,7 @@ const appendImages = (images) => {
                   v-for="category in ProductAttributesStore.categories"
                   :category="category"
                   :key="category.id"
+                  :selected="FormStore.fields.category_id == category.id"
                 />
               </FormSelect>
               <FormInput
@@ -201,7 +203,10 @@ const appendImages = (images) => {
         <SizeOptions />
 
         <div class="col-12 col-lg-6">
-          <FormFileUpload @onUpload="appendImages" />
+          <FormFileUpload
+            @onUpload="appendImages"
+            :images="FormStore.fields.images"
+          />
         </div>
       </div>
     </form>

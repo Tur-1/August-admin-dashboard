@@ -24,7 +24,7 @@
             <tbody>
               <transition-group name="list">
                 <tr
-                  v-for="(attr, index) in FormStore.fields.sizeOptions"
+                  v-for="(attr, index) in FormStore.fields.sizes"
                   :key="index"
                 >
                   <td>{{ index + 1 }}</td>
@@ -38,6 +38,7 @@
                         v-for="(size, index) in ProductAttributesStore.sizes"
                         :key="index"
                         :value="size.id"
+                        :selected="attr.size_id == size.id"
                       >
                         {{ size.name }}
                       </option>
@@ -77,7 +78,7 @@ import { FormStore, FormInput, FormSelect } from "@/components/BaseForm";
 import ProductAttributesStore from "@/modules/Products/stores/ProductAttributesStore";
 
 const addField = () => {
-  FormStore.fields.sizeOptions.push({
+  FormStore.fields.sizes.push({
     id: null,
     size_id: null,
     stock: null,
@@ -85,7 +86,7 @@ const addField = () => {
 };
 const removeField = (index) => {
   if (index != 0) {
-    FormStore.fields.sizeOptions.splice(index, 1);
+    FormStore.fields.sizes.splice(index, 1);
   }
 };
 </script>

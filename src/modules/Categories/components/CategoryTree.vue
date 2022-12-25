@@ -24,7 +24,10 @@ const porps = defineProps({
     :dash="dash + 1"
     v-for="category in category.children"
     :category="category"
-    :selected="FormStore.fields.parent_id == category.id"
+    :selected="
+      FormStore.fields.parent_id == category.id ||
+      FormStore.fields.category_id == category.id
+    "
   />
 </template>
 

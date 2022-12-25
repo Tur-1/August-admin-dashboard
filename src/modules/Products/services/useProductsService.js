@@ -8,6 +8,7 @@ import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
 import { appendFormData } from "@/helpers";
+import useProductAttributesService from "@/modules/Products/services/useProductAttributesService";
 
 
 export default function useProductsService()
@@ -62,8 +63,11 @@ export default function useProductsService()
 
         let response = await useProductsApi.getProduct(route.params.id);
 
-        console.log(response.data.data.product);
+
         FormStore.setFields(response.data.data.product);
+        const { getCategories } =
+            useProductAttributesService();
+        await getCategories(FormStore.fields.section_id);
 
         useLoadingSpinner.hide();
 
@@ -84,7 +88,9 @@ export default function useProductsService()
                 fields: formData
             });
 
-            FormStore.setFields(response.data.data.Product);
+            console.log(response.data.data);
+            FormStore.setFields(response.data.data.product);
+
 
             useToastNotification.open(response.data.data.message);
         } catch (error)

@@ -35,11 +35,11 @@
     <transition-group name="list">
       <div
         class="image-container"
-        v-for="(image, index) in imagesPreview"
-        :key="image"
+        v-for="(image, index) in props.images"
+        :key="index"
       >
         <div class="image-card">
-          <img :src="image" />
+          <img :src="image.image_url" />
           <button
             type="button"
             class="image-card-delete-btn"
@@ -52,7 +52,6 @@
           <div class="form-check">
             <input
               name="is_main_image"
-              :value="image"
               class="form-check-input me-1"
               type="radio"
               :id="'is-main-image-' + index"
@@ -64,7 +63,7 @@
           <button
             type="button"
             class="image-card-full-btn"
-            @click="showFullScreenImage(image)"
+            @click="showFullScreenImage(image.image_url)"
           >
             <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
           </button>
@@ -84,7 +83,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from "vue";
+import { ref, reactive, watch, computed } from "vue";
 import defaultImage from "@/assets/img/defult-image.png";
 
 const props = defineProps({
@@ -97,28 +96,28 @@ const props = defineProps({
     type: String,
   },
   error: String,
+  images: {
+    default: reactive([]),
+    type: Array,
+  },
 });
 const emits = defineEmits(["onUpload"]);
-
-let imagesPreview = reactive([]);
-let images = reactive([]);
 
 let fullScreenImage = ref("");
 let showImage = ref(false);
 
 const onFileChange = (e) => {
   const files = e.target.files;
-
   let file;
-
   for (file of files) {
-    imagesPreview.push(URL.createObjectURL(file));
-    images.push(file);
+    props.images.push({
+      file: file,
+      image_url: URL.createObjectURL(file),
+    });
   }
 };
 const removeImage = (index) => {
-  images.splice(index, 1);
-  imagesPreview.splice(index, 1);
+  props.images.splice(index, 1);
 };
 
 const showFullScreenImage = (image) => {
@@ -126,8 +125,12 @@ const showFullScreenImage = (image) => {
   showImage.value = true;
 };
 
-watch(images, (image) => {
-  emits("onUpload", images);
+watch(props.images, (image) => {
+  let imagesFiles = [];
+  props.images.forEach((element) => {
+    imagesFiles.push(element.file);
+  });
+  emits("onUpload", imagesFiles);
 });
 </script>
 <style scoped>
