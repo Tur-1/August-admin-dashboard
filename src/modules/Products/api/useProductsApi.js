@@ -24,11 +24,16 @@ const deleteProduct = (id) =>
 {
     return api().delete("/products/delete/" + id);
 }
+const deleteProductImage = (image_id) =>
+{
+    return api().delete("/products/images/delete/" + image_id);
+}
 
 export default {
     getAllProducts,
     storeNewProduct,
     updateProduct,
     getProduct,
+    deleteProductImage,
     deleteProduct
 }

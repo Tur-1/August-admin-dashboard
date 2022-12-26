@@ -19,17 +19,15 @@
         type="file"
         name="image"
         id="image"
-        multiple
+        :multiple="props.multiple"
         class="d-none"
-        @change="onFileChange"
+        @change="props.multiple ? onFilesChange($event) : onFileChange($event)"
       />
-      <span
-        class="text-danger mt-1 ms-2"
-        style="font-size: 12px"
-        v-show="error"
-      >
-        {{ error }}
-      </span>
+      <div v-show="error" v-for="err in error" class="d-flex flex-column">
+        <span class="text-danger mt-1 ms-2" style="font-size: 12px">
+          {{ err }}
+        </span>
+      </div>
     </div>
 
     <transition-group name="list">
@@ -39,17 +37,18 @@
         :key="index"
       >
         <div class="image-card">
-          <img :src="image.image_url" />
+          <img :src="image.image_url ?? defultImage" />
           <button
+            v-if="canDeleteImage"
             type="button"
             class="image-card-delete-btn"
-            @click="removeImage(index)"
+            @click="removeImage(index, image.image_id)"
           >
             <i class="fa-solid fa-circle-xmark"></i>
           </button>
         </div>
         <div class="image-card-footer">
-          <div class="form-check">
+          <!-- <div class="form-check">
             <input
               name="is_main_image"
               class="form-check-input me-1"
@@ -59,11 +58,11 @@
             <label class="form-check-label m-1" :for="'is-main-image-' + index">
               main image
             </label>
-          </div>
+          </div> -->
           <button
             type="button"
             class="image-card-full-btn"
-            @click="showFullScreenImage(image.image_url)"
+            @click="showFullScreenImage(image.image_url ?? defultImage)"
           >
             <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
           </button>
@@ -83,8 +82,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, computed } from "vue";
-import defaultImage from "@/assets/img/defult-image.png";
+import { ref, reactive } from "vue";
+import defultImage from "@/assets/img/defult-image.png";
 
 const props = defineProps({
   multiple: Boolean,
@@ -92,46 +91,69 @@ const props = defineProps({
     type: String,
     default: "250px",
   },
-  imageUrl: {
-    type: String,
-  },
-  error: String,
   images: {
     default: reactive([]),
     type: Array,
   },
+  error: Array,
+  canDeleteImage: Boolean,
 });
-const emits = defineEmits(["onUpload"]);
+const emits = defineEmits(["onUpload", "onDelete"]);
 
 let fullScreenImage = ref("");
 let showImage = ref(false);
+let imagesFiles = [];
 
 const onFileChange = (e) => {
+  const file = e.target.files[0];
+  props.images.splice(0, 1);
+  props.images.push({
+    file: file,
+    image_url: URL.createObjectURL(file),
+  });
+
+  props.images.forEach((element) => {
+    imagesFiles.push(element.file);
+  });
+
+  emits("onUpload", imagesFiles[0]);
+};
+
+const onFilesChange = (e) => {
   const files = e.target.files;
   let file;
+
   for (file of files) {
     props.images.push({
       file: file,
       image_url: URL.createObjectURL(file),
     });
   }
+
+  props.images.forEach((element) => {
+    imagesFiles.push(element.file);
+  });
+
+  emits("onUpload", imagesFiles);
 };
-const removeImage = (index) => {
+
+const removeImage = (index, image_id) => {
   props.images.splice(index, 1);
+  if (image_id) {
+    emits("onDelete", image_id);
+  }
+
+  props.images.forEach((element) => {
+    imagesFiles.push(element.file);
+  });
+
+  emits("onUpload", imagesFiles);
 };
 
 const showFullScreenImage = (image) => {
   fullScreenImage.value = image;
   showImage.value = true;
 };
-
-watch(props.images, (image) => {
-  let imagesFiles = [];
-  props.images.forEach((element) => {
-    imagesFiles.push(element.file);
-  });
-  emits("onUpload", imagesFiles);
-});
 </script>
 <style scoped>
 .image-preview {

@@ -12,7 +12,7 @@
             v-model="FormStore.fields.name"
             id="name1"
             type="text"
-            :error="FormStore.errors.name?.[0]"
+            :error="FormStore.errors.name"
           />
         </div>
       </div>

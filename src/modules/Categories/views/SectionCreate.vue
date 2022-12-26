@@ -30,11 +30,11 @@ onMounted(() => {
             label="Name *"
             v-model="FormStore.fields.name"
             id="sectionName"
-            :error="FormStore.errors.name?.[0]"
+            :error="FormStore.errors.name"
           />
           <FormFileUpload
-            :error="FormStore.errors.image?.[0]"
-            @onUploadImage="(image) => formData.append('image', image)"
+            :error="FormStore.errors.image"
+            @onUpload="(image) => formData.append('image', image)"
           />
         </div>
       </div>

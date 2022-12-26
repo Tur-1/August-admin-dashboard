@@ -12,21 +12,21 @@
             v-model="FormStore.fields.code"
             id="code"
             type="text"
-            :error="FormStore.errors.code?.[0]"
+            :error="FormStore.errors.code"
           />
           <FormInput
             label="coupon amount *"
             v-model="FormStore.fields.amount"
             id="amount"
             type="number"
-            :error="FormStore.errors.amount?.[0]"
+            :error="FormStore.errors.amount"
           />
           <FormInput
             label="coupon use times *"
             v-model="FormStore.fields.use_times"
             id="use_times"
             type="text"
-            :error="FormStore.errors.use_times?.[0]"
+            :error="FormStore.errors.use_times"
           />
         </div>
         <div class="col-12 col-lg-6">
@@ -36,13 +36,13 @@
             id="minimum_purchase"
             type="number"
             step="'any'"
-            :error="FormStore.errors.minimum_purchases?.[0]"
+            :error="FormStore.errors.minimum_purchases"
           />
 
           <FormSelect
             label="Coupon Type *"
             v-model="FormStore.fields.type"
-            :error="FormStore.errors.type?.[0]"
+            :error="FormStore.errors.type"
             id="type"
             :options="['Percentage', 'Fixed']"
             defaultOption="-- select type --"
@@ -53,7 +53,7 @@
             id="starts_at"
             type="date"
             step="'any'"
-            :error="FormStore.errors.starts_at?.[0]"
+            :error="FormStore.errors.starts_at"
           />
           <FormInput
             label="expires at *"
@@ -61,7 +61,7 @@
             id="expires_at"
             type="date"
             step="'any'"
-            :error="FormStore.errors.expires_at?.[0]"
+            :error="FormStore.errors.expires_at"
           />
         </div>
       </div>

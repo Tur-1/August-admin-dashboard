@@ -5,7 +5,7 @@
         label="Roles *"
         v-model="FormStore.fields.role_id"
         @change="getRolePermissions(FormStore.fields.role_id)"
-        :error="FormStore.errors.role_id?.[0]"
+        :error="FormStore.errors.role_id"
         id="roles"
         defaultOption="-- select role --"
       >

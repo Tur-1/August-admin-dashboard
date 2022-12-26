@@ -115,7 +115,20 @@ export default function useProductsService()
         useConfirmModal.onProgress(false)
 
     };
+    const deleteProductImage = async (id) =>
+    {
 
+        useConfirmModal.onProgress(true)
+
+        let response = await useProductsApi.deleteProductImage(id);
+
+        useConfirmModal.close();
+
+        useToastNotification.open(response.data.data.message);
+
+        useConfirmModal.onProgress(false)
+
+    };
 
 
     return {
@@ -123,6 +136,7 @@ export default function useProductsService()
         storeNewProduct,
         getAllProducts,
         deleteProduct,
+        deleteProductImage,
         showProduct
     }
 

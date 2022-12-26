@@ -39,7 +39,7 @@ const formData = new FormData();
           <FormSelect
             label="section *"
             v-model="FormStore.fields.section_id"
-            :error="FormStore.errors.section_id?.[0]"
+            :error="FormStore.errors.section_id"
             id="section"
             defaultOption="-- select section --"
             @change="getCategoriesBySection(FormStore.fields.section_id)"
@@ -56,7 +56,7 @@ const formData = new FormData();
           <FormSelect
             label="category *"
             v-model="FormStore.fields.parent_id"
-            :error="FormStore.errors.parent_id?.[0]"
+            :error="FormStore.errors.parent_id"
             id="category"
             defaultOption="-- main category --"
           >
@@ -71,13 +71,13 @@ const formData = new FormData();
             label="Name *"
             v-model="FormStore.fields.name"
             id="categoryName"
-            :error="FormStore.errors.name?.[0]"
+            :error="FormStore.errors.name"
           />
         </div>
         <div class="col-lg-6 col-12">
           <FormFileUpload
-            :error="FormStore.errors.image?.[0]"
-            @onUploadImage="(image) => formData.append('image', image)"
+            :error="FormStore.errors.image"
+            @onUpload="(image) => formData.append('image', image)"
           />
         </div>
       </div>

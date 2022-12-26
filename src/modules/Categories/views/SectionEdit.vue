@@ -1,7 +1,6 @@
 <script setup>
 import useSectionService from "@/modules/Categories/services/useSectionService";
-
-import { onMounted } from "vue";
+import { onMounted, reactive } from "vue";
 import {
   FormFileUpload,
   BaseForm,
@@ -29,9 +28,9 @@ const formData = new FormData();
             id="categoryName"
           />
           <FormFileUpload
-            @onUploadImage="(image) => formData.append('image', image)"
-            :imageUrl="FormStore.fields.image_url"
-            :error="FormStore.errors.image?.[0]"
+            @onUpload="(image) => formData.append('image', image)"
+            :images="reactive([{ image_url: FormStore.fields.image_url }])"
+            :error="FormStore.errors.image"
           />
         </div>
       </div>

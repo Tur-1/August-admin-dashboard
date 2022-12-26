@@ -13,9 +13,11 @@
       :step="step"
     />
 
-    <span class="text-danger mt-1 ms-2" style="font-size: 12px" v-show="error">
-      {{ error }}
-    </span>
+    <div v-show="error" v-for="err in error" class="d-flex flex-column">
+      <span class="text-danger mt-1 ms-2" style="font-size: 12px">
+        {{ err }}
+      </span>
+    </div>
   </div>
 </template>
 <script setup>

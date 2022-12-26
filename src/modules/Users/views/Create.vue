@@ -8,33 +8,33 @@
             v-model="FormStore.fields.name"
             id="name1"
             type="text"
-            :error="FormStore.errors.name?.[0]"
+            :error="FormStore.errors.name"
           />
           <FormInput
             label="Email address *"
             v-model="FormStore.fields.email"
             id="email1"
             type="email"
-            :error="FormStore.errors.email?.[0]"
+            :error="FormStore.errors.email"
           />
           <FormInput
             label="Password *"
             v-model="FormStore.fields.password"
             id="Password1"
             type="password"
-            :error="FormStore.errors.password?.[0]"
+            :error="FormStore.errors.password"
           />
           <FormInput
             label="phone *"
             v-model="FormStore.fields.phone_number"
             id="phone1"
             type="number"
-            :error="FormStore.errors.phone_number?.[0]"
+            :error="FormStore.errors.phone_number"
           />
           <FormSelect
             label="Gender *"
             v-model="FormStore.fields.gender"
-            :error="FormStore.errors.gender?.[0]"
+            :error="FormStore.errors.gender"
             id="gender"
             :options="['Male', 'Female']"
           />

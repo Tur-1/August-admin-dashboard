@@ -7,7 +7,7 @@ import {
 } from "@/components/BaseForm";
 import useColorsService from "@/modules/Colors/services/useColorsService";
 
-import { onMounted } from "vue";
+import { onMounted, reactive } from "vue";
 
 const { updateColor, showColor } = useColorsService();
 
@@ -28,13 +28,13 @@ const formData = new FormData();
             v-model="FormStore.fields.name"
             id="name1"
             type="text"
-            :error="FormStore.errors.name?.[0]"
+            :error="FormStore.errors.name"
           />
 
           <FormFileUpload
-            :error="FormStore.errors.image?.[0]"
-            @onUploadImage="(image) => formData.append('image', image)"
-            :imageUrl="FormStore.fields.image_url"
+            :error="FormStore.errors.image"
+            @onUpload="(image) => formData.append('image', image)"
+            :images="reactive([{ image_url: FormStore.fields.image_url }])"
           />
         </div>
       </div>

@@ -34,11 +34,11 @@ const formData = new FormData();
             v-model="FormStore.fields.name"
             id="name1"
             type="text"
-            :error="FormStore.errors.name?.[0]"
+            :error="FormStore.errors.name"
           />
 
           <FormFileUpload
-            :error="FormStore.errors.image?.[0]"
+            :error="FormStore.errors.image"
             @onUpload="(image) => formData.append('image', image)"
           />
         </div>

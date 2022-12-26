@@ -82,13 +82,13 @@ const appendImages = (images) => {
                 v-model="FormStore.fields.name"
                 id="name1"
                 type="text"
-                :error="FormStore.errors.name?.[0]"
+                :error="FormStore.errors.name"
               />
 
               <FormSelect
                 label="brands *"
                 v-model="FormStore.fields.brand_id"
-                :error="FormStore.errors.brand_id?.[0]"
+                :error="FormStore.errors.brand_id"
                 id="brands"
                 defaultOption="-- select brand --"
               >
@@ -103,7 +103,7 @@ const appendImages = (images) => {
               <FormSelect
                 label="colors *"
                 v-model="FormStore.fields.color_id"
-                :error="FormStore.errors.color_id?.[0]"
+                :error="FormStore.errors.color_id"
                 id="colors"
                 defaultOption="-- select color --"
               >
@@ -120,7 +120,7 @@ const appendImages = (images) => {
               <FormSelect
                 label="section *"
                 v-model="FormStore.fields.section_id"
-                :error="FormStore.errors.section_id?.[0]"
+                :error="FormStore.errors.section_id"
                 id="section"
                 defaultOption="-- select section --"
                 @change="getCategories(FormStore.fields.section_id)"
@@ -138,7 +138,7 @@ const appendImages = (images) => {
               <FormSelect
                 label="category *"
                 v-model="FormStore.fields.category_id"
-                :error="FormStore.errors.category_id?.[0]"
+                :error="FormStore.errors.category_id"
                 id="category"
                 defaultOption="-- select category --"
               >
@@ -154,7 +154,7 @@ const appendImages = (images) => {
                 id="shipping_cost1"
                 type="number"
                 step="any"
-                :error="FormStore.errors.shipping_cost?.[0]"
+                :error="FormStore.errors.shipping_cost"
               />
             </div>
             <div class="col-12 col-lg-6">
@@ -165,12 +165,12 @@ const appendImages = (images) => {
                 type="number"
                 placeholder="385"
                 step="any"
-                :error="FormStore.errors.price?.[0]"
+                :error="FormStore.errors.price"
               />
               <FormSelect
                 label="discount Type "
                 v-model="FormStore.fields.discount_type"
-                :error="FormStore.errors.discount_type?.[0]"
+                :error="FormStore.errors.discount_type"
                 id="type"
                 :options="['Percentage', 'Fixed']"
                 defaultOption="-- select discount type --"
@@ -182,7 +182,7 @@ const appendImages = (images) => {
                 id="discount_amount1"
                 type="number"
                 step="any"
-                :error="FormStore.errors.discount_amount?.[0]"
+                :error="FormStore.errors.discount_amount"
               />
               <FormInput
                 label="discount starts at "
@@ -190,7 +190,7 @@ const appendImages = (images) => {
                 id="discount_starts_at"
                 type="date"
                 step="'any'"
-                :error="FormStore.errors.discount_starts_at?.[0]"
+                :error="FormStore.errors.discount_starts_at"
               />
               <FormInput
                 label="discount expires at "
@@ -198,7 +198,7 @@ const appendImages = (images) => {
                 id="discount_expires_at"
                 type="date"
                 step="'any'"
-                :error="FormStore.errors.discount_expires_at?.[0]"
+                :error="FormStore.errors.discount_expires_at"
               />
             </div>
             <div class="col-lg-6">
@@ -218,7 +218,11 @@ const appendImages = (images) => {
         <SizeOptions />
 
         <div class="col-12 col-lg-6">
-          <FormFileUpload @onUpload="appendImages" />
+          <FormFileUpload
+            @onUpload="appendImages"
+            :multiple="true"
+            :canDeleteImage="true"
+          />
         </div>
       </div>
     </form>

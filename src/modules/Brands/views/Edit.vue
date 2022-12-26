@@ -7,7 +7,7 @@ import {
 } from "@/components/BaseForm";
 import useBrandsService from "@/modules/Brands/services/useBrandsService";
 
-import { onMounted } from "vue";
+import { onMounted, reactive } from "vue";
 
 const { updateBrand, showBrand } = useBrandsService();
 
@@ -28,13 +28,13 @@ const formData = new FormData();
             v-model="FormStore.fields.name"
             id="name1"
             type="text"
-            :error="FormStore.errors.name?.[0]"
+            :error="FormStore.errors.name"
           />
 
           <FormFileUpload
-            :error="FormStore.errors.image?.[0]"
+            :error="FormStore.errors.image"
             @onUpload="(image) => formData.append('image', image)"
-            :imageUrl="FormStore.fields.image_url"
+            :images="reactive([{ image_url: FormStore.fields.image_url }])"
           />
         </div>
       </div>
