@@ -12,7 +12,7 @@ await getAllUsers();
 
 <template>
   <transition-group name="list">
-    <tr v-for="(user, index) in UsersStore.filtered" :key="user.id">
+    <tr v-for="(user, index) in UsersStore.filtered" :key="user">
       <td>
         <div class="form-check dashboard-check">
           <input

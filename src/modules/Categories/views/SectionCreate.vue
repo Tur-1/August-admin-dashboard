@@ -9,11 +9,11 @@ import useSectionService from "@/modules/Categories/services/useSectionService";
 import { onMounted } from "vue";
 
 const { storeNewSection } = useSectionService();
-const formData = new FormData();
 
 onMounted(() => {
   FormStore.setFields({
     name: "",
+    image: "",
   });
 });
 </script>
@@ -22,7 +22,7 @@ onMounted(() => {
     <BaseForm
       submitTitle="create"
       title="new section"
-      @onSubmit="storeNewSection(formData)"
+      @onSubmit="storeNewSection"
     >
       <div class="row d-flex justify-content-center">
         <div class="col-lg-6 col-12">
@@ -34,7 +34,7 @@ onMounted(() => {
           />
           <FormFileUpload
             :error="FormStore.errors.image"
-            @onUpload="(image) => formData.append('image', image)"
+            @onUpload="(image) => (FormStore.fields.image = image)"
           />
         </div>
       </div>

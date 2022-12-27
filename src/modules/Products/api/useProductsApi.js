@@ -13,7 +13,6 @@ const storeNewProduct = (fields) =>
 }
 const updateProduct = ({ fields, id }) =>
 {
-
     return api().post("/products/update/" + id, fields);
 }
 const getProduct = (id) =>
@@ -28,12 +27,16 @@ const deleteProductImage = (image_id) =>
 {
     return api().delete("/products/images/delete/" + image_id);
 }
-
+const changeProductMainImage = (image_id) =>
+{
+    return api().delete("/products/images/update-main-image/" + image_id);
+}
 export default {
     getAllProducts,
     storeNewProduct,
     updateProduct,
     getProduct,
     deleteProductImage,
-    deleteProduct
+    deleteProduct,
+    changeProductMainImage
 }

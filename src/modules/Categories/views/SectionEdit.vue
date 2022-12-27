@@ -1,6 +1,6 @@
 <script setup>
 import useSectionService from "@/modules/Categories/services/useSectionService";
-import { onMounted, reactive } from "vue";
+import { onMounted } from "vue";
 import {
   FormFileUpload,
   BaseForm,
@@ -10,15 +10,13 @@ import {
 
 const { updateSection, showSection } = useSectionService();
 onMounted(showSection);
-
-const formData = new FormData();
 </script>
 <template>
   <section class="main-section">
     <BaseForm
       submitTitle="update"
       title="update section"
-      @onSubmit="updateSection(formData)"
+      @onSubmit="updateSection"
     >
       <div class="row d-flex justify-content-center">
         <div class="col-lg-6 col-12">
@@ -28,9 +26,8 @@ const formData = new FormData();
             id="categoryName"
           />
           <FormFileUpload
-            @onUpload="(image) => formData.append('image', image)"
-            :images="reactive([{ image_url: FormStore.fields.image_url }])"
-            :error="FormStore.errors.image"
+            @onUpload="(image) => (FormStore.fields.image = image)"
+            :image_url="FormStore.fields.image_url"
           />
         </div>
       </div>

@@ -70,7 +70,7 @@ export default function useCategoryService()
 
         try
         {
-            appendFormData(formData, FormStore.fields);
+            const formData = appendFormData(FormStore.fields);
 
             let response = await useCategoryApi.storeNewCategory(formData);
 
@@ -95,7 +95,7 @@ export default function useCategoryService()
 
         try
         {
-            appendFormData(formData, FormStore.fields);
+            const formData = appendFormData(FormStore.fields);
 
 
             let response = await useCategoryApi.updateCategory({

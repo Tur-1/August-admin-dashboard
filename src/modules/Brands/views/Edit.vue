@@ -7,20 +7,15 @@ import {
 } from "@/components/BaseForm";
 import useBrandsService from "@/modules/Brands/services/useBrandsService";
 
-import { onMounted, reactive } from "vue";
+import { onMounted } from "vue";
 
 const { updateBrand, showBrand } = useBrandsService();
 
 onMounted(showBrand);
-const formData = new FormData();
 </script>
 <template>
   <section class="main-section">
-    <BaseForm
-      @onSubmit="updateBrand(formData)"
-      submitTitle="update"
-      title="update Brand"
-    >
+    <BaseForm @onSubmit="updateBrand" submitTitle="update" title="update Brand">
       <div class="row d-flex justify-content-center">
         <div class="col-12 col-lg-6">
           <FormInput
@@ -32,9 +27,8 @@ const formData = new FormData();
           />
 
           <FormFileUpload
-            :error="FormStore.errors.image"
-            @onUpload="(image) => formData.append('image', image)"
-            :images="reactive([{ image_url: FormStore.fields.image_url }])"
+            @onUpload="(image) => (FormStore.fields.image = image)"
+            :image_url="FormStore.fields.image_url"
           />
         </div>
       </div>

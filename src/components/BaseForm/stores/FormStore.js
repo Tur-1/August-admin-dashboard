@@ -30,13 +30,17 @@ let FormStore = reactive({
     {
         this.fields = fields;
     },
-    appendFields(fields)
+    appendFields(newFields)
     {
 
         let field;
-        for (field in fields)
+        for (field in newFields)
         {
-            this.fields[field] = fields[field];
+            if (!this.fields.hasOwnProperty(newFields))
+            {
+                this.fields[field] = newFields[field];
+            }
+
         }
     },
     clearFields()

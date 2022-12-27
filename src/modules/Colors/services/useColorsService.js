@@ -24,14 +24,14 @@ export default function useColorsService()
 
 
     }
-    const storeNewColor = async (formData) =>
+    const storeNewColor = async () =>
     {
         FormStore.showProgress();
         FormStore.clearErrors();
 
         try
         {
-            appendFormData(formData, FormStore.fields);
+            const formData = appendFormData(FormStore.fields);
 
             let response = await useColorsApi.storeNewColor(formData);
 
@@ -49,7 +49,7 @@ export default function useColorsService()
         FormStore.hideProgress();
 
     };
-    const updateColor = async (formData) =>
+    const updateColor = async () =>
     {
         FormStore.showProgress();
         FormStore.clearErrors();
@@ -58,7 +58,9 @@ export default function useColorsService()
         try
         {
 
-            appendFormData(formData, FormStore.fields);
+            const formData = appendFormData(FormStore.fields);
+
+
             let response = await useColorsApi.updateColor({
                 id: FormStore.fields.id,
                 fields: formData

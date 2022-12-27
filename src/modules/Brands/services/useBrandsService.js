@@ -33,7 +33,7 @@ export default function useBrandsService()
 
         try
         {
-            appendFormData(formData, FormStore.fields);
+            const formData = appendFormData(FormStore.fields);
 
             let response = await useBrandsApi.storeNewBrand(formData);
 
@@ -60,7 +60,7 @@ export default function useBrandsService()
         try
         {
 
-            appendFormData(formData, FormStore.fields);
+            const formData = appendFormData(FormStore.fields);
             let response = await useBrandsApi.updateBrand({
                 id: FormStore.fields.id,
                 fields: formData

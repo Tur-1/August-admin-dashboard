@@ -3,7 +3,7 @@ import useToastNotification from "@/components/Toast/useToastNotification";
 import useRouterService from "@/router/useRouterService";
 import ProductsStore from "@/modules/Products/stores/ProductsStore";
 import useProductsApi from "@/modules/Products/api/useProductsApi";
-import { useLoadingSpinner } from "@/components/LoadingSpinner";
+import { useLoadingSpinner } from '@/components/LoadingSpinner';
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
@@ -27,16 +27,15 @@ export default function useProductsService()
 
 
     }
-    const storeNewProduct = async (formData) =>
+    const storeNewProduct = async () =>
     {
         FormStore.showProgress();
         FormStore.clearErrors();
 
-
-
         try
         {
-            appendFormData(formData, FormStore.fields);
+
+            const formData = appendFormData(FormStore.fields);
 
             let response = await useProductsApi.storeNewProduct(formData);
 
@@ -49,7 +48,11 @@ export default function useProductsService()
         } catch (error)
         {
 
-            FormStore.setErrors(error.response);
+            if (error.response)
+            {
+                FormStore.setErrors(error.response);
+            }
+
         }
         FormStore.hideProgress();
 
@@ -73,30 +76,38 @@ export default function useProductsService()
 
     };
 
-    const updateProduct = async (formData) =>
+    const updateProduct = async () =>
     {
         FormStore.showProgress();
         FormStore.clearErrors();
 
 
+
         try
         {
 
-            appendFormData(formData, FormStore.fields);
-            let response = await useProductsApi.updateProduct({
-                id: FormStore.fields.id,
-                fields: formData
-            });
-
-            console.log(response.data.data);
-            FormStore.setFields(response.data.data.product);
+            const formData = appendFormData(FormStore.fields);
 
 
-            useToastNotification.open(response.data.data.message);
+            for (const iterator of formData)
+            {
+                console.log(iterator[0], iterator[1]);
+            }
+            // let response = await useProductsApi.updateProduct({
+            //     id: FormStore.fields.id,
+            //     fields: formData
+            // });
+
+            // FormStore.setFields(response.data.data.product);
+
+            // useToastNotification.open(response.data.data.message);
         } catch (error)
         {
+            if (error.response)
+            {
+                FormStore.setErrors(error.response);
+            }
 
-            FormStore.setErrors(error.response);
         }
 
         FormStore.hideProgress();
@@ -129,6 +140,18 @@ export default function useProductsService()
         useConfirmModal.onProgress(false)
 
     };
+    const changeProductMainImage = async (id) =>
+    {
+
+        useLoadingSpinner.show();
+
+        let response = await useProductsApi.changeProductMainImage(id);
+
+        useToastNotification.open(response.data.data.message);
+
+        useLoadingSpinner.hide();
+
+    };
 
 
     return {
@@ -137,7 +160,8 @@ export default function useProductsService()
         getAllProducts,
         deleteProduct,
         deleteProductImage,
-        showProduct
+        showProduct,
+        changeProductMainImage
     }
 
 }

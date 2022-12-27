@@ -10,30 +10,41 @@ export const isNull = (value) =>
 }
 
 
-export const appendFormData = (formData, fields) =>
+export const appendFormData = (formFields) =>
 {
     let field;
 
 
-    for (field in fields)
+    const formData = new FormData();
+    for (field in formFields)
     {
-        if (Array.isArray(fields[field]))
+
+
+        if (!Array.isArray(formFields[field]))
         {
 
-            fields[field].forEach((element, index) =>
+            formData.append(field, formFields[field]);
+        }
+
+
+        if (Array.isArray(formFields[field]))
+        {
+            formFields[field].forEach((element, index) =>
             {
                 formData.append(`${ field }[]`, JSON.stringify(element));
 
             });
-
-
-
-        } else
-        {
-            formData.append(field, fields[field]);
         }
 
-    }
+        if (Array.isArray(formFields[field]) && formFields[field][0] instanceof File)
+        {
+            formFields[field].forEach((element, index) =>
+            {
+                formData.append(`${ field }[${ index }]`, element);
 
+            });
+        }
+    }
     return formData;
 }
+

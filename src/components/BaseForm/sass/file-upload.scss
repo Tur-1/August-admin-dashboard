@@ -52,9 +52,11 @@
 }
 .image-container {
     max-width: 150px;
+    min-height: 150px;
     display: flex;
     flex-direction: column;
-    margin: 15px 4px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .image-card {
@@ -68,10 +70,7 @@
     border-radius: 8px;
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 19%) !important;
 }
-.image-card img {
-    // height: 100%;
-    // width: 100%;
-}
+
 .image-card .image-card-delete-btn {
     position: absolute;
     left: 50%;

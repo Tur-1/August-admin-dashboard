@@ -19,9 +19,8 @@
         type="file"
         name="image"
         id="image"
-        :multiple="props.multiple"
         class="d-none"
-        @change="props.multiple ? onFilesChange($event) : onFileChange($event)"
+        @change="onFileChange"
       />
       <div v-show="error" v-for="err in error" class="d-flex flex-column">
         <span class="text-danger mt-1 ms-2" style="font-size: 12px">
@@ -29,51 +28,25 @@
         </span>
       </div>
     </div>
-
-    <transition-group name="list">
-      <div
-        class="image-container"
-        v-for="(image, index) in props.images"
-        :key="index"
-      >
-        <div class="image-card">
-          <img :src="image.image_url ?? defultImage" />
-          <button
-            v-if="canDeleteImage"
-            type="button"
-            class="image-card-delete-btn"
-            @click="removeImage(index, image.image_id)"
-          >
-            <i class="fa-solid fa-circle-xmark"></i>
-          </button>
-        </div>
-        <div class="image-card-footer">
-          <!-- <div class="form-check">
-            <input
-              name="is_main_image"
-              class="form-check-input me-1"
-              type="radio"
-              :id="'is-main-image-' + index"
-            />
-            <label class="form-check-label m-1" :for="'is-main-image-' + index">
-              main image
-            </label>
-          </div> -->
-          <button
-            type="button"
-            class="image-card-full-btn"
-            @click="showFullScreenImage(image.image_url ?? defultImage)"
-          >
-            <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
-          </button>
-        </div>
+    <div class="image-container" v-if="imagePreview || props.image_url">
+      <div class="image-card">
+        <img :src="imagePreview ?? props.image_url" />
       </div>
-    </transition-group>
+      <div class="image-card-footer">
+        <button
+          type="button"
+          class="image-card-full-btn"
+          @click="showFullScreenImage(imagePreview ?? props.image_url)"
+        >
+          <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+        </button>
+      </div>
+    </div>
     <Transition name="bounce" mode="out-in">
-      <div class="full-screen-image" v-if="showImage">
+      <div class="full-screen-image" v-if="showfullScreenImage">
         <img :src="fullScreenImage" />
 
-        <button type="button" @click="showImage = false">
+        <button type="button" @click="showfullScreenImage = false">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -91,68 +64,29 @@ const props = defineProps({
     type: String,
     default: "250px",
   },
-  images: {
-    default: reactive([]),
-    type: Array,
-  },
+  image_url: String,
+
   error: Array,
-  canDeleteImage: Boolean,
 });
 const emits = defineEmits(["onUpload", "onDelete"]);
 
 let fullScreenImage = ref("");
-let showImage = ref(false);
-let imagesFiles = [];
+let showfullScreenImage = ref(false);
+
+let imagePreview = ref(null);
 
 const onFileChange = (e) => {
   const file = e.target.files[0];
-  props.images.splice(0, 1);
-  props.images.push({
-    file: file,
-    image_url: URL.createObjectURL(file),
-  });
+  if (file) {
+    imagePreview.value = URL.createObjectURL(file);
 
-  props.images.forEach((element) => {
-    imagesFiles.push(element.file);
-  });
-
-  emits("onUpload", imagesFiles[0]);
-};
-
-const onFilesChange = (e) => {
-  const files = e.target.files;
-  let file;
-
-  for (file of files) {
-    props.images.push({
-      file: file,
-      image_url: URL.createObjectURL(file),
-    });
+    emits("onUpload", file);
   }
-
-  props.images.forEach((element) => {
-    imagesFiles.push(element.file);
-  });
-
-  emits("onUpload", imagesFiles);
-};
-
-const removeImage = (index, image_id) => {
-  props.images.splice(index, 1);
-  if (image_id) {
-    emits("onDelete", image_id);
-  }
-
-  props.images.forEach((element) => {
-    imagesFiles.push(element.file);
-  });
-
-  emits("onUpload", imagesFiles);
 };
 
 const showFullScreenImage = (image) => {
   fullScreenImage.value = image;
-  showImage.value = true;
+  showfullScreenImage.value = true;
 };
 </script>
 <style scoped>
@@ -162,7 +96,7 @@ const showFullScreenImage = (image) => {
 }
 .list-enter-active,
 .list-leave-active {
-  transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease;
 }
 .list-enter-from,
 .list-leave-to {

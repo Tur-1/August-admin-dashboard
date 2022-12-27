@@ -19,7 +19,7 @@ export default function useSectionService()
 
         try
         {
-            appendFormData(formData, FormStore.fields);
+            const formData = appendFormData(FormStore.fields);
 
             let response = await useCategoryApi.storeNewSection(formData);
 
@@ -59,7 +59,7 @@ export default function useSectionService()
         try
         {
 
-            appendFormData(formData, FormStore.fields);
+            const formData = appendFormData(FormStore.fields);
 
             let response = await useCategoryApi.updateSection({
                 id: FormStore.fields.id,

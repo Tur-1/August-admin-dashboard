@@ -21,18 +21,17 @@ onMounted(async () => {
     parent_id: "",
     section_id: "",
     name: "",
+    image: "",
   });
   CategoryStore.sectionCategories = [];
 });
-
-const formData = new FormData();
 </script>
 <template>
   <section class="main-section">
     <BaseForm
       submitTitle="create"
       title="new category"
-      @onSubmit="storeNewCategory(formData)"
+      @onSubmit="storeNewCategory"
     >
       <div class="row">
         <div class="col-lg-6 col-12">
@@ -77,7 +76,7 @@ const formData = new FormData();
         <div class="col-lg-6 col-12">
           <FormFileUpload
             :error="FormStore.errors.image"
-            @onUpload="(image) => formData.append('image', image)"
+            @onUpload="(image) => (FormStore.fields.image = image)"
           />
         </div>
       </div>

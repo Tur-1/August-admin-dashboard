@@ -1,14 +1,13 @@
 .LoadingSpinner {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgb(253 253 253 / 9%);
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: rgb(39 39 39 / 27%);
     z-index: 999999999999;
 }
 .spinner-box {

@@ -7,6 +7,7 @@ import {
 } from "@/components/BaseForm";
 import CategoryTree from "@/modules/Categories/components/CategoryTree.vue";
 import SizeOptions from "@/modules/Products/components/SizeOptions.vue";
+import ProductImages from "@/modules/Products/components/ProductImages.vue";
 import useProductsService from "@/modules/Products/services/useProductsService";
 import ProductAttributesStore from "@/modules/Products/stores/ProductAttributesStore";
 import SubmitButton from "@/components/SubmitButton/index.vue";
@@ -19,8 +20,6 @@ import useProductAttributesService from "@/modules/Products/services/useProductA
 const { storeNewProduct } = useProductsService();
 const { getColors, getBrands, getSections, getCategories, getSizeOptions } =
   useProductAttributesService();
-
-const formData = new FormData();
 
 onMounted(() => {
   FormStore.clearErrors();
@@ -37,6 +36,8 @@ onMounted(() => {
     discount_type: "",
     discount_amount: "",
     discount_starts_at: "",
+    productImages: [],
+    mainImage: "",
     discount_expires_at: "",
     sizes: [
       {
@@ -53,19 +54,10 @@ onMounted(() => {
     console.log(error);
   }
 });
-
-const appendImages = (images) => {
-  images.forEach((image, index) => {
-    formData.append(`images[${index}]`, image);
-  });
-};
 </script>
 <template>
   <section class="main-section">
-    <form
-      @submit.prevent="storeNewProduct(formData)"
-      enctype="multipart/form-data"
-    >
+    <form @submit.prevent="storeNewProduct" enctype="multipart/form-data">
       <div class="card border-0 shadow p-2 pb-4 mb-4">
         <div
           class="card-header mx-lg-4 p-0 py-3 py-lg-3 mb-4 mb-md-0 d-flex justify-content-between"
@@ -218,11 +210,7 @@ const appendImages = (images) => {
         <SizeOptions />
 
         <div class="col-12 col-lg-6">
-          <FormFileUpload
-            @onUpload="appendImages"
-            :multiple="true"
-            :canDeleteImage="true"
-          />
+          <ProductImages />
         </div>
       </div>
     </form>

@@ -15,18 +15,13 @@ onMounted(() => {
   FormStore.clearErrors();
   FormStore.setFields({
     name: "",
+    image: "",
   });
 });
-
-const formData = new FormData();
 </script>
 <template>
   <section class="main-section">
-    <BaseForm
-      @onSubmit="storeNewBrand(formData)"
-      submitTitle="create"
-      title="new Brand"
-    >
+    <BaseForm @onSubmit="storeNewBrand" submitTitle="create" title="new Brand">
       <div class="row d-flex justify-content-center">
         <div class="col-12 col-lg-6">
           <FormInput
@@ -39,7 +34,7 @@ const formData = new FormData();
 
           <FormFileUpload
             :error="FormStore.errors.image"
-            @onUpload="(image) => formData.append('image', image)"
+            @onUpload="(image) => (FormStore.fields.image = image)"
           />
         </div>
       </div>

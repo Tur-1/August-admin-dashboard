@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive } from "vue";
+import { onMounted } from "vue";
 import useCategoryService from "@/modules/Categories/services/useCategoryService";
 import CategoryTree from "@/modules/Categories/components/CategoryTree.vue";
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
@@ -16,15 +16,13 @@ const { showCategory, updateCategory, getCategoriesBySection } =
   useCategoryService();
 
 onMounted(showCategory);
-
-const formData = new FormData();
 </script>
 <template>
   <section class="main-section">
     <BaseForm
       submitTitle="update"
       title="update category"
-      @onSubmit="updateCategory(formData)"
+      @onSubmit="updateCategory"
     >
       <div class="row">
         <div class="col-lg-6 col-12">
@@ -71,8 +69,8 @@ const formData = new FormData();
         <div class="col-lg-6 col-12">
           <FormFileUpload
             :error="FormStore.errors.image"
-            @onUpload="(image) => formData.append('image', image)"
-            :images="reactive([{ image_url: FormStore.fields.image_url }])"
+            @onUpload="(image) => (FormStore.fields.image = image)"
+            :image_url="FormStore.fields.image_url"
           />
         </div>
       </div>

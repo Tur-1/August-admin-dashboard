@@ -7,49 +7,34 @@ import {
 } from "@/components/BaseForm";
 import CategoryTree from "@/modules/Categories/components/CategoryTree.vue";
 import SizeOptions from "@/modules/Products/components/SizeOptions.vue";
+import ProductImages from "@/modules/Products/components/ProductImages.vue";
 import useProductsService from "@/modules/Products/services/useProductsService";
 import ProductAttributesStore from "@/modules/Products/stores/ProductAttributesStore";
 import SubmitButton from "@/components/SubmitButton/index.vue";
 import { LightEditor } from "@hannanmiah/light-editor";
 // import "@hannanmiah/light-editor/dist/style.css";
 import { onMounted } from "vue";
-import useCategoryService from "@/modules/Categories/services/useCategoryService";
 import useProductAttributesService from "@/modules/Products/services/useProductAttributesService";
 
 const { updateProduct, showProduct, deleteProductImage } = useProductsService();
 const { getColors, getBrands, getSections, getCategories, getSizeOptions } =
   useProductAttributesService();
 
-const formData = new FormData();
-
 onMounted(async () => {
   FormStore.clearErrors();
 
-  try {
-    Promise.all([
-      showProduct(),
-      getColors(),
-      getBrands(),
-      getSections(),
-      getSizeOptions(),
-    ]);
-  } catch (error) {
-    console.log(error);
-  }
+  Promise.all([
+    showProduct(),
+    getColors(),
+    getBrands(),
+    getSections(),
+    getSizeOptions(),
+  ]);
 });
-
-const appendImages = (images) => {
-  images.forEach((image, index) => {
-    formData.append(`images[${index}]`, image);
-  });
-};
 </script>
 <template>
   <section class="main-section">
-    <form
-      @submit.prevent="updateProduct(formData)"
-      enctype="multipart/form-data"
-    >
+    <form @submit.prevent="updateProduct" enctype="multipart/form-data">
       <div class="card border-0 shadow p-2 pb-4 mb-4">
         <div
           class="card-header mx-lg-4 p-0 py-3 py-lg-3 mb-4 mb-md-0 d-flex justify-content-between"
@@ -203,12 +188,9 @@ const appendImages = (images) => {
         <SizeOptions />
 
         <div class="col-12 col-lg-6">
-          <FormFileUpload
-            :multiple="true"
-            @onUpload="appendImages"
+          <ProductImages
             @onDelete="async (image_id) => await deleteProductImage(image_id)"
             :images="FormStore.fields.images"
-            :canDeleteImage="true"
           />
         </div>
       </div>
