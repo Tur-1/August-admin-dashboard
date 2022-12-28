@@ -112,6 +112,8 @@ const { changeProductMainImage } = useProductsService();
 let fullScreenImage = ref("");
 let showfullScreenImage = ref(false);
 
+let productImages = [];
+
 const onFilesChange = (e) => {
   const files = e.target.files;
   let file;
@@ -129,21 +131,32 @@ const onFilesChange = (e) => {
 
 const removeImage = (index, image_id) => {
   props.images.splice(index, 1);
+
   if (image_id) {
     emits("onDelete", image_id);
   }
 
-  FormStore.fields.productImages = getImages();
+  FormStore.fields.productImages = props.images
+    .filter(
+      (element, elementIndex) =>
+        element.file && element.file.is_main_image == false
+    )
+    .map((element) => {
+      return element.file;
+    });
 };
 
 const showFullScreenImage = (image) => {
   fullScreenImage.value = image;
   showfullScreenImage.value = true;
 };
-const getImages = () => {
+const getImages = (index) => {
   return props.images
-    .filter((element) => element.file)
-    .map((eleme) => eleme.file);
+    .filter((element, elementIndex) => element.file)
+    .map((eleme) => {
+      eleme.file.is_main_image = false;
+      return eleme.file;
+    });
 };
 
 const changeMainImage = async ({ imageId, index }) => {
@@ -152,15 +165,26 @@ const changeMainImage = async ({ imageId, index }) => {
     return;
   }
 
-  let images = getImages();
+  props.images.forEach((element, elementIndex) => {
+    if (elementIndex == index) {
+      element.file.is_main_image = true;
+    }
+  });
 
-  let mainImage = images.at(index);
-  images.splice(index, 1);
+  let mainImage = props.images.at(index).file;
 
-  FormStore.fields.productImages = images;
   FormStore.fields.mainImage = mainImage;
 
-  console.log(mainImage);
+  FormStore.fields.productImages = props.images
+    .filter(
+      (element, elementIndex) =>
+        element.file && element.file.is_main_image == false
+    )
+    .map((element) => {
+      return element.file;
+    });
+
+  console.log(FormStore.fields.productImages, mainImage);
 };
 </script>
 <style scoped>

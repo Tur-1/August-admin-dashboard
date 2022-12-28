@@ -7,7 +7,7 @@ import { useLoadingSpinner } from '@/components/LoadingSpinner';
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
-import { appendFormData } from "@/helpers";
+import { appendFormData, isNotNull } from "@/helpers";
 import useProductAttributesService from "@/modules/Products/services/useProductAttributesService";
 
 
@@ -19,42 +19,35 @@ export default function useProductsService()
 
         let response = await useProductsApi.getAllProducts();
 
+        console.log(response.data.data);
         ProductsStore.value.filtered = response.data.data;
         ProductsStore.value.list = response.data;
         ProductsStore.value.pagination = response.data.pagination;
 
 
-
-
     }
     const storeNewProduct = async () =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
+        useLoadingSpinner.show();
 
         try
         {
+            let response = await useProductsApi.storeNewProduct();
 
-            const formData = appendFormData(FormStore.fields);
-
-            let response = await useProductsApi.storeNewProduct(formData);
-
-            FormStore.clearFields();
-
-            useRouterService.redirectBack();
+            await getAllProducts();
 
             useToastNotification.open(response.data.data.message);
 
+
         } catch (error)
         {
-
             if (error.response)
             {
                 FormStore.setErrors(error.response);
             }
 
         }
-        FormStore.hideProgress();
+        useLoadingSpinner.hide();
 
     };
     const showProduct = async () =>
@@ -66,11 +59,15 @@ export default function useProductsService()
 
         let response = await useProductsApi.getProduct(route.params.id);
 
-
         FormStore.setFields(response.data.data.product);
-        const { getCategories } =
-            useProductAttributesService();
-        await getCategories(FormStore.fields.section_id);
+
+
+        if (isNotNull(FormStore.fields.section_id))
+        {
+            const { getCategories } = useProductAttributesService();
+
+            await getCategories(FormStore.fields.section_id);
+        }
 
         useLoadingSpinner.hide();
 
@@ -82,25 +79,20 @@ export default function useProductsService()
         FormStore.clearErrors();
 
 
-
         try
         {
 
             const formData = appendFormData(FormStore.fields);
 
+            let response = await useProductsApi.updateProduct({
+                id: FormStore.fields.id,
+                fields: formData
+            });
 
-            for (const iterator of formData)
-            {
-                console.log(iterator[0], iterator[1]);
-            }
-            // let response = await useProductsApi.updateProduct({
-            //     id: FormStore.fields.id,
-            //     fields: formData
-            // });
 
-            // FormStore.setFields(response.data.data.product);
+            FormStore.setFields(response.data.data.product);
 
-            // useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.data.message);
         } catch (error)
         {
             if (error.response)
@@ -152,7 +144,18 @@ export default function useProductsService()
         useLoadingSpinner.hide();
 
     };
+    const publishProduct = async (id) =>
+    {
 
+        useLoadingSpinner.show();
+
+        let response = await useProductsApi.publishProduct(id);
+
+        useToastNotification.open(response.data.data.message);
+
+        useLoadingSpinner.hide();
+
+    };
 
     return {
         updateProduct,
@@ -161,7 +164,8 @@ export default function useProductsService()
         deleteProduct,
         deleteProductImage,
         showProduct,
-        changeProductMainImage
+        changeProductMainImage,
+        publishProduct
     }
 
 }

@@ -6,7 +6,7 @@ import ButtonLink from "@/components/ButtonLink/index.vue";
 import { ref } from "vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
 
-const { getAllProducts, deleteProduct } = useProductsService();
+const { getAllProducts, deleteProduct, publishProduct } = useProductsService();
 
 await getAllProducts();
 
@@ -34,7 +34,7 @@ const openModal = ({ id, index }) => {
         <i class="fa-solid fa-circle-xmark"></i>
       </button>
       <div class="product-list-card-image">
-        <img :src="defultImage" />
+        <img :src="product.main_image_url ?? defultImage" />
       </div>
       <div class="product-list-card-body">
         <div class="input-group mb-2">
@@ -44,7 +44,7 @@ const openModal = ({ id, index }) => {
           <input
             type="text"
             class="form-control"
-            :value="product.name"
+            :value="product.name ?? ''"
             disabled
           />
         </div>
@@ -56,7 +56,7 @@ const openModal = ({ id, index }) => {
           <input
             type="text"
             disabled
-            :value="product.price"
+            :value="product.price ?? ''"
             class="form-control"
             aria-label="Amount (to the nearest dollar)"
           />
@@ -65,7 +65,7 @@ const openModal = ({ id, index }) => {
         <div class="product-list-card-group">
           <div class="card-group-first">
             <span class="product-list-card-group-label"> stock </span>
-            <span> {{ product.stock }} </span>
+            <span> {{ product.stock ?? "" }} </span>
           </div>
         </div>
 
@@ -75,9 +75,10 @@ const openModal = ({ id, index }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              :value="product.status"
-              :checked="product.status"
+              :value="product.status ?? ''"
+              :checked="product.status ?? ''"
               role="switch"
+              @change="publishProduct(product.id)"
               id="flexSwitchCheckChecked"
             />
           </div>
@@ -93,15 +94,6 @@ const openModal = ({ id, index }) => {
     </div>
   </transition-group>
 
-  <div class="container">
-    <div class="row">
-      <div class="d-flex justify-content-center align-items-center">
-        <div v-show="ProductsStore.filtered.length == 0">
-          <h5 class="text-center">No Colors Found</h5>
-        </div>
-      </div>
-    </div>
-  </div>
   <ConfirmModal
     @onConfirm="deleteProduct(product)"
     @onClose="useConfirmModal.close()"

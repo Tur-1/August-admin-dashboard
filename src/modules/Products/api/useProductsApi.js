@@ -6,18 +6,32 @@ const getAllProducts = () =>
 {
     return api().get('products');
 }
-const storeNewProduct = (fields) =>
+
+
+
+const storeNewProduct = () =>
 {
-    const config = { headers: { "Content-Type": "multipart/form-data" } };
-    return api().post("products/store", fields, config);
+
+    return api().post("products/store");
 }
 const updateProduct = ({ fields, id }) =>
 {
-    return api().post("/products/update/" + id, fields);
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
+    return api().post("/products/update/" + id, fields, config);
+}
+
+const uploadProductImages = ({ fields, id }) =>
+{
+
+    return api().post("/products/update/" + id, fields, config);
 }
 const getProduct = (id) =>
 {
     return api().post("/products/show/" + id);
+}
+const publishProduct = (id) =>
+{
+    return api().post("/products/publish/" + id);
 }
 const deleteProduct = (id) =>
 {
@@ -31,6 +45,7 @@ const changeProductMainImage = (image_id) =>
 {
     return api().delete("/products/images/update-main-image/" + image_id);
 }
+
 export default {
     getAllProducts,
     storeNewProduct,
@@ -38,5 +53,6 @@ export default {
     getProduct,
     deleteProductImage,
     deleteProduct,
-    changeProductMainImage
+    changeProductMainImage,
+    publishProduct
 }
