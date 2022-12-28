@@ -21,7 +21,7 @@ const { storeNewProduct } = useProductsService();
       </button>
     </PageHeader>
     <div class="card card-body border-0 shadow mb-4">
-      <div class="product-list ">
+      <div class="product-list">
         <Suspense>
           <ProductCard />
 

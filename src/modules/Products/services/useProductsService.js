@@ -19,7 +19,6 @@ export default function useProductsService()
 
         let response = await useProductsApi.getAllProducts();
 
-        console.log(response.data.data);
         ProductsStore.value.filtered = response.data.data;
         ProductsStore.value.list = response.data;
         ProductsStore.value.pagination = response.data.pagination;
