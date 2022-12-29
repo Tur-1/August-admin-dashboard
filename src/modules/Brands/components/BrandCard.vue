@@ -82,9 +82,7 @@ const defultImage = "./src/assets/img/defult-image.png";
   <ConfirmModal
     @onConfirm="deleteBrand(Brand)"
     @onClose="useConfirmModal.close()"
-  >
-    <span>are you sure ?</span>
-  </ConfirmModal>
+  />
 </template>
 <style scoped>
 .list-enter-active,

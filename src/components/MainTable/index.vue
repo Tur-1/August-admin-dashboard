@@ -1,6 +1,7 @@
 <script setup>
 import { NoRecordsFound } from "@/components/MainTable";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
+import { useSlots } from "vue";
 const props = defineProps({
   paginationLinks: Array,
   results: Number,
@@ -15,6 +16,8 @@ const props = defineProps({
 });
 
 defineEmits(["onChangePage", "onDelete"]);
+
+const slots = useSlots();
 </script>
 <template>
   <div class="card card-body shadow border-0 table-wrapper table-responsive">
@@ -85,7 +88,9 @@ defineEmits(["onChangePage", "onDelete"]);
       @onConfirm="$emit('onDelete')"
       @onClose="useConfirmModal.close()"
     >
-      <span>{{ confirmTitle ?? "are you sure ?" }}</span>
+      <template #body v-if="confirmTitle">
+        <span>{{ confirmTitle }}</span>
+      </template>
     </ConfirmModal>
   </div>
 </template>

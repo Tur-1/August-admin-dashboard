@@ -63,9 +63,15 @@ const openModal = ({ id, index }) => {
           <span class="input-group-text transparent-border-left">SAR</span>
         </div>
         <div class="product-list-card-group">
-          <div class="card-group-first">
+          <span
+            class="badge text-bg-danger p-2 rounded-0 w-100"
+            v-if="product.stock == 0"
+          >
+            OUT OF STOCK
+          </span>
+          <div class="card-group-first" v-if="product.stock > 0">
             <span class="product-list-card-group-label"> stock </span>
-            <span> {{ product.stock ?? "" }} </span>
+            <span> {{ product.stock }} </span>
           </div>
         </div>
 
@@ -97,9 +103,7 @@ const openModal = ({ id, index }) => {
   <ConfirmModal
     @onConfirm="deleteProduct(product)"
     @onClose="useConfirmModal.close()"
-  >
-    <span>are you sure ?</span>
-  </ConfirmModal>
+  />
 </template>
 <style scoped>
 .list-enter-active,

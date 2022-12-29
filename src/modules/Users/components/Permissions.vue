@@ -18,27 +18,51 @@
         </option>
       </FormSelect>
     </div>
-    <div class="row">
+  </div>
+
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseOne"
+          aria-expanded="true"
+          aria-controls="collapseOne"
+        >
+          Permissions
+        </button>
+      </h2>
       <div
-        class="col-12 col-lg-6"
-        v-for="(permission, key) in UsersStore.rolePermissions"
+        id="collapseOne"
+        class="accordion-collapse collapse show"
+        aria-labelledby="headingOne"
+        data-bs-parent="#accordionExample"
       >
-        <div class="role">
-          <h6 class="permission-page-name">{{ key }}</h6>
+        <div class="accordion-body row">
           <div
-            class="form-check permissions-checkbox"
-            v-for="per in permission"
+            class="col-12 col-lg-6"
+            v-for="(permission, key) in UsersStore.rolePermissions"
           >
-            <input
-              class="form-check-input"
-              type="checkbox"
-              v-model="FormStore.fields.permissionsIds"
-              :value="per.id"
-              :id="'permission-' + per.id"
-            />
-            <label class="form-check-label" :for="'permission-' + per.id">
-              {{ per.name }}
-            </label>
+            <div class="role">
+              <h6 class="permission-page-name">{{ key }}</h6>
+              <div
+                class="form-check permissions-checkbox"
+                v-for="per in permission"
+              >
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="FormStore.fields.permissionsIds"
+                  :value="per.id"
+                  :id="'permission-' + per.id"
+                />
+                <label class="form-check-label" :for="'permission-' + per.id">
+                  {{ per.name }}
+                </label>
+              </div>
+            </div>
           </div>
         </div>
       </div>

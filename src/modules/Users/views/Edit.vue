@@ -43,8 +43,8 @@
             :options="['Male', 'Female']"
           />
         </div>
-        <Permissions />
       </div>
+      <Permissions />
     </BaseForm>
   </section>
 </template>

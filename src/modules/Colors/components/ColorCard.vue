@@ -80,9 +80,7 @@ const openModal = ({ id, index }) => {
   <ConfirmModal
     @onConfirm="deleteColor(color)"
     @onClose="useConfirmModal.close()"
-  >
-    <span>are you sure ?</span>
-  </ConfirmModal>
+  />
 </template>
 <style scoped>
 .list-enter-active,

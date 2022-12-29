@@ -18,7 +18,7 @@ export default function useUsersService()
 
         let response = await useRolesApi.getAllRoles();
 
-        UsersStore.value.roles = response.data;
+        UsersStore.roles = response.data;
 
         useLoadingSpinner.hide();
     }
@@ -30,12 +30,12 @@ export default function useUsersService()
 
             let response = await useRolesApi.getRolePermission(role_id);
 
-            UsersStore.value.rolePermissions = response.data;
+            UsersStore.rolePermissions = response.data;
 
             useLoadingSpinner.hide();
         } else
         {
-            UsersStore.value.rolePermissions = [];
+            UsersStore.rolePermissions = [];
         }
 
     }
@@ -49,9 +49,9 @@ export default function useUsersService()
             search: search
         });
 
-        UsersStore.value.filtered = response.data.data;
-        UsersStore.value.list = response.data;
-        UsersStore.value.pagination = response.data.meta.pagination;
+        UsersStore.filtered = response.data.data;
+        UsersStore.list = response.data;
+        UsersStore.pagination = response.data.meta.pagination;
 
 
     }
@@ -107,7 +107,7 @@ export default function useUsersService()
         useConfirmModal.onProgress(true)
         let response = await useUsersApi.deleteUser(id);
 
-        UsersStore.value.filtered.splice(index, 1);
+        UsersStore.filtered.splice(index, 1);
         useConfirmModal.close();
 
         useToastNotification.open(response.data.data.message);

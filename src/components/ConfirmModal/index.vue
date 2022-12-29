@@ -8,7 +8,8 @@
       <div class="confirm-modal">
         <div class="confirm-modal-content">
           <div class="confirm-modal-body">
-            <slot />
+            <h6 v-if="!slots.body">are you sure ?</h6>
+            <slot name="body" />
           </div>
           <div class="modal-footer">
             <button
@@ -45,8 +46,11 @@
 
 <script setup>
 import { useConfirmModal } from "@/components/ConfirmModal";
+import { useSlots } from "vue";
 const props = defineProps(["id"]);
 const emits = defineEmits(["onClose", "onConfirm"]);
+
+const slots = useSlots();
 </script>
 <style scoped>
 .slide-enter-active {

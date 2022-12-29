@@ -1,6 +1,6 @@
 <template>
   <div class="product-list-card" v-for="i in 8">
-    <div class="product-list-card-image placeholder-wave">
+    <div class="product-list-card-image placeholder-wave p-0">
       <span
         src="..."
         class="placeholder w-100 rounded-0"
