@@ -27,7 +27,7 @@ export default function useSectionService()
 
             useRouterService.redirectBack();
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
 
 
 
@@ -46,7 +46,7 @@ export default function useSectionService()
 
         let response = await useCategoryApi.getCategory(route.params.id);
 
-        FormStore.setFields(response.data.data);
+        FormStore.setFields(response.data);
 
         useLoadingSpinner.hide();
 
@@ -66,8 +66,8 @@ export default function useSectionService()
                 formData: formData
             });
 
-            FormStore.setFields(response.data.data.category);
-            useToastNotification.open(response.data.data.message);
+            FormStore.setFields(response.data.category);
+            useToastNotification.open(response.data.message);
 
         } catch (error)
         {

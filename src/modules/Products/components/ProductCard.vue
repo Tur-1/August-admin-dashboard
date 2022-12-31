@@ -64,12 +64,16 @@ const openModal = ({ id, index }) => {
         </div>
         <div class="product-list-card-group">
           <span
-            class="badge text-bg-danger p-2 rounded-0 w-100"
-            v-if="product.stock == 0"
+            style="height: 32px"
+            class="badge text-bg-danger rounded-0 w-100 d-flex justify-content-center align-items-center"
+            v-if="product.stock == 0 && product.stock !== null"
           >
             OUT OF STOCK
           </span>
-          <div class="card-group-first" v-if="product.stock > 0">
+          <div
+            class="card-group-first"
+            v-if="product.stock > 0 || product.stock == null"
+          >
             <span class="product-list-card-group-label"> stock </span>
             <span> {{ product.stock }} </span>
           </div>

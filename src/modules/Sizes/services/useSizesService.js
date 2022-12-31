@@ -21,7 +21,7 @@ export default function useSizesService()
             url: url,
         });
 
-        SizesStore.value.filtered = response.data.data;
+        SizesStore.value.filtered = response.data;
         SizesStore.value.list = response.data;
         SizesStore.value.pagination = response.data.pagination;
 
@@ -40,7 +40,7 @@ export default function useSizesService()
 
             useRouterService.redirectBack();
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
 
         } catch (error)
         {
@@ -61,10 +61,10 @@ export default function useSizesService()
             let response = await useSizesApi.updateSize(FormStore.fields, id);
 
 
-            FormStore.setFields(response.data.data.size);
+            FormStore.setFields(response.data.size);
 
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
         } catch (error)
         {
 
@@ -82,7 +82,7 @@ export default function useSizesService()
         SizesStore.value.filtered.splice(index, 1);
         useConfirmModal.close();
 
-        useToastNotification.open(response.data.data.message);
+        useToastNotification.open(response.data.message);
 
         useConfirmModal.onProgress(false)
 
@@ -96,7 +96,7 @@ export default function useSizesService()
 
         let response = await useSizesApi.getSize(route.params.id);
 
-        FormStore.setFields(response.data.data.size);
+        FormStore.setFields(response.data.size);
 
         useLoadingSpinner.hide();
 

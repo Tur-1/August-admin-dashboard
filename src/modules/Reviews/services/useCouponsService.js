@@ -21,7 +21,7 @@ export default function useCouponsService()
             url: url,
         });
 
-        CouponsStore.value.filtered = response.data.data;
+        CouponsStore.value.filtered = response.data;
         CouponsStore.value.list = response.data;
         CouponsStore.value.pagination = response.data.meta.pagination;
 
@@ -40,7 +40,7 @@ export default function useCouponsService()
 
             useRouterService.redirectBack();
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
 
         } catch (error)
         {
@@ -61,10 +61,10 @@ export default function useCouponsService()
             let response = await useCouponsApi.updateCoupon(FormStore.fields, id);
 
 
-            FormStore.setFields(response.data.data.coupon);
+            FormStore.setFields(response.data.coupon);
 
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
         } catch (error)
         {
 
@@ -82,7 +82,7 @@ export default function useCouponsService()
         CouponsStore.value.filtered.splice(index, 1);
         useConfirmModal.close();
 
-        useToastNotification.open(response.data.data.message);
+        useToastNotification.open(response.data.message);
 
         useConfirmModal.onProgress(false)
 
@@ -96,7 +96,7 @@ export default function useCouponsService()
 
         let response = await useCouponsApi.getCoupon(route.params.id);
 
-        FormStore.setFields(response.data.data.coupon);
+        FormStore.setFields(response.data.coupon);
 
         useLoadingSpinner.hide();
 

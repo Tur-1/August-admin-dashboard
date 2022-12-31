@@ -18,7 +18,7 @@ export default function useBrandsService()
 
         let response = await useBrandsApi.getAll();
 
-        BrandsStore.value.filtered = response.data.data;
+        BrandsStore.value.filtered = response.data;
         BrandsStore.value.list = response.data;
         BrandsStore.value.pagination = response.data.pagination;
 
@@ -41,7 +41,7 @@ export default function useBrandsService()
 
             useRouterService.redirectBack();
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
 
         } catch (error)
         {
@@ -66,9 +66,9 @@ export default function useBrandsService()
                 fields: formData
             });
 
-            FormStore.setFields(response.data.data.brand);
+            FormStore.setFields(response.data.brand);
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
         } catch (error)
         {
 
@@ -86,7 +86,7 @@ export default function useBrandsService()
         BrandsStore.value.filtered.splice(index, 1);
         useConfirmModal.close();
 
-        useToastNotification.open(response.data.data.message);
+        useToastNotification.open(response.data.message);
 
         useConfirmModal.onProgress(false)
 
@@ -101,7 +101,7 @@ export default function useBrandsService()
 
         let response = await useBrandsApi.getBrand(route.params.id);
 
-        FormStore.setFields(response.data.data.brand);
+        FormStore.setFields(response.data.brand);
 
         useLoadingSpinner.hide();
 

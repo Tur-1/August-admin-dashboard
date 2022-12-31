@@ -32,7 +32,7 @@ export default function useRolesService()
             url: url,
         });
 
-        RolesStore.value.filtered = response.data.data;
+        RolesStore.value.filtered = response.data;
         RolesStore.value.list = response.data;
         RolesStore.value.pagination = response.data.meta.pagination;
 
@@ -50,7 +50,7 @@ export default function useRolesService()
 
             useRouterService.redirectBack();
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
 
         } catch (error)
         {
@@ -71,10 +71,10 @@ export default function useRolesService()
             let response = await useRolesApi.updateRole(FormStore.fields, id);
 
 
-            FormStore.setFields(response.data.data.role);
+            FormStore.setFields(response.data.role);
             FormStore.fields.permissions = FormStore.fields.permissions_ids;
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
         } catch (error)
         {
 
@@ -92,7 +92,7 @@ export default function useRolesService()
         RolesStore.value.filtered.splice(index, 1);
         useConfirmModal.close();
 
-        useToastNotification.open(response.data.data.message);
+        useToastNotification.open(response.data.message);
 
         useConfirmModal.onProgress(false)
 
@@ -107,7 +107,7 @@ export default function useRolesService()
         let response = await useRolesApi.getRole(route.params.id);
 
 
-        FormStore.setFields(response.data.data.role);
+        FormStore.setFields(response.data.role);
         FormStore.fields.permissions = FormStore.fields.permissions_ids;
 
         useLoadingSpinner.hide();

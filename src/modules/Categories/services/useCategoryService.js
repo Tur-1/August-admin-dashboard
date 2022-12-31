@@ -38,7 +38,7 @@ export default function useCategoryService()
 
 
         CategoryStore.value.list = response.data;
-        CategoryStore.value.filtered = response.data.data;
+        CategoryStore.value.filtered = response.data;
         CategoryStore.value.pagination = response.data.meta.pagination;
         CategoryStore.value.sections = FilterSections();
 
@@ -77,7 +77,7 @@ export default function useCategoryService()
             FormStore.clearFields();
             useRouterService.redirectBack();
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
 
 
         } catch (error)
@@ -104,10 +104,10 @@ export default function useCategoryService()
             });
 
 
-            FormStore.setFields(response.data.data.category);
+            FormStore.setFields(response.data.category);
 
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
 
 
         } catch (error)
@@ -128,7 +128,7 @@ export default function useCategoryService()
         CategoryStore.value.filtered.splice(category.index, 1);
         useConfirmModal.close();
 
-        useToastNotification.open(response.data.data.message);
+        useToastNotification.open(response.data.message);
 
         useConfirmModal.onProgress(false)
     }
@@ -142,7 +142,7 @@ export default function useCategoryService()
 
         let response = await useCategoryApi.getCategory(route.params.id);
 
-        FormStore.setFields(response.data.data);
+        FormStore.setFields(response.data);
 
         await getAllSections();
         await getCategoriesBySection(FormStore.fields.section_id);

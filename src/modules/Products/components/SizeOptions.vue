@@ -50,7 +50,7 @@
                       id="name1"
                       type="number"
                       placeholder="in stock"
-                      :error="FormStore.errors.stock?.[0]"
+                      :error="FormStore.errors.sizes"
                     />
                   </td>
                   <td>
@@ -82,6 +82,7 @@ const addField = () => {
     id: null,
     size_id: null,
     stock: null,
+    errors: null,
   });
 };
 const removeField = (index) => {

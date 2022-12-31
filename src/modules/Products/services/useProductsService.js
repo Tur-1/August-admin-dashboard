@@ -20,8 +20,8 @@ export default function useProductsService()
         let response = await useProductsApi.getAllProducts();
 
         ProductsStore.value.filtered = response.data.data;
-        ProductsStore.value.list = response.data;
-        ProductsStore.value.pagination = response.data.pagination;
+        ProductsStore.value.list = response.data.data;
+        ProductsStore.value.pagination = response.data.meta.pagination;
 
 
     }
@@ -35,7 +35,7 @@ export default function useProductsService()
 
             await getAllProducts();
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
 
 
         } catch (error)
@@ -58,7 +58,8 @@ export default function useProductsService()
 
         let response = await useProductsApi.getProduct(route.params.id);
 
-        FormStore.setFields(response.data.data.product);
+        console.log(response.data.product);
+        FormStore.setFields(response.data.product);
 
 
         if (isNotNull(FormStore.fields.section_id))
@@ -89,13 +90,15 @@ export default function useProductsService()
             });
 
 
-            FormStore.setFields(response.data.data.product);
+            FormStore.setFields(response.data.product);
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
         } catch (error)
         {
             if (error.response)
             {
+
+                console.log(error.response.data.errors);
                 FormStore.setErrors(error.response);
             }
 
@@ -112,7 +115,7 @@ export default function useProductsService()
         ProductsStore.value.filtered.splice(index, 1);
         useConfirmModal.close();
 
-        useToastNotification.open(response.data.data.message);
+        useToastNotification.open(response.data.message);
 
         useConfirmModal.onProgress(false)
 
@@ -126,7 +129,7 @@ export default function useProductsService()
 
         useConfirmModal.close();
 
-        useToastNotification.open(response.data.data.message);
+        useToastNotification.open(response.data.message);
 
         useConfirmModal.onProgress(false)
 
@@ -138,7 +141,7 @@ export default function useProductsService()
 
         let response = await useProductsApi.changeProductMainImage(id);
 
-        useToastNotification.open(response.data.data.message);
+        useToastNotification.open(response.data.message);
 
         useLoadingSpinner.hide();
 
@@ -150,7 +153,7 @@ export default function useProductsService()
 
         let response = await useProductsApi.publishProduct(id);
 
-        useToastNotification.open(response.data.data.message);
+        useToastNotification.open(response.data.message);
 
         useLoadingSpinner.hide();
 

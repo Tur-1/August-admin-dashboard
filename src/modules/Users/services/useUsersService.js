@@ -49,7 +49,7 @@ export default function useUsersService()
             search: search
         });
 
-        UsersStore.filtered = response.data.data;
+        UsersStore.filtered = response.data;
         UsersStore.list = response.data;
         UsersStore.pagination = response.data.meta.pagination;
 
@@ -68,7 +68,7 @@ export default function useUsersService()
 
             useRouterService.redirectBack();
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
 
         } catch (error)
         {
@@ -89,10 +89,10 @@ export default function useUsersService()
             let response = await useUsersApi.updateUser(FormStore.fields, id);
 
 
-            FormStore.setFields(response.data.data.user);
+            FormStore.setFields(response.data.user);
 
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
         } catch (error)
         {
 
@@ -110,7 +110,7 @@ export default function useUsersService()
         UsersStore.filtered.splice(index, 1);
         useConfirmModal.close();
 
-        useToastNotification.open(response.data.data.message);
+        useToastNotification.open(response.data.message);
 
         useConfirmModal.onProgress(false)
 
@@ -125,11 +125,11 @@ export default function useUsersService()
         let response = await useUsersApi.getUser(route.params.id);
 
 
-        FormStore.setFields(response.data.data);
+        FormStore.setFields(response.data);
 
 
         await getAllRoles();
-        await getRolePermissions(response.data.data.role_id);
+        await getRolePermissions(response.data.role_id);
 
         useLoadingSpinner.hide();
 

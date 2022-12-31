@@ -18,7 +18,7 @@ export default function useColorsService()
 
         let response = await useColorsApi.getAll();
 
-        ColorsStore.value.filtered = response.data.data;
+        ColorsStore.value.filtered = response.data;
         ColorsStore.value.list = response.data;
         ColorsStore.value.pagination = response.data.pagination;
 
@@ -39,7 +39,7 @@ export default function useColorsService()
 
             useRouterService.redirectBack();
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
 
         } catch (error)
         {
@@ -66,9 +66,9 @@ export default function useColorsService()
                 fields: formData
             });
 
-            FormStore.setFields(response.data.data.color);
+            FormStore.setFields(response.data.color);
 
-            useToastNotification.open(response.data.data.message);
+            useToastNotification.open(response.data.message);
         } catch (error)
         {
 
@@ -86,7 +86,7 @@ export default function useColorsService()
         ColorsStore.value.filtered.splice(index, 1);
         useConfirmModal.close();
 
-        useToastNotification.open(response.data.data.message);
+        useToastNotification.open(response.data.message);
 
         useConfirmModal.onProgress(false)
 
@@ -100,7 +100,7 @@ export default function useColorsService()
 
         let response = await useColorsApi.getColor(route.params.id);
 
-        FormStore.setFields(response.data.data.color);
+        FormStore.setFields(response.data.color);
 
         useLoadingSpinner.hide();
 
