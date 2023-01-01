@@ -18,7 +18,7 @@ export default function useColorsService()
 
         let response = await useColorsApi.getAll();
 
-        ColorsStore.value.filtered = response.data;
+        ColorsStore.value.filtered = response.data.data;
         ColorsStore.value.list = response.data;
         ColorsStore.value.pagination = response.data.pagination;
 

@@ -21,7 +21,7 @@ export default function useSizesService()
             url: url,
         });
 
-        SizesStore.value.filtered = response.data;
+        SizesStore.value.filtered = response.data.data;
         SizesStore.value.list = response.data;
         SizesStore.value.pagination = response.data.pagination;
 

@@ -58,10 +58,16 @@ export default function useProductsService()
 
         let response = await useProductsApi.getProduct(route.params.id);
 
-        console.log(response.data.product);
         FormStore.setFields(response.data.product);
 
-
+        if (FormStore.fields.sizes.length == 0)
+        {
+            FormStore.fields.sizes.push({
+                id: null,
+                size_id: null,
+                stock: null,
+            });
+        }
         if (isNotNull(FormStore.fields.section_id))
         {
             const { getCategories } = useProductAttributesService();
@@ -89,7 +95,6 @@ export default function useProductsService()
                 fields: formData
             });
 
-
             FormStore.setFields(response.data.product);
 
             useToastNotification.open(response.data.message);
@@ -97,10 +102,9 @@ export default function useProductsService()
         {
             if (error.response)
             {
-
-                console.log(error.response.data.errors);
                 FormStore.setErrors(error.response);
             }
+
 
         }
 

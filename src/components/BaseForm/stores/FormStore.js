@@ -3,7 +3,7 @@ import { reactive } from 'vue';
 
 let FormStore = reactive({
     fields: {},
-    errors: {},
+    errors: [],
     onProgress: false,
     showProgress()
     {

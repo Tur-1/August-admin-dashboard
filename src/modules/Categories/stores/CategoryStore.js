@@ -1,6 +1,6 @@
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 
-let CategoryStore = ref({
+let CategoryStore = reactive({
     list: [],
     filtered: [],
     pagination: [],

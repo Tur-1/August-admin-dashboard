@@ -156,11 +156,11 @@ onMounted(async () => {
               />
               <FormInput
                 label="discount starts at "
-                v-model="FormStore.fields.discount_starts_at"
+                v-model="FormStore.fields.discount_start_at"
                 id="discount_starts_at"
                 type="date"
                 step="'any'"
-                :error="FormStore.errors.discount_starts_at"
+                :error="FormStore.errors.discount_start_at"
               />
               <FormInput
                 label="discount expires at "

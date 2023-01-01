@@ -21,7 +21,7 @@ export default function useCouponsService()
             url: url,
         });
 
-        CouponsStore.value.filtered = response.data;
+        CouponsStore.value.filtered = response.data.data;
         CouponsStore.value.list = response.data;
         CouponsStore.value.pagination = response.data.meta.pagination;
 

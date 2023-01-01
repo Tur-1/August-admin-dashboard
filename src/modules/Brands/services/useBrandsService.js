@@ -18,7 +18,7 @@ export default function useBrandsService()
 
         let response = await useBrandsApi.getAll();
 
-        BrandsStore.value.filtered = response.data;
+        BrandsStore.value.filtered = response.data.data;
         BrandsStore.value.list = response.data;
         BrandsStore.value.pagination = response.data.pagination;
 

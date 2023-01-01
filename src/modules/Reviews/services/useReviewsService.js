@@ -1,8 +1,8 @@
-import useCouponsApi from "@/modules/Coupons/api/useCouponsApi";
+import useReviewsApi from "@/modules/Reviews/api/useReviewsApi";
 import useToastNotification from "@/components/Toast/useToastNotification";
 
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
-import CouponsStore from "@/modules/Coupons/stores/CouponsStore";
+import ReviewsStore from "@/modules/Reviews/stores/ReviewsStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
@@ -10,31 +10,31 @@ import useRouterService from "@/router/useRouterService";
 
 
 
-export default function useCouponsService()
+export default function useReviewsService()
 {
 
-    const getAllCoupons = async ({ url } = {}) =>
+    const getAllReviews = async ({ url } = {}) =>
     {
 
-
-        let response = await useCouponsApi.getCoupons({
+        useLoadingSpinner.show();
+        let response = await useReviewsApi.getReviews({
             url: url,
         });
 
-        CouponsStore.value.filtered = response.data;
-        CouponsStore.value.list = response.data;
-        CouponsStore.value.pagination = response.data.meta.pagination;
-
+        ReviewsStore.filtered = response.data.data;
+        ReviewsStore.list = response.data.data;
+        ReviewsStore.pagination = response.data.meta.pagination;
+        useLoadingSpinner.hide();
 
     }
-    const storeNewCoupon = async () =>
+    const storeNewReview = async () =>
     {
         FormStore.showProgress();
         FormStore.clearErrors();
 
         try
         {
-            let response = await useCouponsApi.storeNewCoupon(FormStore.fields);
+            let response = await useReviewsApi.storeNewReview(FormStore.fields);
 
             FormStore.clearFields();
 
@@ -50,7 +50,7 @@ export default function useCouponsService()
         FormStore.hideProgress();
 
     };
-    const updateCoupon = async (id) =>
+    const updateReview = async (id) =>
     {
         FormStore.showProgress();
         FormStore.clearErrors();
@@ -58,10 +58,10 @@ export default function useCouponsService()
         try
         {
 
-            let response = await useCouponsApi.updateCoupon(FormStore.fields, id);
+            let response = await useReviewsApi.updateReview(FormStore.fields, id);
 
 
-            FormStore.setFields(response.data.coupon);
+            FormStore.setFields(response.data.Review);
 
 
             useToastNotification.open(response.data.message);
@@ -74,12 +74,12 @@ export default function useCouponsService()
         FormStore.hideProgress();
 
     };
-    const deleteCoupon = async ({ id, index }) =>
+    const deleteReview = async ({ id, index }) =>
     {
         useConfirmModal.onProgress(true)
-        let response = await useCouponsApi.deleteCoupon(id);
+        let response = await useReviewsApi.deleteReview(id);
 
-        CouponsStore.value.filtered.splice(index, 1);
+        ReviewsStore.filtered.splice(index, 1);
         useConfirmModal.close();
 
         useToastNotification.open(response.data.message);
@@ -87,16 +87,16 @@ export default function useCouponsService()
         useConfirmModal.onProgress(false)
 
     };
-    const showCoupon = async () =>
+    const showReview = async () =>
     {
         useLoadingSpinner.show();
         FormStore.clearErrors();
 
         const route = useRoute();
 
-        let response = await useCouponsApi.getCoupon(route.params.id);
+        let response = await useReviewsApi.getReview(route.params.id);
 
-        FormStore.setFields(response.data.coupon);
+        FormStore.setFields(response.data.Review);
 
         useLoadingSpinner.hide();
 
@@ -106,11 +106,11 @@ export default function useCouponsService()
 
 
     return {
-        updateCoupon,
-        storeNewCoupon,
-        getAllCoupons,
-        deleteCoupon,
-        showCoupon
+        updateReview,
+        storeNewReview,
+        getAllReviews,
+        deleteReview,
+        showReview
     }
 
 }

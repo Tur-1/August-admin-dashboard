@@ -1,6 +1,5 @@
 import useCategoryApi from "@/modules/Categories/api/useCategoryApi";
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
-import CategoriesTableEntries from "@/modules/Categories/stores/CategoriesTableEntries";
 import useRouterService from "@/router/useRouterService";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import useToastNotification from "@/components/Toast/useToastNotification";
@@ -21,7 +20,7 @@ export default function useCategoryService()
 
         let response = await useCategoryApi.getSections();
 
-        CategoryStore.value.sections = response.data;
+        CategoryStore.sections = response.data;
 
         useLoadingSpinner.hide();
 
@@ -36,11 +35,10 @@ export default function useCategoryService()
             url: url
         });
 
-
-        CategoryStore.value.list = response.data;
-        CategoryStore.value.filtered = response.data;
-        CategoryStore.value.pagination = response.data.meta.pagination;
-        CategoryStore.value.sections = FilterSections();
+        CategoryStore.filtered = response.data.data;
+        CategoryStore.list = response.data;
+        CategoryStore.pagination = response.data.meta.pagination;
+        CategoryStore.sections = FilterSections();
 
         return response.data;
     }
@@ -53,10 +51,10 @@ export default function useCategoryService()
         if (section_id)
         {
             let response = await useCategoryApi.getCategoriesBySection(section_id);
-            CategoryStore.value.sectionCategories = response.data;
+            CategoryStore.sectionCategories = response.data;
         } else
         {
-            CategoryStore.value.sectionCategories = [];
+            CategoryStore.sectionCategories = [];
         }
 
         useLoadingSpinner.hide();
@@ -125,7 +123,7 @@ export default function useCategoryService()
 
         let response = await useCategoryApi.deleteCategory(category.id);
 
-        CategoryStore.value.filtered.splice(category.index, 1);
+        CategoryStore.filtered.splice(category.index, 1);
         useConfirmModal.close();
 
         useToastNotification.open(response.data.message);

@@ -49,7 +49,7 @@ export default function useUsersService()
             search: search
         });
 
-        UsersStore.filtered = response.data;
+        UsersStore.filtered = response.data.data;
         UsersStore.list = response.data;
         UsersStore.pagination = response.data.meta.pagination;
 

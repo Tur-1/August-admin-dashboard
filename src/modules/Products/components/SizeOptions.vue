@@ -33,6 +33,7 @@
                       v-model="attr.size_id"
                       id="section"
                       defaultOption="-- select size --"
+                      :error="FormStore.errors[`sizes.${index}.size_id`]"
                     >
                       <option
                         v-for="(size, index) in ProductAttributesStore.sizes"
@@ -50,7 +51,7 @@
                       id="name1"
                       type="number"
                       placeholder="in stock"
-                      :error="FormStore.errors.sizes"
+                      :error="FormStore.errors[`sizes.${index}.stock`]"
                     />
                   </td>
                   <td>
@@ -82,7 +83,6 @@ const addField = () => {
     id: null,
     size_id: null,
     stock: null,
-    errors: null,
   });
 };
 const removeField = (index) => {

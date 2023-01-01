@@ -1,11 +1,7 @@
 <template>
   <div class="row">
     <div class="upload-image-box shadow">
-      <label
-        for="image"
-        class="upload-image-label form-control"
-        :class="{ 'is-invalid': error }"
-      >
+      <label for="image" class="upload-image-label form-control">
         <div class="upload-image-warrapr">
           <img src="@/assets/img/upload.png" alt="" />
           <p class="mt-3">Drag your Photes to start uploading .</p>
@@ -23,11 +19,6 @@
         class="d-none"
         @change="onFilesChange"
       />
-      <div v-show="error" v-for="err in error" class="d-flex flex-column">
-        <span class="text-danger mt-1 ms-2" style="font-size: 12px">
-          {{ err }}
-        </span>
-      </div>
     </div>
 
     <Transition name="bounce" mode="out-in">
@@ -80,6 +71,16 @@
           >
             <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
           </button>
+        </div>
+
+        <div
+          v-show="FormStore.errors[`productImages.${index}`]"
+          v-for="err in FormStore.errors[`productImages.${index}`]"
+          class="d-flex flex-column"
+        >
+          <span class="text-danger mt-1 ms-2" style="font-size: 12px">
+            {{ err }}
+          </span>
         </div>
       </div>
     </transition-group>
