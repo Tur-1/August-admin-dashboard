@@ -28,6 +28,19 @@
             type="text"
             :error="FormStore.errors.use_times"
           />
+          <FormSelect
+            label="Status*"
+            v-model="FormStore.fields.is_active"
+            :error="FormStore.errors.is_active"
+            id="is_active"
+          >
+            <option :value="1" :selected="FormStore.fields.is_active == true">
+              Active
+            </option>
+            <option :value="0" :selected="FormStore.fields.is_active == false">
+              inActive
+            </option>
+          </FormSelect>
         </div>
         <div class="col-12 col-lg-6">
           <FormInput
@@ -92,6 +105,7 @@ onMounted(() => {
     type: "",
     minimum_purchases: "",
     use_times: "",
+    is_active: true,
   });
 });
 </script>

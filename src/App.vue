@@ -21,12 +21,3 @@ const route = useRoute();
     <LoadingSpinner />
   </main>
 </template>
-<!-- <MobileNavbar />
-  <Sidebar />
-  <main class="content">
-    <Navbar />
-    <RouterView :key="route.path" />
-    <Footer />
-    <Toast />
-    <LoadingSpinner />
-  </main> -->

@@ -10,6 +10,7 @@ import CouponsRoutes from '@/modules/Coupons/routes'
 import RolesRoutes from '@/modules/Roles/routes'
 import ReviewsRoutes from '@/modules/Reviews/routes'
 import ProductsRoutes from '@/modules/Products/routes'
+import OrdersRoutes from '@/modules/Orders/routes'
 
 
 
@@ -29,7 +30,8 @@ const router = createRouter({
     ...CouponsRoutes,
     ...RolesRoutes,
     ...ReviewsRoutes,
-    ...ProductsRoutes
+    ...ProductsRoutes,
+    ...OrdersRoutes
 
   ]
 })

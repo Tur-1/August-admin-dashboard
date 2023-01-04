@@ -41,6 +41,15 @@
           </template>
         </SidebarLink>
         <SidebarLink
+          toRoute="orders"
+          title="orders"
+          :activeRouteNames="['ordersEdit', 'orders']"
+        >
+          <template #icon>
+            <i class="fa-solid fa-boxes-stacked"></i>
+          </template>
+        </SidebarLink>
+        <SidebarLink
           toRoute="products"
           title="products"
           :activeRouteNames="['productsCreate', 'productsEdit', 'products']"
