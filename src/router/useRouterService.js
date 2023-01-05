@@ -4,6 +4,8 @@ import router from '@/router'
 
 
 const useRouterService = reactive({
+    isAuthenticated: false,
+
     redirectBack()
     {
         return router.back();

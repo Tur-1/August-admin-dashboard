@@ -1,10 +1,10 @@
 import { ref } from 'vue';
 
-let CouponsStore = ref({
+let OrdersStore = ref({
     list: [],
     filtered: [],
     pagination: [],
 });
 
 
-export default CouponsStore;
+export default OrdersStore;

@@ -11,6 +11,10 @@ import RolesRoutes from '@/modules/Roles/routes'
 import ReviewsRoutes from '@/modules/Reviews/routes'
 import ProductsRoutes from '@/modules/Products/routes'
 import OrdersRoutes from '@/modules/Orders/routes'
+import useAuthApi from '@/router/useAuthApi'
+import useRouterService from '@/router/useRouterService'
+import { useLoadingSpinner } from '@/components/LoadingSpinner'
+import AuthUser from '@/Auth/store/AuthUser'
 
 
 
@@ -20,7 +24,8 @@ const router = createRouter({
     {
       path: '/',
       name: 'dashboard',
-      component: Dashboard
+      component: Dashboard,
+
     },
     ...UsersRoutes,
     ...CategoriesRoutes,
@@ -36,5 +41,21 @@ const router = createRouter({
   ]
 })
 
+router.beforeEach(async (to, from, next) =>
+{
 
+  useLoadingSpinner.show();
+  let isNotAuthenticated = await useAuthApi.isAuthenticated();
+
+  if (isNotAuthenticated.data == false)
+  {
+
+    return window.location.href = "http://localhost:5174";
+  }
+  useLoadingSpinner.hide();
+  useRouterService.isAuthenticated = true;
+  AuthUser.setUserData(isNotAuthenticated.data);
+
+  return next();
+})
 export default router

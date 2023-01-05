@@ -3,6 +3,8 @@ import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import UsersStore from "@/modules/Users/stores/UsersStore";
 import useUsersService from "@/modules/Users/services/useUsersService";
 
+import maleAvatar from "@/assets/img/avatars/avatar_male.png";
+import femaleAvatar from "@/assets/img/avatars/avatar_female.png";
 const emits = defineEmits(["onDelete"]);
 
 const { getAllUsers } = useUsersService();
@@ -27,7 +29,7 @@ await getAllUsers();
       <td>
         <a href="#" class="d-flex align-items-center">
           <img
-            src="@/assets/img/team/profile-picture-1.jpg"
+            :src="user.gender == 'Male' ? maleAvatar : femaleAvatar"
             class="avatar rounded-circle me-3"
             alt="Avatar"
           />

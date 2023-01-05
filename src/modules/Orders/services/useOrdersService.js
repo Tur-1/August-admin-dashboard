@@ -7,6 +7,7 @@ import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
 import useRouterService from "@/router/useRouterService";
+import OrderDetailsStore from "@/modules/Orders/stores/OrderDetailsStore";
 
 
 
@@ -96,7 +97,12 @@ export default function useOrdersService()
 
         let response = await useOrdersApi.getOrder(route.params.id);
 
-        FormStore.setFields(response.data.Order);
+        OrderDetailsStore.order = response.data.order
+        OrderDetailsStore.products = response.data.products
+        OrderDetailsStore.coupon = response.data.coupon
+        OrderDetailsStore.address = response.data.address
+        console.log(response.data);
+        // FormStore.setFields(response.data.Order);
 
         useLoadingSpinner.hide();
 

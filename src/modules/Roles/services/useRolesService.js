@@ -18,7 +18,7 @@ export default function useRolesService()
         useLoadingSpinner.show();
         let response = await useRolesApi.getAllPermissions();
 
-        RolesStore.value.permissions = response.data;
+        RolesStore.value.permissions = response.data
 
         useLoadingSpinner.hide();
 
@@ -32,7 +32,7 @@ export default function useRolesService()
             url: url,
         });
 
-        RolesStore.value.filtered = response.data;
+        RolesStore.value.filtered = response.data.data;
         RolesStore.value.list = response.data;
         RolesStore.value.pagination = response.data.meta.pagination;
 

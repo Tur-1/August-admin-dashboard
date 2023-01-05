@@ -12,56 +12,28 @@ await getAllOrders();
 
 <template>
   <transition-group name="list">
-    <tr v-for="(Order, index) in OrdersStore.filtered" :key="Order.id">
+    <tr v-for="(order, index) in OrdersStore.filtered" :key="order.order.id">
       <td>
-        <div class="form-check dashboard-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="userCheck1"
-          />
-          <label class="form-check-label" for="userCheck1"></label>
-        </div>
+        <a href="#" class="text-primary fw-bold">{{ order.order.id }}</a>
       </td>
-      <td>
-        <span class="fw-bold">{{ Order.code }}</span>
-      </td>
-      <td>
-        <span class="fw-bold"
-          >{{ Order.amount }} {{ Order.type !== "Fixed" ? "%" : "" }}</span
-        >
-      </td>
-      <td>
-        <span class="fw-bold">{{ Order.starts_at }}</span>
-      </td>
-      <td>
-        <span class="fw-bold">{{ Order.expires_at }}</span>
-      </td>
-      <td>
-        <span
-          class="badge rounded-pill fw-bold"
-          :class="{
-            'text-bg-danger': !Order.is_active,
-            'text-bg-success': Order.is_active,
-          }"
-        >
-          {{ Order.is_active ? "Active" : "Expired" }}
-        </span>
-      </td>
+
+      <td>{{ order.order.user.name }}</td>
+      <td>{{ order.order.date }}</td>
+      <td>{{ order.order.total }}</td>
+      <td>{{ order.order.status }}</td>
 
       <td>
         <DropdownMenu>
           <RouterLink
             class="dropdown-item d-flex align-items-center"
-            :to="{ name: 'OrdersEdit', params: { id: Order.id } }"
+            :to="{ name: 'ordersEdit', params: { id: order.order.id } }"
           >
             <i class="fa-solid fa-pen-to-square"></i>
             Edit
           </RouterLink>
 
           <a
-            @click="$emit('onDelete', { id: Order.id, index: index })"
+            @click="$emit('onDelete', { id: order.order.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"
           >

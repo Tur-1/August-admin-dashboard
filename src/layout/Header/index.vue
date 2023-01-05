@@ -225,14 +225,14 @@
             <img
               class="avatar rounded-circle"
               alt="Image placeholder"
-              src="/src/assets/img/team/profile-picture-3.jpg"
+              :src="AuthUser.user.gender == 'Male' ? maleAvatar : femaleAvatar"
             />
             <div
               class="media-body ms-2 text-dark align-items-center d-none d-lg-block"
             >
-              <span class="mb-0 font-small fw-bold text-gray-900"
-                >Bonnie Green</span
-              >
+              <span class="mb-0 font-small fw-bold text-gray-900">{{
+                AuthUser.user.name
+              }}</span>
             </div>
           </div></a
         >
@@ -320,4 +320,9 @@
   </header>
 </template>
 
-<script setup></script>
+<script setup>
+import AuthUser from "@/Auth/store/AuthUser";
+
+import maleAvatar from "@/assets/img/avatars/avatar_male.png";
+import femaleAvatar from "@/assets/img/avatars/avatar_female.png";
+</script>

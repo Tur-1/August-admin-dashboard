@@ -24,5 +24,33 @@ const openModal = ({ id, index }) => {
 <template>
   <section class="main-section">
     <PageHeader title="Orders List"> </PageHeader>
+
+    <div class="card border-0 shadow mb-4">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-centered table-nowrap mb-0 rounded">
+            <thead class="thead-light">
+              <tr>
+                <th class="border-0 rounded-start">#</th>
+                <th class="border-0">Name</th>
+                <th class="border-0">Date</th>
+                <th class="border-0">Total</th>
+                <th class="border-0">Status</th>
+                <th class="border-0">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <Suspense>
+                <OrderRow />
+
+                <template #callback>
+                  <OrderRowSkeleton />
+                </template>
+              </Suspense>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
