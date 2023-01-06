@@ -99,6 +99,15 @@
           </template>
         </SidebarLink>
         <SidebarLink
+          toRoute="banners"
+          title="banners"
+          :activeRouteNames="['bannersCreate', 'bannersEdit', 'banners']"
+        >
+          <template #icon>
+            <i class="fa-regular fa-image"></i>
+          </template>
+        </SidebarLink>
+        <SidebarLink
           toRoute="coupons"
           title="coupons"
           :activeRouteNames="['couponsCreate', 'couponsEdit', 'coupons']"

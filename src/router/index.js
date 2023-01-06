@@ -8,6 +8,7 @@ import BrandsRoutes from '@/modules/Brands/routes'
 import SizesRoutes from '@/modules/Sizes/routes'
 import CouponsRoutes from '@/modules/Coupons/routes'
 import RolesRoutes from '@/modules/Roles/routes'
+
 import ReviewsRoutes from '@/modules/Reviews/routes'
 import ProductsRoutes from '@/modules/Products/routes'
 import OrdersRoutes from '@/modules/Orders/routes'
@@ -15,6 +16,8 @@ import useAuthApi from '@/router/useAuthApi'
 import useRouterService from '@/router/useRouterService'
 import { useLoadingSpinner } from '@/components/LoadingSpinner'
 import AuthUser from '@/Auth/store/AuthUser'
+import BannerRoutes from '@/modules/AugustBanners/routes'
+
 
 
 
@@ -35,8 +38,11 @@ const router = createRouter({
     ...CouponsRoutes,
     ...RolesRoutes,
     ...ReviewsRoutes,
+    ...BannerRoutes,
     ...ProductsRoutes,
-    ...OrdersRoutes
+    ...OrdersRoutes,
+
+
 
   ]
 })
