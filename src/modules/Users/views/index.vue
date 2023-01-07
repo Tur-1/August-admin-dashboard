@@ -8,7 +8,7 @@ import useUsersService from "@/modules/Users/services/useUsersService";
 import UsersStore from "@/modules/Users/stores/UsersStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { MainTable, TableSettings } from "@/components/MainTable";
-
+import AuthUser from "@/Auth/store/AuthUser";
 const { deleteUser, setShowingEntries, getAllUsers } = useUsersService();
 
 let search = ref("");
@@ -29,10 +29,15 @@ const openModal = ({ id, index }) => {
 <template>
   <section class="main-section">
     <PageHeader title="Users List">
-      <ButtonLink title="New User" routeName="usersCreate" />
+      <ButtonLink
+        title="New User"
+        routeName="usersCreate"
+        v-if="AuthUser.userCanAccess('create-users')"
+      />
     </PageHeader>
 
     <TableSettings
+      v-if="AuthUser.userCanAccess('access-users')"
       @onChangeEntries="setShowingEntries"
       inputPlaceholder="search users"
       v-model="search"
@@ -40,6 +45,7 @@ const openModal = ({ id, index }) => {
     />
 
     <MainTable
+      v-if="AuthUser.userCanAccess('access-users')"
       :fields="fields"
       @onChangePage="getAllUsers"
       @onDelete="deleteUser(user)"

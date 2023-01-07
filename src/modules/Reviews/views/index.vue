@@ -6,8 +6,10 @@ import ReviewsStore from "@/modules/Reviews/stores/ReviewsStore";
 import useReviewsService from "@/modules/Reviews/services/useReviewsService";
 import { onMounted, ref } from "vue";
 
+import maleAvatar from "@/assets/img/avatars/avatar_male.png";
+import femaleAvatar from "@/assets/img/avatars/avatar_female.png";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
-
+import AuthUser from "@/Auth/store/AuthUser";
 const { getAllReviews, deleteReview } = useReviewsService();
 
 onMounted(getAllReviews);
@@ -21,7 +23,7 @@ const openModal = ({ id, index }) => {
 };
 </script>
 <template>
-  <section class="main-section">
+  <section class="main-section" v-if="AuthUser.userCanAccess('access-reviews')">
     <PageHeader title="Reviews "> </PageHeader>
 
     <div class="container">
@@ -31,12 +33,12 @@ const openModal = ({ id, index }) => {
             <div
               v-for="(review, index) in ReviewsStore.filtered"
               :key="review.id"
-              class="card mb-5"
+              class="card mb-5 card-review"
             >
               <div class="d-flex pb-0">
                 <div class="mb-0">
                   <img
-                    src="@/assets/img/defult-image.png"
+                    :src="review.product_image"
                     class="img-fluid rounded-start"
                     style="max-width: 150px !important; height: 100%"
                     alt="..."
@@ -46,7 +48,11 @@ const openModal = ({ id, index }) => {
                   <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
                       <img
-                        src="@/assets/img/team/profile-picture-1.jpg"
+                        :src="
+                          review.user.gender == 'Male'
+                            ? maleAvatar
+                            : femaleAvatar
+                        "
                         class="img-fluid rounded-circle me-3"
                         width="40"
                         alt="..."
@@ -71,57 +77,25 @@ const openModal = ({ id, index }) => {
                           <i class="fa-solid fa-trash-can"></i>
                           Delete
                         </a>
-                        <button
-                          role="button"
+                        <RouterLink
+                          v-if="AuthUser.userCanAccess('view-reviews')"
                           class="dropdown-item d-flex align-items-center"
-                          data-bs-toggle="collapse"
-                          :data-bs-target="`#reply-${review.id}`"
-                          aria-expanded="false"
-                          aria-controls="collapseExample"
+                          :to="{
+                            name: 'reviewsEdit',
+                            params: { id: review.id },
+                          }"
                         >
-                          <i class="fa-solid fa-share"></i>
-                          {{ review.reply ? "edit " : "" }}reply
-                        </button>
+                          <i class="fa-solid fa-pen-to-square"></i>
+                          Edit
+                        </RouterLink>
                       </DropdownMenu>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="collapse" :id="`reply-${review.id}`">
-                <div class="card card-body">
-                  <form class="form-contact comment_form" id="commentForm">
-                    <div class="d-flex flex-row align-items-start">
-                      <div class="d-flex flex-column">
-                        <img
-                          src="@/assets/img/team/profile-picture-1.jpg"
-                          alt=""
-                          width="40"
-                          class="rounded-circle me-2 mb-2"
-                        />
-                        <small style="font-size: 12px">{{
-                          review.reply?.user.name
-                        }}</small>
-                      </div>
-
-                      <textarea
-                        class="form-control ml-4 shadow-none textarea"
-                        name="comment"
-                        placeholder="write comment"
-                      >
-                {{ review.reply?.comment ?? "" }}
-                </textarea
-                      >
-                    </div>
-                    <div class="mt-2 float-end">
-                      <button class="btn btn-primary p-2" type="submit">
-                        submit
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
             </div>
           </transition-group>
+          
           <h5 class="text-center" v-show="ReviewsStore.filtered.length == 0">
             No Reviews Found
           </h5>

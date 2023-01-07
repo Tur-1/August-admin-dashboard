@@ -9,7 +9,7 @@ import { useRoute } from "vue-router";
 import TableEntries from "@/components/MainTable/TableEntries";
 import useRolesApi from "@/modules/Roles/api/useRolesApi";
 
-
+import AuthUser from "@/Auth/store/AuthUser";
 export default function useUsersService()
 {
     const getAllRoles = async () =>
@@ -42,97 +42,106 @@ export default function useUsersService()
 
     const getAllUsers = async ({ url, search } = {}) =>
     {
+        if (AuthUser.userCanAccess('access-users'))
+        {
+            let response = await useUsersApi.getUsers({
+                records: TableEntries.activeEntrie,
+                url: url,
+                search: search
+            });
 
-        let response = await useUsersApi.getUsers({
-            records: TableEntries.activeEntrie,
-            url: url,
-            search: search
-        });
-
-        UsersStore.filtered = response.data.data;
-        UsersStore.list = response.data;
-        UsersStore.pagination = response.data.meta.pagination;
-
+            UsersStore.filtered = response.data.data;
+            UsersStore.list = response.data;
+            UsersStore.pagination = response.data.meta.pagination;
+        }
 
     }
     const storeNewUser = async () =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-        try
+        if (AuthUser.userCanAccess('create-users'))
         {
-            let response = await useUsersApi.storeNewUser(FormStore.fields);
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            FormStore.clearFields();
+            try
+            {
+                let response = await useUsersApi.storeNewUser(FormStore.fields);
 
-            useRouterService.redirectBack();
+                FormStore.clearFields();
 
-            useToastNotification.open(response.data.message);
+                useRouterService.redirectBack();
 
-        } catch (error)
-        {
+                useToastNotification.open(response.data.message);
 
-            FormStore.setErrors(error.response);
+            } catch (error)
+            {
+
+                FormStore.setErrors(error.response);
+            }
+            FormStore.hideProgress();
         }
-        FormStore.hideProgress();
-
     };
     const updateUser = async (id) =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-        try
+        if (AuthUser.userCanAccess('update-users'))
         {
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            let response = await useUsersApi.updateUser(FormStore.fields, id);
+            try
+            {
+
+                let response = await useUsersApi.updateUser(FormStore.fields, id);
 
 
-            FormStore.setFields(response.data.user);
+                FormStore.setFields(response.data.user);
 
 
-            useToastNotification.open(response.data.message);
-        } catch (error)
-        {
+                useToastNotification.open(response.data.message);
+            } catch (error)
+            {
 
-            FormStore.setErrors(error.response);
+                FormStore.setErrors(error.response);
+            }
+
+            FormStore.hideProgress();
         }
-
-        FormStore.hideProgress();
-
     };
     const deleteUser = async ({ id, index }) =>
     {
-        useConfirmModal.onProgress(true)
-        let response = await useUsersApi.deleteUser(id);
+        if (AuthUser.userCanAccess('delete-users'))
+        {
+            useConfirmModal.onProgress(true)
+            let response = await useUsersApi.deleteUser(id);
 
-        UsersStore.filtered.splice(index, 1);
-        useConfirmModal.close();
+            UsersStore.filtered.splice(index, 1);
+            useConfirmModal.close();
 
-        useToastNotification.open(response.data.message);
+            useToastNotification.open(response.data.message);
 
-        useConfirmModal.onProgress(false)
-
+            useConfirmModal.onProgress(false)
+        }
     };
     const showUser = async () =>
     {
-        useLoadingSpinner.show();
-        FormStore.clearErrors();
+        if (AuthUser.userCanAccess('view-users'))
+        {
+            useLoadingSpinner.show();
+            FormStore.clearErrors();
 
-        const route = useRoute();
+            const route = useRoute();
 
-        let response = await useUsersApi.getUser(route.params.id);
-
-
-        FormStore.setFields(response.data);
+            let response = await useUsersApi.getUser(route.params.id);
 
 
-        await getAllRoles();
-        await getRolePermissions(response.data.role_id);
+            FormStore.setFields(response.data);
 
-        useLoadingSpinner.hide();
 
+            await getAllRoles();
+            await getRolePermissions(response.data.role_id);
+
+            useLoadingSpinner.hide();
+        }
     };
 
     const setShowingEntries = (records) =>

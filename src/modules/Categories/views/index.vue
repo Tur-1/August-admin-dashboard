@@ -14,7 +14,7 @@ import {
   SearchCategories,
   setShowingEntries,
 } from "@/modules/Categories/helpers";
-
+import AuthUser from "@/Auth/store/AuthUser";
 const { getAllCategories, destroyCategory } = useCategoryService();
 
 onMounted(getAllCategories);
@@ -38,11 +38,21 @@ const fields = ["image", "name", "section", "Action"];
 <template>
   <section class="main-section">
     <PageHeader title="Categories List">
-      <ButtonLink title="New Category" routeName="categoriesCreate" />
-      <ButtonLink title="New Section" routeName="sectionCreate" class="ms-2" />
+      <ButtonLink
+        title="New Category"
+        routeName="categoriesCreate"
+        v-if="AuthUser.userCanAccess('create-categories')"
+      />
+      <ButtonLink
+        title="New Section"
+        routeName="sectionCreate"
+        class="ms-2"
+        v-if="AuthUser.userCanAccess('create-categories')"
+      />
     </PageHeader>
 
     <TableSettings
+      v-if="AuthUser.userCanAccess('access-categories')"
       @onChangeEntries="setShowingEntries"
       inputPlaceholder="search categories"
       v-model="search"
@@ -52,6 +62,7 @@ const fields = ["image", "name", "section", "Action"];
     </TableSettings>
 
     <MainTable
+      v-if="AuthUser.userCanAccess('access-categories')"
       :fields="fields"
       @onChangePage="getAllCategories"
       @onDelete="destroyCategory(category)"

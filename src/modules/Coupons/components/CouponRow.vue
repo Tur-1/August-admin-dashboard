@@ -2,7 +2,7 @@
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import CouponsStore from "@/modules/Coupons/stores/CouponsStore";
 import useCouponsService from "@/modules/Coupons/services/useCouponsService";
-
+import AuthUser from "@/Auth/store/AuthUser";
 const emits = defineEmits(["onDelete"]);
 
 const { getAllCoupons } = useCouponsService();
@@ -53,6 +53,7 @@ await getAllCoupons();
       <td>
         <DropdownMenu>
           <RouterLink
+            v-if="AuthUser.userCanAccess('view-coupons')"
             class="dropdown-item d-flex align-items-center"
             :to="{ name: 'couponsEdit', params: { id: coupon.id } }"
           >
@@ -61,6 +62,7 @@ await getAllCoupons();
           </RouterLink>
 
           <a
+            v-if="AuthUser.userCanAccess('delete-coupons')"
             @click="$emit('onDelete', { id: coupon.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"

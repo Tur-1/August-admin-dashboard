@@ -2,7 +2,7 @@
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import SizesStore from "@/modules/Sizes/stores/SizesStore";
 import useSizesService from "@/modules/Sizes/services/useSizesService";
-
+import AuthUser from "@/Auth/store/AuthUser";
 const emits = defineEmits(["onDelete"]);
 
 const { getAllSizes } = useSizesService();
@@ -31,6 +31,7 @@ await getAllSizes();
       <td>
         <DropdownMenu>
           <RouterLink
+            v-if="AuthUser.userCanAccess('view-size-options')"
             class="dropdown-item d-flex align-items-center"
             :to="{ name: 'sizesEdit', params: { id: size.id } }"
           >
@@ -39,6 +40,7 @@ await getAllSizes();
           </RouterLink>
 
           <a
+            v-if="AuthUser.userCanAccess('delete-size-options')"
             @click="$emit('onDelete', { id: size.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"

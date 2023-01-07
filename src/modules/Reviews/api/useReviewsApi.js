@@ -15,7 +15,7 @@ const storeNewReview = (fields) =>
 const updateReview = (fields, id) =>
 {
 
-    return api().put("reviews/update/" + id, fields);
+    return api().post("reviews/update/" + id, fields);
 }
 const getReview = (id) =>
 {
@@ -26,7 +26,13 @@ const deleteReview = (id) =>
     return api().delete("reviews/delete/" + id);
 }
 
+
+const replyReview = (id, comment) =>
+{
+    return api().post(`/reviews/show/${ id }/reply`, comment);
+}
 export default {
+    replyReview,
     getReviews,
     storeNewReview,
     updateReview,

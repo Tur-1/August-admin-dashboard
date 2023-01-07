@@ -5,6 +5,7 @@ import useBannersService from "@/modules/AugustBanners/services/useBannersServic
 import { ref } from "vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
 import defultImage from "@/assets/img/defult-image.png";
+import AuthUser from "@/Auth/store/AuthUser";
 const { getAllBanners, deleteBanner } = useBannersService();
 
 await getAllBanners();
@@ -40,6 +41,7 @@ const openModal = ({ id, index }) => {
           </div>
           <DropdownMenu>
             <RouterLink
+              v-if="AuthUser.userCanAccess('view-banners')"
               class="dropdown-item d-flex align-items-center"
               :to="{
                 name: 'bannersEdit',
@@ -51,6 +53,7 @@ const openModal = ({ id, index }) => {
             </RouterLink>
 
             <a
+              v-if="AuthUser.userCanAccess('delete-banners')"
               @click="openModal({ id: banner.id, index: index })"
               role="button"
               class="dropdown-item d-flex align-items-center text-danger"

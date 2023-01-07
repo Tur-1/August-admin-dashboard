@@ -5,7 +5,7 @@ import ProductsStore from "@/modules/Products/stores/ProductsStore";
 import ButtonLink from "@/components/ButtonLink/index.vue";
 import { ref } from "vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
-
+import AuthUser from "@/Auth/store/AuthUser";
 const { getAllProducts, deleteProduct, publishProduct } = useProductsService();
 
 await getAllProducts();
@@ -28,6 +28,7 @@ const openModal = ({ id, index }) => {
     >
       <button
         type="button"
+        v-if="AuthUser.userCanAccess('delete-products')"
         class="product-list-card-delete-btn"
         @click="openModal({ id: product.id, index: index })"
       >
@@ -94,6 +95,7 @@ const openModal = ({ id, index }) => {
           </div>
         </div>
         <ButtonLink
+          v-if="AuthUser.userCanAccess('view-products')"
           title="view details"
           routeName="productsEdit"
           :params="{ id: product.id }"

@@ -1,6 +1,6 @@
 import useCouponsApi from "@/modules/Coupons/api/useCouponsApi";
 import useToastNotification from "@/components/Toast/useToastNotification";
-
+import AuthUser from "@/Auth/store/AuthUser";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import CouponsStore from "@/modules/Coupons/stores/CouponsStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
@@ -15,91 +15,100 @@ export default function useCouponsService()
 
     const getAllCoupons = async ({ url } = {}) =>
     {
+        if (AuthUser.userCanAccess('access-coupons'))
+        {
 
+            let response = await useCouponsApi.getCoupons({
+                url: url,
+            });
 
-        let response = await useCouponsApi.getCoupons({
-            url: url,
-        });
+            CouponsStore.value.filtered = response.data.data;
+            CouponsStore.value.list = response.data;
+            CouponsStore.value.pagination = response.data.meta.pagination;
 
-        CouponsStore.value.filtered = response.data.data;
-        CouponsStore.value.list = response.data;
-        CouponsStore.value.pagination = response.data.meta.pagination;
-
-
+        }
     }
     const storeNewCoupon = async () =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-        try
+        if (AuthUser.userCanAccess('create-coupons'))
         {
-            let response = await useCouponsApi.storeNewCoupon(FormStore.fields);
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            FormStore.clearFields();
+            try
+            {
+                let response = await useCouponsApi.storeNewCoupon(FormStore.fields);
 
-            useRouterService.redirectBack();
+                FormStore.clearFields();
 
-            useToastNotification.open(response.data.message);
+                useRouterService.redirectBack();
 
-        } catch (error)
-        {
+                useToastNotification.open(response.data.message);
 
-            FormStore.setErrors(error.response);
+            } catch (error)
+            {
+
+                FormStore.setErrors(error.response);
+            }
+            FormStore.hideProgress();
         }
-        FormStore.hideProgress();
-
     };
     const updateCoupon = async (id) =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-        try
+        if (AuthUser.userCanAccess('update-coupons'))
         {
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            let response = await useCouponsApi.updateCoupon(FormStore.fields, id);
+            try
+            {
+
+                let response = await useCouponsApi.updateCoupon(FormStore.fields, id);
 
 
-            FormStore.setFields(response.data.coupon);
+                FormStore.setFields(response.data.coupon);
 
 
-            useToastNotification.open(response.data.message);
-        } catch (error)
-        {
+                useToastNotification.open(response.data.message);
+            } catch (error)
+            {
 
-            FormStore.setErrors(error.response);
+                FormStore.setErrors(error.response);
+            }
+
+            FormStore.hideProgress();
         }
-
-        FormStore.hideProgress();
-
     };
     const deleteCoupon = async ({ id, index }) =>
     {
-        useConfirmModal.onProgress(true)
-        let response = await useCouponsApi.deleteCoupon(id);
+        if (AuthUser.userCanAccess('delete-coupons'))
+        {
+            useConfirmModal.onProgress(true)
+            let response = await useCouponsApi.deleteCoupon(id);
 
-        CouponsStore.value.filtered.splice(index, 1);
-        useConfirmModal.close();
+            CouponsStore.value.filtered.splice(index, 1);
+            useConfirmModal.close();
 
-        useToastNotification.open(response.data.message);
+            useToastNotification.open(response.data.message);
 
-        useConfirmModal.onProgress(false)
-
+            useConfirmModal.onProgress(false)
+        }
     };
     const showCoupon = async () =>
     {
-        useLoadingSpinner.show();
-        FormStore.clearErrors();
+        if (AuthUser.userCanAccess('view-coupons'))
+        {
+            useLoadingSpinner.show();
+            FormStore.clearErrors();
 
-        const route = useRoute();
+            const route = useRoute();
 
-        let response = await useCouponsApi.getCoupon(route.params.id);
+            let response = await useCouponsApi.getCoupon(route.params.id);
 
-        FormStore.setFields(response.data.coupon);
+            FormStore.setFields(response.data.coupon);
 
-        useLoadingSpinner.hide();
-
+            useLoadingSpinner.hide();
+        }
     };
 
 

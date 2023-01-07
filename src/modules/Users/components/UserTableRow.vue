@@ -2,7 +2,7 @@
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import UsersStore from "@/modules/Users/stores/UsersStore";
 import useUsersService from "@/modules/Users/services/useUsersService";
-
+import AuthUser from "@/Auth/store/AuthUser";
 import maleAvatar from "@/assets/img/avatars/avatar_male.png";
 import femaleAvatar from "@/assets/img/avatars/avatar_female.png";
 const emits = defineEmits(["onDelete"]);
@@ -50,6 +50,7 @@ await getAllUsers();
       <td>
         <DropdownMenu>
           <RouterLink
+            v-if="AuthUser.userCanAccess('view-users')"
             class="dropdown-item d-flex align-items-center"
             :to="{ name: 'usersEdit', params: { id: user.id } }"
           >
@@ -58,6 +59,7 @@ await getAllUsers();
           </RouterLink>
 
           <a
+            v-if="AuthUser.userCanAccess('delete-users')"
             @click="$emit('onDelete', { id: user.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"

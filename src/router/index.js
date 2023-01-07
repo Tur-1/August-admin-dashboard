@@ -8,11 +8,10 @@ import BrandsRoutes from '@/modules/Brands/routes'
 import SizesRoutes from '@/modules/Sizes/routes'
 import CouponsRoutes from '@/modules/Coupons/routes'
 import RolesRoutes from '@/modules/Roles/routes'
-
 import ReviewsRoutes from '@/modules/Reviews/routes'
 import ProductsRoutes from '@/modules/Products/routes'
 import OrdersRoutes from '@/modules/Orders/routes'
-import useAuthApi from '@/router/useAuthApi'
+import useAuthApi from '@/Auth/api/useAuthApi'
 import useRouterService from '@/router/useRouterService'
 import { useLoadingSpinner } from '@/components/LoadingSpinner'
 import AuthUser from '@/Auth/store/AuthUser'
@@ -41,7 +40,15 @@ const router = createRouter({
     ...BannerRoutes,
     ...ProductsRoutes,
     ...OrdersRoutes,
+    , {
+      path: "/login",
+      name: "login",
+      component: () => import('@/Auth/views/login.vue'),
+      meta: {
+        requireAuth: false,
+      }
 
+    }
 
 
   ]
@@ -50,18 +57,28 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) =>
 {
 
+
   useLoadingSpinner.show();
   let isNotAuthenticated = await useAuthApi.isAuthenticated();
 
   if (isNotAuthenticated.data == false)
   {
 
-    return window.location.href = "http://localhost:5174";
+    useRouterService.isAuthenticated = false;
+    if (!to.name !== 'login')
+    {
+      return next({ name: 'login' });
+    }
+  } else
+  {
+    useRouterService.isAuthenticated = true;
+    AuthUser.setUserData(isNotAuthenticated.data);
   }
-  useLoadingSpinner.hide();
-  useRouterService.isAuthenticated = true;
-  AuthUser.setUserData(isNotAuthenticated.data);
 
+
+
+
+  useLoadingSpinner.hide();
   return next();
 })
 export default router

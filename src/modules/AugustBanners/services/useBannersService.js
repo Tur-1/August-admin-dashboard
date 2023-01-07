@@ -8,6 +8,8 @@ import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
 import { appendFormData } from "@/helpers";
+import AuthUser from "@/Auth/store/AuthUser";
+
 
 
 export default function useBannersService()
@@ -16,94 +18,100 @@ export default function useBannersService()
     const getAllBanners = async () =>
     {
 
+
         let response = await useBannersApi.getAll();
 
-
         BannersStore.value.list = response.data;
-
 
     }
     const storeNewBanner = async () =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-
-        try
+        if (AuthUser.userCanAccess('create-banners'))
         {
-            const formData = appendFormData(FormStore.fields);
+            FormStore.showProgress();
+            FormStore.clearErrors();
+            try
+            {
+                const formData = appendFormData(FormStore.fields);
 
-            let response = await useBannersApi.storeNewBanner(formData);
+                let response = await useBannersApi.storeNewBanner(formData);
 
-            FormStore.clearFields();
+                FormStore.clearFields();
 
-            useRouterService.redirectBack();
+                useRouterService.redirectBack();
 
-            useToastNotification.open(response.data.message);
+                useToastNotification.open(response.data.message);
 
-        } catch (error)
-        {
+            } catch (error)
+            {
 
-            FormStore.setErrors(error.response);
+                FormStore.setErrors(error.response);
+            }
+            FormStore.hideProgress();
         }
-        FormStore.hideProgress();
 
     };
     const updateBanner = async () =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-
-        try
+        if (AuthUser.userCanAccess('update-banners'))
         {
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            const formData = appendFormData(FormStore.fields);
+
+            try
+            {
+
+                const formData = appendFormData(FormStore.fields);
 
 
-            let response = await useBannersApi.updateBanner({
-                id: FormStore.fields.id,
-                fields: formData
-            });
+                let response = await useBannersApi.updateBanner({
+                    id: FormStore.fields.id,
+                    fields: formData
+                });
 
-            FormStore.setFields(response.data.banner);
+                FormStore.setFields(response.data.banner);
 
-            useToastNotification.open(response.data.message);
-        } catch (error)
-        {
+                useToastNotification.open(response.data.message);
+            } catch (error)
+            {
 
-            FormStore.setErrors(error.response);
+                FormStore.setErrors(error.response);
+            }
+
+            FormStore.hideProgress();
         }
-
-        FormStore.hideProgress();
-
     };
     const deleteBanner = async ({ id, index }) =>
     {
-        useConfirmModal.onProgress(true)
-        let response = await useBannersApi.deleteBanner(id);
+        if (AuthUser.userCanAccess('delete-banners'))
+        {
+            useConfirmModal.onProgress(true)
+            let response = await useBannersApi.deleteBanner(id);
 
-        BannersStore.value.filtered.splice(index, 1);
-        useConfirmModal.close();
+            BannersStore.value.filtered.splice(index, 1);
+            useConfirmModal.close();
 
-        useToastNotification.open(response.data.message);
+            useToastNotification.open(response.data.message);
 
-        useConfirmModal.onProgress(false)
-
+            useConfirmModal.onProgress(false)
+        }
     };
     const showBanner = async () =>
     {
-        useLoadingSpinner.show();
-        FormStore.clearErrors();
+        if (AuthUser.userCanAccess('view-banners'))
+        {
+            useLoadingSpinner.show();
+            FormStore.clearErrors();
 
-        const route = useRoute();
+            const route = useRoute();
 
-        let response = await useBannersApi.getBanner(route.params.id);
+            let response = await useBannersApi.getBanner(route.params.id);
 
-        FormStore.setFields(response.data.banner);
+            FormStore.setFields(response.data.banner);
 
-        useLoadingSpinner.hide();
-
+            useLoadingSpinner.hide();
+        }
     };
 
 

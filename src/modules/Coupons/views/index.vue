@@ -8,7 +8,7 @@ import useCouponsService from "@/modules/Coupons/services/useCouponsService";
 import CouponsStore from "@/modules/Coupons/stores/CouponsStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { MainTable } from "@/components/MainTable";
-
+import AuthUser from "@/Auth/store/AuthUser";
 const { deleteCoupon, getAllCoupons } = useCouponsService();
 
 let fields = ["Code", "amount", "START DATE", "END DATE", "STATUS", "Action"];
@@ -24,10 +24,15 @@ const openModal = ({ id, index }) => {
 <template>
   <section class="main-section">
     <PageHeader title="Coupons List">
-      <ButtonLink title="New Coupon" routeName="couponsCreate" />
+      <ButtonLink
+        title="New Coupon"
+        routeName="couponsCreate"
+        v-if="AuthUser.userCanAccess('create-coupons')"
+      />
     </PageHeader>
 
     <MainTable
+      v-if="AuthUser.userCanAccess('access-coupons')"
       :fields="fields"
       @onChangePage="getAllCoupons"
       @onDelete="deleteCoupon(Coupon)"

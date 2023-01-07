@@ -9,120 +9,129 @@ import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
 import { appendFormData, isNotNull } from "@/helpers";
 import useProductAttributesService from "@/modules/Products/services/useProductAttributesService";
-
+import AuthUser from "@/Auth/store/AuthUser";
 
 export default function useProductsService()
 {
 
     const getAllProducts = async () =>
     {
+        if (AuthUser.userCanAccess('access-products'))
+        {
+            let response = await useProductsApi.getAllProducts();
 
-        let response = await useProductsApi.getAllProducts();
+            ProductsStore.value.filtered = response.data.data;
+            ProductsStore.value.list = response.data.data;
+            ProductsStore.value.pagination = response.data.meta.pagination;
 
-        ProductsStore.value.filtered = response.data.data;
-        ProductsStore.value.list = response.data.data;
-        ProductsStore.value.pagination = response.data.meta.pagination;
-
-
+        }
     }
     const storeNewProduct = async () =>
     {
-        useLoadingSpinner.show();
-
-        try
+        if (AuthUser.userCanAccess('create-products'))
         {
-            let response = await useProductsApi.storeNewProduct();
+            useLoadingSpinner.show();
 
-            await getAllProducts();
-
-            useToastNotification.open(response.data.message);
-
-
-        } catch (error)
-        {
-            if (error.response)
+            try
             {
-                FormStore.setErrors(error.response);
+                let response = await useProductsApi.storeNewProduct();
+
+                await getAllProducts();
+
+                useToastNotification.open(response.data.message);
+
+
+            } catch (error)
+            {
+                if (error.response)
+                {
+                    FormStore.setErrors(error.response);
+                }
+
             }
-
+            useLoadingSpinner.hide();
         }
-        useLoadingSpinner.hide();
-
     };
     const showProduct = async () =>
     {
-        useLoadingSpinner.show();
-        FormStore.clearErrors();
-
-        const route = useRoute();
-
-        let response = await useProductsApi.getProduct(route.params.id);
-
-        FormStore.setFields(response.data.product);
-
-        if (FormStore.fields.sizes.length == 0)
+        if (AuthUser.userCanAccess('view-products'))
         {
-            FormStore.fields.sizes.push({
-                id: null,
-                size_id: null,
-                stock: null,
-            });
+            useLoadingSpinner.show();
+            FormStore.clearErrors();
+
+            const route = useRoute();
+
+            let response = await useProductsApi.getProduct(route.params.id);
+
+            FormStore.setFields(response.data.product);
+
+            if (FormStore.fields.sizes.length == 0)
+            {
+                FormStore.fields.sizes.push({
+                    id: null,
+                    size_id: null,
+                    stock: null,
+                });
+            }
+            if (isNotNull(FormStore.fields.section_id))
+            {
+                const { getCategories } = useProductAttributesService();
+
+                await getCategories(FormStore.fields.section_id);
+            }
+
+            useLoadingSpinner.hide();
         }
-        if (isNotNull(FormStore.fields.section_id))
-        {
-            const { getCategories } = useProductAttributesService();
-
-            await getCategories(FormStore.fields.section_id);
-        }
-
-        useLoadingSpinner.hide();
-
     };
 
     const updateProduct = async () =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-
-        try
+        if (AuthUser.userCanAccess('update-products'))
         {
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            const formData = appendFormData(FormStore.fields);
 
-            let response = await useProductsApi.updateProduct({
-                id: FormStore.fields.id,
-                fields: formData
-            });
-
-            FormStore.setFields(response.data.product);
-
-            useToastNotification.open(response.data.message);
-        } catch (error)
-        {
-            if (error.response)
+            try
             {
-                FormStore.setErrors(error.response);
+
+                const formData = appendFormData(FormStore.fields);
+
+                let response = await useProductsApi.updateProduct({
+                    id: FormStore.fields.id,
+                    fields: formData
+                });
+
+                FormStore.setFields(response.data.product);
+
+                useToastNotification.open(response.data.message);
+            } catch (error)
+            {
+                if (error.response)
+                {
+                    FormStore.setErrors(error.response);
+                }
+
+
             }
 
-
+            FormStore.hideProgress();
         }
-
-        FormStore.hideProgress();
-
     };
     const deleteProduct = async ({ id, index }) =>
     {
-        useConfirmModal.onProgress(true)
-        let response = await useProductsApi.deleteProduct(id);
+        if (AuthUser.userCanAccess('delete-products'))
+        {
+            useConfirmModal.onProgress(true)
+            let response = await useProductsApi.deleteProduct(id);
 
-        ProductsStore.value.filtered.splice(index, 1);
-        useConfirmModal.close();
+            ProductsStore.value.filtered.splice(index, 1);
+            useConfirmModal.close();
 
-        useToastNotification.open(response.data.message);
+            useToastNotification.open(response.data.message);
 
-        useConfirmModal.onProgress(false)
-
+            useConfirmModal.onProgress(false)
+        }
     };
     const deleteProductImage = async (id) =>
     {

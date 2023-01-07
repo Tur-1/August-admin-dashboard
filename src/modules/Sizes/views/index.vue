@@ -8,7 +8,7 @@ import useSizesService from "@/modules/Sizes/services/useSizesService";
 import SizesStore from "@/modules/Sizes/stores/SizesStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { MainTable } from "@/components/MainTable";
-
+import AuthUser from "@/Auth/store/AuthUser";
 const { deleteSize, getAllSizes } = useSizesService();
 
 let fields = ["Name", "Action"];
@@ -24,10 +24,15 @@ const openModal = ({ id, index }) => {
 <template>
   <section class="main-section">
     <PageHeader title="Sizes List">
-      <ButtonLink title="New Size" routeName="sizesCreate" />
+      <ButtonLink
+        title="New Size"
+        routeName="sizesCreate"
+        v-if="AuthUser.userCanAccess('create-size-options')"
+      />
     </PageHeader>
 
     <MainTable
+      v-if="AuthUser.userCanAccess('access-size-options')"
       :fields="fields"
       @onChangePage="getAllSizes"
       @onDelete="deleteSize(Size)"

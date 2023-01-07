@@ -4,6 +4,7 @@ let ReviewsStore = reactive({
     list: [],
     filtered: [],
     pagination: [],
+    review: [],
 });
 
 

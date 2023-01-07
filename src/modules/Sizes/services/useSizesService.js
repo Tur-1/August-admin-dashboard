@@ -1,6 +1,6 @@
 import useSizesApi from "@/modules/Sizes/api/useSizesApi";
 import useToastNotification from "@/components/Toast/useToastNotification";
-
+import AuthUser from "@/Auth/store/AuthUser";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import SizesStore from "@/modules/Sizes/stores/SizesStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
@@ -16,90 +16,99 @@ export default function useSizesService()
     const getAllSizes = async ({ url } = {}) =>
     {
 
+        if (AuthUser.userCanAccess('access-size-options'))
+        {
+            let response = await useSizesApi.getSizes({
+                url: url,
+            });
 
-        let response = await useSizesApi.getSizes({
-            url: url,
-        });
+            SizesStore.value.filtered = response.data.data;
+            SizesStore.value.list = response.data;
+            SizesStore.value.pagination = response.data.pagination;
 
-        SizesStore.value.filtered = response.data.data;
-        SizesStore.value.list = response.data;
-        SizesStore.value.pagination = response.data.pagination;
-
-
+        }
     }
     const storeNewSize = async () =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-        try
+        if (AuthUser.userCanAccess('create-size-options'))
         {
-            let response = await useSizesApi.storeNewSize(FormStore.fields);
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            FormStore.clearFields();
+            try
+            {
+                let response = await useSizesApi.storeNewSize(FormStore.fields);
 
-            useRouterService.redirectBack();
+                FormStore.clearFields();
 
-            useToastNotification.open(response.data.message);
+                useRouterService.redirectBack();
 
-        } catch (error)
-        {
+                useToastNotification.open(response.data.message);
 
-            FormStore.setErrors(error.response);
+            } catch (error)
+            {
+
+                FormStore.setErrors(error.response);
+            }
+            FormStore.hideProgress();
         }
-        FormStore.hideProgress();
-
     };
     const updateSize = async (id) =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-        try
+        if (AuthUser.userCanAccess('update-size-options'))
         {
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            let response = await useSizesApi.updateSize(FormStore.fields, id);
+            try
+            {
+
+                let response = await useSizesApi.updateSize(FormStore.fields, id);
 
 
-            FormStore.setFields(response.data.size);
+                FormStore.setFields(response.data.size);
 
 
-            useToastNotification.open(response.data.message);
-        } catch (error)
-        {
+                useToastNotification.open(response.data.message);
+            } catch (error)
+            {
 
-            FormStore.setErrors(error.response);
+                FormStore.setErrors(error.response);
+            }
+
+            FormStore.hideProgress();
         }
-
-        FormStore.hideProgress();
-
     };
     const deleteSize = async ({ id, index }) =>
     {
-        useConfirmModal.onProgress(true)
-        let response = await useSizesApi.deleteSize(id);
+        if (AuthUser.userCanAccess('delete-size-options'))
+        {
+            useConfirmModal.onProgress(true)
+            let response = await useSizesApi.deleteSize(id);
 
-        SizesStore.value.filtered.splice(index, 1);
-        useConfirmModal.close();
+            SizesStore.value.filtered.splice(index, 1);
+            useConfirmModal.close();
 
-        useToastNotification.open(response.data.message);
+            useToastNotification.open(response.data.message);
 
-        useConfirmModal.onProgress(false)
-
+            useConfirmModal.onProgress(false)
+        }
     };
     const showSize = async () =>
     {
-        useLoadingSpinner.show();
-        FormStore.clearErrors();
+        if (AuthUser.userCanAccess('view-size-options'))
+        {
+            useLoadingSpinner.show();
+            FormStore.clearErrors();
 
-        const route = useRoute();
+            const route = useRoute();
 
-        let response = await useSizesApi.getSize(route.params.id);
+            let response = await useSizesApi.getSize(route.params.id);
 
-        FormStore.setFields(response.data.size);
+            FormStore.setFields(response.data.size);
 
-        useLoadingSpinner.hide();
-
+            useLoadingSpinner.hide();
+        }
     };
 
 

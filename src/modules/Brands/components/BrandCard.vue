@@ -4,6 +4,7 @@ import BrandsStore from "@/modules/Brands/stores/BrandsStore";
 import useBrandsService from "@/modules/Brands/services/useBrandsService";
 import { ref } from "vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
+import AuthUser from "@/Auth/store/AuthUser";
 
 const { getAllBrands, deleteBrand } = useBrandsService();
 
@@ -47,6 +48,7 @@ const defultImage = "./src/assets/img/defult-image.png";
         </div>
         <DropdownMenu>
           <RouterLink
+            v-if="AuthUser.userCanAccess('view-brands')"
             class="dropdown-item d-flex align-items-center"
             :to="{
               name: 'brandsEdit',
@@ -58,6 +60,7 @@ const defultImage = "./src/assets/img/defult-image.png";
           </RouterLink>
 
           <a
+            v-if="AuthUser.userCanAccess('delete-brands')"
             @click="openModal({ id: Brand.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"

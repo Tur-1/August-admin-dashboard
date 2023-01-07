@@ -2,7 +2,7 @@
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import useCategoryService from "@/modules/Categories/services/useCategoryService";
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
-
+import AuthUser from "@/Auth/store/AuthUser";
 const emits = defineEmits(["onDelete"]);
 
 const defultImage = "./src/assets/img/defult-image.png";
@@ -47,6 +47,7 @@ await getAllCategories();
       <td>
         <DropdownMenu>
           <RouterLink
+            v-if="AuthUser.userCanAccess('view-categories')"
             class="dropdown-item d-flex align-items-center"
             :to="{
               name: category.is_section ? 'sectionEdit' : 'categoriesEdit',
@@ -58,6 +59,7 @@ await getAllCategories();
           </RouterLink>
 
           <a
+            v-if="AuthUser.userCanAccess('delete-categories')"
             @click="$emit('onDelete', { id: category.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"

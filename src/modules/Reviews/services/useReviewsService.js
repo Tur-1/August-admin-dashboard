@@ -1,6 +1,6 @@
 import useReviewsApi from "@/modules/Reviews/api/useReviewsApi";
 import useToastNotification from "@/components/Toast/useToastNotification";
-
+import AuthUser from "@/Auth/store/AuthUser";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import ReviewsStore from "@/modules/Reviews/stores/ReviewsStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
@@ -15,94 +15,119 @@ export default function useReviewsService()
 
     const getAllReviews = async ({ url } = {}) =>
     {
+        if (AuthUser.userCanAccess('access-reviews'))
+        {
+            useLoadingSpinner.show();
+            let response = await useReviewsApi.getReviews({
+                url: url,
+            });
 
-        useLoadingSpinner.show();
-        let response = await useReviewsApi.getReviews({
-            url: url,
-        });
-
-        ReviewsStore.filtered = response.data.data;
-        ReviewsStore.list = response.data.data;
-        ReviewsStore.pagination = response.data.meta.pagination;
-        useLoadingSpinner.hide();
-
+            ReviewsStore.filtered = response.data.data;
+            ReviewsStore.list = response.data.data;
+            ReviewsStore.pagination = response.data.meta.pagination;
+            useLoadingSpinner.hide();
+        }
     }
+
     const storeNewReview = async () =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-        try
+        if (AuthUser.userCanAccess('create-reviews'))
         {
-            let response = await useReviewsApi.storeNewReview(FormStore.fields);
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            FormStore.clearFields();
+            try
+            {
+                let response = await useReviewsApi.storeNewReview(FormStore.fields);
 
-            useRouterService.redirectBack();
+                FormStore.clearFields();
 
-            useToastNotification.open(response.data.message);
+                useRouterService.redirectBack();
 
-        } catch (error)
-        {
+                useToastNotification.open(response.data.message);
 
-            FormStore.setErrors(error.response);
+            } catch (error)
+            {
+
+                FormStore.setErrors(error.response);
+            }
+            FormStore.hideProgress();
         }
-        FormStore.hideProgress();
-
     };
     const updateReview = async (id) =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-        try
+        if (AuthUser.userCanAccess('update-reviews'))
         {
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            let response = await useReviewsApi.updateReview(FormStore.fields, id);
+            try
+            {
+
+                let response = await useReviewsApi.updateReview(FormStore.fields, id);
 
 
-            FormStore.setFields(response.data.Review);
+                ReviewsStore.review.reply = response.data.review;
 
+                FormStore.clearFields();
+                useToastNotification.open(response.data.message);
+            } catch (error)
+            {
 
-            useToastNotification.open(response.data.message);
-        } catch (error)
-        {
+                FormStore.setErrors(error.response);
+            }
 
-            FormStore.setErrors(error.response);
+            FormStore.hideProgress();
         }
-
-        FormStore.hideProgress();
-
     };
     const deleteReview = async ({ id, index }) =>
     {
-        useConfirmModal.onProgress(true)
-        let response = await useReviewsApi.deleteReview(id);
+        if (AuthUser.userCanAccess('delete-reviews'))
+        {
+            useConfirmModal.onProgress(true)
+            let response = await useReviewsApi.deleteReview(id);
 
-        ReviewsStore.filtered.splice(index, 1);
-        useConfirmModal.close();
+            ReviewsStore.filtered.splice(index, 1);
+            useConfirmModal.close();
 
-        useToastNotification.open(response.data.message);
+            useToastNotification.open(response.data.message);
 
-        useConfirmModal.onProgress(false)
-
+            useConfirmModal.onProgress(false)
+        }
     };
-    const showReview = async () =>
+    const showReview = async (review_id) =>
     {
+        if (AuthUser.userCanAccess('view-reviews'))
+        {
+            useLoadingSpinner.show();
+            FormStore.clearErrors();
+
+
+            let response = await useReviewsApi.getReview(review_id);
+
+            ReviewsStore.review = response.data.review
+
+
+            useLoadingSpinner.hide();
+        }
+    };
+
+    const replyReview = async (review_id) =>
+    {
+
         useLoadingSpinner.show();
         FormStore.clearErrors();
 
-        const route = useRoute();
 
-        let response = await useReviewsApi.getReview(route.params.id);
+        let response = await useReviewsApi.replyReview(review_id, FormStore.fields);
 
-        FormStore.setFields(response.data.Review);
+        ReviewsStore.review.reply = response.data.review;
+
+
 
         useLoadingSpinner.hide();
 
     };
-
-
 
 
     return {
@@ -110,7 +135,8 @@ export default function useReviewsService()
         storeNewReview,
         getAllReviews,
         deleteReview,
-        showReview
+        showReview,
+        replyReview
     }
 
 }

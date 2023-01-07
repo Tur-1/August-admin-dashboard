@@ -2,7 +2,7 @@
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import RolesStore from "@/modules/Roles/stores/RolesStore";
 import useRolesService from "@/modules/Roles/services/useRolesService";
-
+import AuthUser from "@/Auth/store/AuthUser";
 const emits = defineEmits(["onDelete"]);
 
 const { getRoles } = useRolesService();
@@ -31,6 +31,7 @@ await getRoles();
       <td>
         <DropdownMenu>
           <RouterLink
+            v-if="AuthUser.userCanAccess('view-roles')"
             class="dropdown-item d-flex align-items-center"
             :to="{ name: 'rolesEdit', params: { id: role.id } }"
           >
@@ -39,6 +40,7 @@ await getRoles();
           </RouterLink>
 
           <a
+            v-if="AuthUser.userCanAccess('delete-roles')"
             @click="$emit('onDelete', { id: role.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"

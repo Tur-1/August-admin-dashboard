@@ -1,5 +1,6 @@
 <script setup>
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
+import AuthUser from "@/Auth/store/AuthUser";
 import PageHeader from "@/components/PageHeader/index.vue";
 import ProductCard from "@/modules/Products/components/ProductCard.vue";
 import ProductCardSkeleton from "@/modules/Products/components/ProductCardSkeleton.vue";
@@ -12,6 +13,7 @@ const { storeNewProduct } = useProductsService();
   <section class="main-section">
     <PageHeader title="products List">
       <button
+        v-if="AuthUser.userCanAccess('create-products')"
         :disabled="useLoadingSpinner.isOnProgress"
         @click="storeNewProduct"
         class="btn btn-sm btn-gray-800 d-inline-flex align-items-center"
@@ -20,7 +22,10 @@ const { storeNewProduct } = useProductsService();
         <span class="ms-2">New product</span>
       </button>
     </PageHeader>
-    <div class="card card-body border-0 shadow mb-4">
+    <div
+      class="card card-body border-0 shadow mb-4"
+      v-if="AuthUser.userCanAccess('access-products')"
+    >
       <div class="product-list">
         <Suspense>
           <ProductCard />

@@ -8,7 +8,7 @@ import useRolesService from "@/modules/Roles/services/useRolesService";
 import RolesStore from "@/modules/Roles/stores/RolesStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { MainTable } from "@/components/MainTable";
-
+import AuthUser from "@/Auth/store/AuthUser";
 const { deleteRole, getRoles } = useRolesService();
 
 let fields = ["Name", "Action"];
@@ -24,10 +24,15 @@ const openModal = ({ id, index }) => {
 <template>
   <section class="main-section">
     <PageHeader title="Roles List">
-      <ButtonLink title="New Role" routeName="rolesCreate" />
+      <ButtonLink
+        title="New Role"
+        routeName="rolesCreate"
+        v-if="AuthUser.userCanAccess('create-roles')"
+      />
     </PageHeader>
 
     <MainTable
+      v-if="AuthUser.userCanAccess('access-roles')"
       :fields="fields"
       @onChangePage="getRoles"
       @onDelete="deleteRole(Role)"

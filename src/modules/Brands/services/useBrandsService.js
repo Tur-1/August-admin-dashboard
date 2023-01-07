@@ -4,6 +4,7 @@ import useRouterService from "@/router/useRouterService";
 import BrandsStore from "@/modules/Brands/stores/BrandsStore";
 import useBrandsApi from "@/modules/Brands/api/useBrandsApi";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
+import AuthUser from "@/Auth/store/AuthUser";
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
@@ -15,96 +16,105 @@ export default function useBrandsService()
 
     const getAllBrands = async () =>
     {
+        if (AuthUser.userCanAccess('access-brands'))
+        {
+            let response = await useBrandsApi.getAll();
 
-        let response = await useBrandsApi.getAll();
-
-        BrandsStore.value.filtered = response.data.data;
-        BrandsStore.value.list = response.data;
-        BrandsStore.value.pagination = response.data.pagination;
-
+            BrandsStore.value.filtered = response.data.data;
+            BrandsStore.value.list = response.data;
+            BrandsStore.value.pagination = response.data.pagination;
+        }
 
 
 
     }
     const storeNewBrand = async (formData) =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-        try
+        if (AuthUser.userCanAccess('create-brands'))
         {
-            const formData = appendFormData(FormStore.fields);
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            let response = await useBrandsApi.storeNewBrand(formData);
+            try
+            {
+                const formData = appendFormData(FormStore.fields);
 
-            FormStore.clearFields();
+                let response = await useBrandsApi.storeNewBrand(formData);
 
-            useRouterService.redirectBack();
+                FormStore.clearFields();
 
-            useToastNotification.open(response.data.message);
+                useRouterService.redirectBack();
 
-        } catch (error)
-        {
+                useToastNotification.open(response.data.message);
 
-            FormStore.setErrors(error.response);
+            } catch (error)
+            {
+
+                FormStore.setErrors(error.response);
+            }
+            FormStore.hideProgress();
         }
-        FormStore.hideProgress();
-
     };
     const updateBrand = async (formData) =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-
-        try
+        if (AuthUser.userCanAccess('update-brands'))
         {
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            const formData = appendFormData(FormStore.fields);
-            let response = await useBrandsApi.updateBrand({
-                id: FormStore.fields.id,
-                fields: formData
-            });
 
-            FormStore.setFields(response.data.brand);
+            try
+            {
 
-            useToastNotification.open(response.data.message);
-        } catch (error)
-        {
+                const formData = appendFormData(FormStore.fields);
+                let response = await useBrandsApi.updateBrand({
+                    id: FormStore.fields.id,
+                    fields: formData
+                });
 
-            FormStore.setErrors(error.response);
+                FormStore.setFields(response.data.brand);
+
+                useToastNotification.open(response.data.message);
+            } catch (error)
+            {
+
+                FormStore.setErrors(error.response);
+            }
+
+            FormStore.hideProgress();
         }
-
-        FormStore.hideProgress();
-
     };
     const deleteBrand = async ({ id, index }) =>
     {
-        useConfirmModal.onProgress(true)
-        let response = await useBrandsApi.deleteBrand(id);
+        if (AuthUser.userCanAccess('delete-brands'))
+        {
+            useConfirmModal.onProgress(true)
+            let response = await useBrandsApi.deleteBrand(id);
 
-        BrandsStore.value.filtered.splice(index, 1);
-        useConfirmModal.close();
+            BrandsStore.value.filtered.splice(index, 1);
+            useConfirmModal.close();
 
-        useToastNotification.open(response.data.message);
+            useToastNotification.open(response.data.message);
 
-        useConfirmModal.onProgress(false)
-
+            useConfirmModal.onProgress(false)
+        }
     };
     const showBrand = async () =>
     {
-        useLoadingSpinner.show();
-        FormStore.clearErrors();
+        if (AuthUser.userCanAccess('view-brands'))
+        {
+            useLoadingSpinner.show();
+            FormStore.clearErrors();
 
-        const route = useRoute();
+            const route = useRoute();
 
 
-        let response = await useBrandsApi.getBrand(route.params.id);
+            let response = await useBrandsApi.getBrand(route.params.id);
 
-        FormStore.setFields(response.data.brand);
+            FormStore.setFields(response.data.brand);
 
-        useLoadingSpinner.hide();
-
+            useLoadingSpinner.hide();
+        }
     };
 
 

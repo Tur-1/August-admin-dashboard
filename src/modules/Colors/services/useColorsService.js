@@ -8,102 +8,111 @@ import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
 import { appendFormData } from "@/helpers";
-
+import AuthUser from "@/Auth/store/AuthUser";
 
 export default function useColorsService()
 {
 
     const getAllColors = async () =>
     {
+        if (AuthUser.userCanAccess('access-colors'))
+        {
+            let response = await useColorsApi.getAll();
 
-        let response = await useColorsApi.getAll();
+            ColorsStore.value.filtered = response.data.data;
+            ColorsStore.value.list = response.data;
+            ColorsStore.value.pagination = response.data.pagination;
 
-        ColorsStore.value.filtered = response.data.data;
-        ColorsStore.value.list = response.data;
-        ColorsStore.value.pagination = response.data.pagination;
-
-
+        }
     }
     const storeNewColor = async () =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-        try
+        if (AuthUser.userCanAccess('create-colors'))
         {
-            const formData = appendFormData(FormStore.fields);
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            let response = await useColorsApi.storeNewColor(formData);
+            try
+            {
+                const formData = appendFormData(FormStore.fields);
 
-            FormStore.clearFields();
+                let response = await useColorsApi.storeNewColor(formData);
 
-            useRouterService.redirectBack();
+                FormStore.clearFields();
 
-            useToastNotification.open(response.data.message);
+                useRouterService.redirectBack();
 
-        } catch (error)
-        {
+                useToastNotification.open(response.data.message);
 
-            FormStore.setErrors(error.response);
+            } catch (error)
+            {
+
+                FormStore.setErrors(error.response);
+            }
+            FormStore.hideProgress();
         }
-        FormStore.hideProgress();
-
     };
     const updateColor = async () =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-
-        try
+        if (AuthUser.userCanAccess('update-colors'))
         {
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            const formData = appendFormData(FormStore.fields);
+
+            try
+            {
+
+                const formData = appendFormData(FormStore.fields);
 
 
-            let response = await useColorsApi.updateColor({
-                id: FormStore.fields.id,
-                fields: formData
-            });
+                let response = await useColorsApi.updateColor({
+                    id: FormStore.fields.id,
+                    fields: formData
+                });
 
-            FormStore.setFields(response.data.color);
+                FormStore.setFields(response.data.color);
 
-            useToastNotification.open(response.data.message);
-        } catch (error)
-        {
+                useToastNotification.open(response.data.message);
+            } catch (error)
+            {
 
-            FormStore.setErrors(error.response);
+                FormStore.setErrors(error.response);
+            }
+
+            FormStore.hideProgress();
         }
-
-        FormStore.hideProgress();
-
     };
     const deleteColor = async ({ id, index }) =>
     {
-        useConfirmModal.onProgress(true)
-        let response = await useColorsApi.deleteColor(id);
+        if (AuthUser.userCanAccess('delete-colors'))
+        {
+            useConfirmModal.onProgress(true)
+            let response = await useColorsApi.deleteColor(id);
 
-        ColorsStore.value.filtered.splice(index, 1);
-        useConfirmModal.close();
+            ColorsStore.value.filtered.splice(index, 1);
+            useConfirmModal.close();
 
-        useToastNotification.open(response.data.message);
+            useToastNotification.open(response.data.message);
 
-        useConfirmModal.onProgress(false)
-
+            useConfirmModal.onProgress(false)
+        }
     };
     const showColor = async () =>
     {
-        useLoadingSpinner.show();
-        FormStore.clearErrors();
+        if (AuthUser.userCanAccess('view-colors'))
+        {
+            useLoadingSpinner.show();
+            FormStore.clearErrors();
 
-        const route = useRoute();
+            const route = useRoute();
 
-        let response = await useColorsApi.getColor(route.params.id);
+            let response = await useColorsApi.getColor(route.params.id);
 
-        FormStore.setFields(response.data.color);
+            FormStore.setFields(response.data.color);
 
-        useLoadingSpinner.hide();
-
+            useLoadingSpinner.hide();
+        }
     };
 
 

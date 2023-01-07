@@ -7,7 +7,8 @@ import OrderRowSkeleton from "@/modules/Orders/components/OrderRowSkeleton.vue";
 import useOrdersService from "@/modules/Orders/services/useOrdersService";
 import OrdersStore from "@/modules/Orders/stores/OrdersStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
-import { MainTable } from "@/components/MainTable";
+
+import AuthUser from "@/Auth/store/AuthUser";
 
 const { deleteOrder, getAllOrders } = useOrdersService();
 
@@ -25,7 +26,10 @@ const openModal = ({ id, index }) => {
   <section class="main-section">
     <PageHeader title="Orders List"> </PageHeader>
 
-    <div class="card border-0 shadow mb-4">
+    <div
+      class="card border-0 shadow mb-4"
+      v-if="AuthUser.userCanAccess('access-orders')"
+    >
       <div class="card-body">
         <div class="table-responsive">
           <table class="table table-centered table-nowrap mb-0 rounded">

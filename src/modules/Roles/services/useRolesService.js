@@ -1,7 +1,7 @@
 import useRolesApi from "@/modules/Roles/api/useRolesApi";
 import useToastNotification from "@/components/Toast/useToastNotification";
 
-import { useLoadingSpinner } from "@/components/LoadingSpinner";
+import { useLoadingSpinner } from "@/components/LoadingSpinner"; import AuthUser from "@/Auth/store/AuthUser";
 import RolesStore from "@/modules/Roles/stores/RolesStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
@@ -26,92 +26,101 @@ export default function useRolesService()
 
     const getRoles = async ({ url } = {}) =>
     {
+        if (AuthUser.userCanAccess('access-roles'))
+        {
 
+            let response = await useRolesApi.getRoles({
+                url: url,
+            });
 
-        let response = await useRolesApi.getRoles({
-            url: url,
-        });
-
-        RolesStore.value.filtered = response.data.data;
-        RolesStore.value.list = response.data;
-        RolesStore.value.pagination = response.data.meta.pagination;
-
+            RolesStore.value.filtered = response.data.data;
+            RolesStore.value.list = response.data;
+            RolesStore.value.pagination = response.data.meta.pagination;
+        }
     }
     const storeNewRole = async () =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-        try
+        if (AuthUser.userCanAccess('create-roles'))
         {
-            let response = await useRolesApi.storeNewRole(FormStore.fields);
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            FormStore.clearFields();
+            try
+            {
+                let response = await useRolesApi.storeNewRole(FormStore.fields);
 
-            useRouterService.redirectBack();
+                FormStore.clearFields();
 
-            useToastNotification.open(response.data.message);
+                useRouterService.redirectBack();
 
-        } catch (error)
-        {
+                useToastNotification.open(response.data.message);
 
-            FormStore.setErrors(error.response);
+            } catch (error)
+            {
+
+                FormStore.setErrors(error.response);
+            }
+            FormStore.hideProgress();
         }
-        FormStore.hideProgress();
-
     };
     const updateRole = async (id) =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-        try
+        if (AuthUser.userCanAccess('update-roles'))
         {
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            let response = await useRolesApi.updateRole(FormStore.fields, id);
+            try
+            {
+
+                let response = await useRolesApi.updateRole(FormStore.fields, id);
+
+
+                FormStore.setFields(response.data.role);
+                FormStore.fields.permissions = FormStore.fields.permissions_ids;
+
+                useToastNotification.open(response.data.message);
+            } catch (error)
+            {
+
+                FormStore.setErrors(error.response);
+            }
+
+            FormStore.hideProgress();
+        }
+    };
+    const deleteRole = async ({ id, index }) =>
+    {
+        if (AuthUser.userCanAccess('delete-roles'))
+        {
+            useConfirmModal.onProgress(true)
+            let response = await useRolesApi.deleteRole(id);
+
+            RolesStore.value.filtered.splice(index, 1);
+            useConfirmModal.close();
+
+            useToastNotification.open(response.data.message);
+
+            useConfirmModal.onProgress(false)
+        }
+    };
+    const showRole = async () =>
+    {
+        if (AuthUser.userCanAccess('view-roles'))
+        {
+            useLoadingSpinner.show();
+            FormStore.clearErrors();
+
+            const route = useRoute();
+
+            let response = await useRolesApi.getRole(route.params.id);
 
 
             FormStore.setFields(response.data.role);
             FormStore.fields.permissions = FormStore.fields.permissions_ids;
 
-            useToastNotification.open(response.data.message);
-        } catch (error)
-        {
-
-            FormStore.setErrors(error.response);
+            useLoadingSpinner.hide();
         }
-
-        FormStore.hideProgress();
-
-    };
-    const deleteRole = async ({ id, index }) =>
-    {
-        useConfirmModal.onProgress(true)
-        let response = await useRolesApi.deleteRole(id);
-
-        RolesStore.value.filtered.splice(index, 1);
-        useConfirmModal.close();
-
-        useToastNotification.open(response.data.message);
-
-        useConfirmModal.onProgress(false)
-
-    };
-    const showRole = async () =>
-    {
-        useLoadingSpinner.show();
-        FormStore.clearErrors();
-
-        const route = useRoute();
-
-        let response = await useRolesApi.getRole(route.params.id);
-
-
-        FormStore.setFields(response.data.role);
-        FormStore.fields.permissions = FormStore.fields.permissions_ids;
-
-        useLoadingSpinner.hide();
-
     };
 
 

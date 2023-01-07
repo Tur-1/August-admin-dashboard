@@ -4,26 +4,26 @@ import api from "@/api";
 
 const getAll = () =>
 {
-    return api().get('banners');
+    return api().get('getAllbanners');
 }
 
 const storeNewBanner = (fields) =>
 {
 
-    return api().post("banners/store", fields);
+    return api().post("bannersstore", fields);
 }
 const updateBanner = ({ fields, id }) =>
 {
 
-    return api().post("banners/update/" + id, fields);
+    return api().post("bannersupdate/" + id, fields);
 }
 const getBanner = (id) =>
 {
-    return api().post("banners/show/" + id);
+    return api().post("bannersshow/" + id);
 }
 const deleteBanner = (id) =>
 {
-    return api().delete("banners/delete/" + id);
+    return api().delete("bannersdelete/" + id);
 }
 
 export default {

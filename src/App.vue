@@ -1,25 +1,15 @@
 <script setup>
 import { RouterView, useRoute } from "vue-router";
-import Header from "@/layout/Header/index.vue";
-import Sidebar from "@/layout/Sidebar/index.vue";
-import Footer from "@/layout/Footer/index.vue";
-import Toast from "@/components/Toast/index.vue";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
+import layout from "@/layout/index.vue";
 import useRouterService from "@/router/useRouterService";
 
 const route = useRoute();
 </script>
 <template>
-  <template v-if="useRouterService.isAuthenticated">
-    <Sidebar />
-    <main class="main">
-      <Header />
-      <div class="container-fluid">
-        <RouterView :key="route.path" />
-      </div>
-      <Footer />
-      <Toast />
-      <LoadingSpinner />
-    </main>
+  <layout v-if="useRouterService.isAuthenticated" />
+
+  <template v-if="!useRouterService.isAuthenticated">
+    <RouterView :key="route.path" />
   </template>
+
 </template>
