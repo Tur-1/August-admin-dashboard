@@ -1,6 +1,7 @@
-import { reactive } from "vue";;
+import { reactive } from "vue";
 
 const AuthUser = reactive({
+    isAuthenticated: false,
     user: [],
     permissions: [],
     setUserData(authUser)
@@ -10,7 +11,10 @@ const AuthUser = reactive({
     },
     userCanAccess(perm)
     {
-        return this.permissions.find(ele => ele == perm);
+        if (this.permissions)
+        {
+            return this.permissions.find(ele => ele == perm);
+        }
     }
 });
 

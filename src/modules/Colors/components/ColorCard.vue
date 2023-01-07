@@ -12,7 +12,8 @@ await getAllColors();
 
 let color = ref({ id: "", index: "" });
 
-const openModal = ({ id, index }) => {
+const openModal = ({ id, index }) =>
+{
   useConfirmModal.open();
   color.value.id = id;
   color.value.index = index;
@@ -21,48 +22,29 @@ const openModal = ({ id, index }) => {
 
 <template>
   <transition-group name="list">
-    <figure
-      class="card border-1 m-3"
-      style="width: 170px; min-height: 130px"
-      v-for="(color, index) in ColorsStore.filtered"
-      :key="color.id"
-    >
-      <div
-        style="min-height: 100px"
-        class="card-header bg-white text-center p-0 overflow-hidden d-flex justify-content-center align-items-center h-100 w-100"
-      >
-        <img
-          height="76"
-          :src="color.image_url ?? defultImage"
-          class="img-fluid"
-          alt="Logo"
-        />
+    <figure class="card border-1 m-3" style="width: 170px; min-height: 130px"
+      v-for="(color, index) in ColorsStore.filtered" :key="color.id">
+      <div style="min-height: 100px"
+        class="card-header bg-white text-center p-0 overflow-hidden d-flex justify-content-center align-items-center h-100 w-100">
+        <img height="76" :src="color.image_url ?? defultImage" class="img-fluid" alt="Logo" />
       </div>
 
       <figcaption class="p-2 d-flex justify-content-between align-items-center">
         <div class="colorname">
           <h6 class="card-title m-0">{{ color.name }}</h6>
-          <small style="font-size: 12px">5 items</small>
+          <small style="font-size: 12px">{{ color.products_count }} items</small>
         </div>
         <DropdownMenu>
-          <RouterLink
-            v-if="AuthUser.userCanAccess('view-colors')"
-            class="dropdown-item d-flex align-items-center"
-            :to="{
-              name: 'colorsEdit',
-              params: { id: color.id },
-            }"
-          >
+          <RouterLink v-if="AuthUser.userCanAccess('view-colors')" class="dropdown-item d-flex align-items-center" :to="{
+            name: 'colorsEdit',
+            params: { id: color.id },
+          }">
             <i class="fa-solid fa-pen-to-square"></i>
             Edit
           </RouterLink>
 
-          <a
-            v-if="AuthUser.userCanAccess('delete-colors')"
-            @click="openModal({ id: color.id, index: index })"
-            role="button"
-            class="dropdown-item d-flex align-items-center text-danger"
-          >
+          <a v-if="AuthUser.userCanAccess('delete-colors')" @click="openModal({ id: color.id, index: index })"
+            role="button" class="dropdown-item d-flex align-items-center text-danger">
             <i class="fa-solid fa-trash-can"></i>
             Delete
           </a>
@@ -80,10 +62,7 @@ const openModal = ({ id, index }) => {
       </div>
     </div>
   </div>
-  <ConfirmModal
-    @onConfirm="deleteColor(color)"
-    @onClose="useConfirmModal.close()"
-  />
+  <ConfirmModal @onConfirm="deleteColor(color)" @onClose="useConfirmModal.close()" />
 </template>
 <style scoped>
 .list-enter-active,

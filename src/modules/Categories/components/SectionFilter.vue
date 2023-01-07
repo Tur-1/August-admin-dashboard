@@ -1,15 +1,20 @@
 <script setup>
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { ListBox, ListBoxItem } from "@/components/ListBox";
-import { filterCategoriesBySection } from "@/modules/Categories/helpers";
+import { FilterCategoriesBySection } from "@/modules/Categories/helpers";
+import useCategoryService from "@/modules/Categories/services/useCategoryService";
+
+const { getAllSections } = useCategoryService();
 
 let selectedSection = ref("All");
 
 const selectSection = ({ id, name }) => {
-  filterCategoriesBySection(id);
+  FilterCategoriesBySection(id);
   selectedSection.value = name;
 };
+
+onMounted(getAllSections);
 </script>
 
 <template>

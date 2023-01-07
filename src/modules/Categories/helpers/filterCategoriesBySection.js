@@ -1,7 +1,7 @@
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
 
 
-function filterCategoriesBySection(sectionId)
+function FilterCategoriesBySection(sectionId)
 {
     CategoryStore.filtered = CategoryStore.list.data.filter((category) =>
     {
@@ -17,4 +17,4 @@ function filterCategoriesBySection(sectionId)
 }
 
 
-export default filterCategoriesBySection
+export default FilterCategoriesBySection

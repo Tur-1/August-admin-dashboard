@@ -1,16 +1,16 @@
 <template>
   <header>
     <form class="form-inline"></form>
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center" v-if="AuthUser.user">
       <div class="dropdown ms-lg-3">
         <a class="nav-link dropdown-toggle pt-1 px-0" href="#" role="button" data-bs-toggle="dropdown"
           aria-expanded="false">
           <div class="media d-flex align-items-center">
             <img class="avatar rounded-circle" alt="Image placeholder"
-              :src="AuthUser.user.gender == 'Male' ? maleAvatar : femaleAvatar" />
+              :src="AuthUser.user?.gender == 'Male' ? maleAvatar : femaleAvatar" />
             <div class="media-body ms-2 text-dark align-items-center d-none d-lg-block">
               <span class="mb-0 font-small fw-bold text-gray-900">{{
-                AuthUser.user.name
+                AuthUser.user?.name
               }}</span>
             </div>
           </div>
@@ -34,10 +34,8 @@ import AuthUser from "@/Auth/store/AuthUser";
 
 import maleAvatar from "@/assets/img/avatars/avatar_male.png";
 import femaleAvatar from "@/assets/img/avatars/avatar_female.png";
-import useAuthApi from "@/Auth/api/useAuthApi";
+import useAuthService from "@/Auth/services/useAuthService";
 
-const logout = async () =>
-{
-  await useAuthApi.logout();
-};
+const { logout } = useAuthService();
+
 </script>

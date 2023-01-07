@@ -25,6 +25,7 @@ export default function useCategoryService()
 
             CategoryStore.sections = response.data;
 
+
             useLoadingSpinner.hide();
 
             return response.data;
@@ -43,7 +44,6 @@ export default function useCategoryService()
             CategoryStore.filtered = response.data.data;
             CategoryStore.list = response.data;
             CategoryStore.pagination = response.data.meta.pagination;
-            CategoryStore.sections = FilterSections();
 
             return response.data;
         }

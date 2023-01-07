@@ -45,7 +45,7 @@ const router = createRouter({
       name: "login",
       component: () => import('@/Auth/views/login.vue'),
       meta: {
-        requireAuth: false,
+        guest: true,
       }
 
     }
@@ -57,25 +57,23 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) =>
 {
 
-
   useLoadingSpinner.show();
-  let isNotAuthenticated = await useAuthApi.isAuthenticated();
+  let isAuthenticated = await useAuthApi.isAuthenticated();
 
-  if (isNotAuthenticated.data == false)
+  if (!isAuthenticated.data && to.name !== 'login')
   {
-
-    useRouterService.isAuthenticated = false;
-    if (!to.name !== 'login')
-    {
-      return next({ name: 'login' });
-    }
-  } else
-  {
-    useRouterService.isAuthenticated = true;
-    AuthUser.setUserData(isNotAuthenticated.data);
+    AuthUser.isAuthenticated = false;
+    return next({ name: 'login' });
   }
 
+  AuthUser.isAuthenticated = true;
+  AuthUser.setUserData(isAuthenticated.data);
 
+
+  if (isAuthenticated.data && to.meta.guest)
+  {
+    return next({ name: 'dashboard' });
+  }
 
 
   useLoadingSpinner.hide();
