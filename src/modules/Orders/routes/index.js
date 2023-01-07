@@ -5,11 +5,17 @@ const OrdersRoutes = [
         name: 'orders',
         component: () => import('@/modules/Orders/views/index.vue'),
 
+        meta: {
+            title: 'orders'
+        }
     },
     {
         path: "/orders/:id/edit",
         name: "ordersEdit",
-        component: () => import('@/modules/Orders/views/Edit.vue')
+        component: () => import('@/modules/Orders/views/Edit.vue'),
+        meta: {
+            title: 'orders'
+        }
     }
 
 ];

@@ -56,7 +56,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) =>
 {
-
+  useRouterService.setPageTitle(to.meta.title);
   useLoadingSpinner.show();
   let isAuthenticated = await useAuthApi.isAuthenticated();
 
