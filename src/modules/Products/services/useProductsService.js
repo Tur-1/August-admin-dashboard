@@ -135,41 +135,44 @@ export default function useProductsService()
     };
     const deleteProductImage = async (id) =>
     {
+        if (AuthUser.userCanAccess('delete-products'))
+        {
+            useConfirmModal.onProgress(true)
 
-        useConfirmModal.onProgress(true)
+            let response = await useProductsApi.deleteProductImage(id);
 
-        let response = await useProductsApi.deleteProductImage(id);
+            useConfirmModal.close();
 
-        useConfirmModal.close();
+            useToastNotification.open(response.data.message);
 
-        useToastNotification.open(response.data.message);
-
-        useConfirmModal.onProgress(false)
-
+            useConfirmModal.onProgress(false)
+        }
     };
     const changeProductMainImage = async (id) =>
     {
+        if (AuthUser.userCanAccess('update-products'))
+        {
+            useLoadingSpinner.show();
 
-        useLoadingSpinner.show();
+            let response = await useProductsApi.changeProductMainImage(id);
 
-        let response = await useProductsApi.changeProductMainImage(id);
+            useToastNotification.open(response.data.message);
 
-        useToastNotification.open(response.data.message);
-
-        useLoadingSpinner.hide();
-
+            useLoadingSpinner.hide();
+        }
     };
     const publishProduct = async (id) =>
     {
+        if (AuthUser.userCanAccess('update-products'))
+        {
+            useLoadingSpinner.show();
 
-        useLoadingSpinner.show();
+            let response = await useProductsApi.publishProduct(id);
 
-        let response = await useProductsApi.publishProduct(id);
+            useToastNotification.open(response.data.message);
 
-        useToastNotification.open(response.data.message);
-
-        useLoadingSpinner.hide();
-
+            useLoadingSpinner.hide();
+        }
     };
 
     return {

@@ -2,6 +2,7 @@
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import OrdersStore from "@/modules/Orders/stores/OrdersStore";
 import useOrdersService from "@/modules/Orders/services/useOrdersService";
+import AuthUser from "@/Auth/store/AuthUser";
 
 const emits = defineEmits(["onDelete"]);
 
@@ -25,6 +26,7 @@ await getAllOrders();
       <td>
         <DropdownMenu>
           <RouterLink
+            v-if="AuthUser.userCanAccess('view-orders')"
             class="dropdown-item d-flex align-items-center"
             :to="{ name: 'ordersEdit', params: { id: order.order.id } }"
           >
@@ -33,6 +35,7 @@ await getAllOrders();
           </RouterLink>
 
           <a
+            v-if="AuthUser.userCanAccess('delete-orders')"
             @click="$emit('onDelete', { id: order.order.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"

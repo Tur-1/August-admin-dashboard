@@ -14,68 +14,74 @@ export default function useSectionService()
 
     const storeNewSection = async (formData) =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-        try
+        if (AuthUser.userCanAccess('create-categories'))
         {
-            const formData = appendFormData(FormStore.fields);
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            let response = await useCategoryApi.storeNewSection(formData);
+            try
+            {
+                const formData = appendFormData(FormStore.fields);
 
-            FormStore.clearFields();
+                let response = await useCategoryApi.storeNewSection(formData);
 
-            useRouterService.redirectBack();
+                FormStore.clearFields();
 
-            useToastNotification.open(response.data.message);
+                useRouterService.redirectBack();
+
+                useToastNotification.open(response.data.message);
 
 
 
-        } catch (error)
-        {
-            FormStore.setErrors(error.response);
+            } catch (error)
+            {
+                FormStore.setErrors(error.response);
+            }
+            FormStore.hideProgress();
         }
-        FormStore.hideProgress();
-
     };
     const showSection = async () =>
     {
-        useLoadingSpinner.show();
+        if (AuthUser.userCanAccess('view-categories'))
+        {
+            useLoadingSpinner.show();
 
-        const route = useRoute();
+            const route = useRoute();
 
-        let response = await useCategoryApi.getCategory(route.params.id);
+            let response = await useCategoryApi.getCategory(route.params.id);
 
-        FormStore.setFields(response.data);
+            FormStore.setFields(response.data);
 
-        useLoadingSpinner.hide();
-
+            useLoadingSpinner.hide();
+        }
     };
     const updateSection = async (formData) =>
     {
-        FormStore.showProgress();
-        FormStore.clearErrors();
-
-        try
+        if (AuthUser.userCanAccess('update-categories'))
         {
+            FormStore.showProgress();
+            FormStore.clearErrors();
 
-            const formData = appendFormData(FormStore.fields);
+            try
+            {
 
-            let response = await useCategoryApi.updateSection({
-                id: FormStore.fields.id,
-                formData: formData
-            });
+                const formData = appendFormData(FormStore.fields);
 
-            FormStore.setFields(response.data.category);
-            useToastNotification.open(response.data.message);
+                let response = await useCategoryApi.updateSection({
+                    id: FormStore.fields.id,
+                    formData: formData
+                });
 
-        } catch (error)
-        {
+                FormStore.setFields(response.data.category);
+                useToastNotification.open(response.data.message);
 
-            FormStore.setErrors(error.response);
+            } catch (error)
+            {
+
+                FormStore.setErrors(error.response);
+            }
+            FormStore.hideProgress();
         }
-        FormStore.hideProgress();
-
     };
     return {
 
