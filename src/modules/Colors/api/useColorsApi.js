@@ -27,7 +27,7 @@ const getColor = (id) =>
 }
 const deleteColor = (id) =>
 {
-    return api().delete("/colors/delete/" + id);
+    return api().post("/colors/delete/" + id);
 }
 
 export default {

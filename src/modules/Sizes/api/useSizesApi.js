@@ -21,7 +21,7 @@ const storeNewSize = (fields) =>
 const updateSize = (fields, id) =>
 {
 
-    return api().put("/sizes/update/" + id, fields);
+    return api().post("/sizes/update/" + id, fields);
 }
 const getSize = (id) =>
 {
@@ -29,7 +29,7 @@ const getSize = (id) =>
 }
 const deleteSize = (id) =>
 {
-    return api().delete("/sizes/delete/" + id);
+    return api().post("/sizes/delete/" + id);
 }
 
 export default {

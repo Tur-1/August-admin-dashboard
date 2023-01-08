@@ -28,7 +28,7 @@ const getBrand = (id) =>
 }
 const deleteBrand = (id) =>
 {
-    return api().delete("/brands/delete/" + id);
+    return api().post("/brands/delete/" + id);
 }
 
 export default {

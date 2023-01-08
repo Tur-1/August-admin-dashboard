@@ -15,7 +15,7 @@ const storeNewOrder = (fields) =>
 const updateOrder = (fields, id) =>
 {
 
-    return api().put("orders/update/" + id, fields);
+    return api().post("orders/update/" + id, fields);
 }
 const getOrder = (id) =>
 {
@@ -23,7 +23,7 @@ const getOrder = (id) =>
 }
 const deleteOrder = (id) =>
 {
-    return api().delete("orders/delete/" + id);
+    return api().post("orders/delete/" + id);
 }
 
 export default {

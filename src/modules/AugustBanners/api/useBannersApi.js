@@ -23,7 +23,7 @@ const getBanner = (id) =>
 }
 const deleteBanner = (id) =>
 {
-    return api().delete("bannersdelete/" + id);
+    return api().post("bannersdelete/" + id);
 }
 
 export default {

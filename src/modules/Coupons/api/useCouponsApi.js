@@ -15,7 +15,7 @@ const storeNewCoupon = (fields) =>
 const updateCoupon = (fields, id) =>
 {
 
-    return api().put("coupons/update/" + id, fields);
+    return api().post("coupons/update/" + id, fields);
 }
 const getCoupon = (id) =>
 {
@@ -23,7 +23,7 @@ const getCoupon = (id) =>
 }
 const deleteCoupon = (id) =>
 {
-    return api().delete("coupons/delete/" + id);
+    return api().post("coupons/delete/" + id);
 }
 
 export default {

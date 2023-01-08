@@ -29,7 +29,7 @@ const storeNewRole = (fields) =>
 const updateRole = (fields, id) =>
 {
 
-    return api().put("/roles/update/" + id, fields);
+    return api().post("/roles/update/" + id, fields);
 }
 const getRole = (id) =>
 {
@@ -37,7 +37,7 @@ const getRole = (id) =>
 }
 const deleteRole = (id) =>
 {
-    return api().delete("/roles/delete/" + id);
+    return api().post("/roles/delete/" + id);
 }
 
 export default {

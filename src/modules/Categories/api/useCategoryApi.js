@@ -43,7 +43,7 @@ const updateCategory = ({ id: id, formData: formData }) =>
 
 const deleteCategory = (id) =>
 {
-    return api().delete(`categories/delete/${ id }`);
+    return api().post(`categories/delete/${ id }`);
 }
 export default {
     getAllCategories,

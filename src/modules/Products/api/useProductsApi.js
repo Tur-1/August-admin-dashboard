@@ -35,15 +35,15 @@ const publishProduct = (id) =>
 }
 const deleteProduct = (id) =>
 {
-    return api().delete("/products/delete/" + id);
+    return api().post("/products/delete/" + id);
 }
 const deleteProductImage = (image_id) =>
 {
-    return api().delete("/products/images/delete/" + image_id);
+    return api().post("/products/images/delete/" + image_id);
 }
 const changeProductMainImage = (image_id) =>
 {
-    return api().delete("/products/images/update-main-image/" + image_id);
+    return api().post("/products/images/update-main-image/" + image_id);
 }
 
 export default {

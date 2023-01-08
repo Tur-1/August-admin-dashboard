@@ -23,7 +23,7 @@ const getReview = (id) =>
 }
 const deleteReview = (id) =>
 {
-    return api().delete("reviews/delete/" + id);
+    return api().post("reviews/delete/" + id);
 }
 
 

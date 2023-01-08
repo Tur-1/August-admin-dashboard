@@ -15,7 +15,7 @@ const storeNewUser = (fields) =>
 const updateUser = (fields, id) =>
 {
 
-    return api().put("/users/update/" + id, fields);
+    return api().post("/users/update/" + id, fields);
 }
 const getUser = (id) =>
 {
@@ -23,7 +23,7 @@ const getUser = (id) =>
 }
 const deleteUser = (id) =>
 {
-    return api().delete("/users/delete/" + id);
+    return api().post("/users/delete/" + id);
 }
 
 export default {
