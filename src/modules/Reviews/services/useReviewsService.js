@@ -1,6 +1,6 @@
 import useReviewsApi from "@/modules/Reviews/api/useReviewsApi";
 import useToastNotification from "@/components/Toast/useToastNotification";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import ReviewsStore from "@/modules/Reviews/stores/ReviewsStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
@@ -9,7 +9,7 @@ import { useRoute } from "vue-router";
 import useRouterService from "@/router/useRouterService";
 
 
-
+const AuthUser = useUserStore();
 export default function useReviewsService()
 {
 

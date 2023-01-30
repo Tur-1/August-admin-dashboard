@@ -9,7 +9,7 @@ import { useRoute } from "vue-router";
 import TableEntries from "@/components/MainTable/TableEntries";
 import useRolesApi from "@/modules/Roles/api/useRolesApi";
 
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore"; const AuthUser = useUserStore();
 export default function useUsersService()
 {
     const getAllRoles = async () =>

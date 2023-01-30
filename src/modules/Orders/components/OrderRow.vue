@@ -2,13 +2,23 @@
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import OrdersStore from "@/modules/Orders/stores/OrdersStore";
 import useOrdersService from "@/modules/Orders/services/useOrdersService";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
+import { useConfirmModal, ConfirmModal } from "@/components/ConfirmModal";
+import { ref } from "vue";
 
-const emits = defineEmits(["onDelete"]);
-
-const { getAllOrders } = useOrdersService();
+const { getAllOrders, deleteOrder } = useOrdersService();
 
 await getAllOrders();
+
+const AuthUser = useUserStore();
+
+let order = ref({ id: "", index: "" });
+
+const openModal = ({ id, index }) => {
+  useConfirmModal.open();
+  order.value.id = id;
+  order.value.index = index;
+};
 </script>
 
 <template>
@@ -36,7 +46,7 @@ await getAllOrders();
 
           <a
             v-if="AuthUser.userCanAccess('delete-orders')"
-            @click="$emit('onDelete', { id: order.order.id, index: index })"
+            @click="openModal({ id: order.order.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"
           >
@@ -47,6 +57,11 @@ await getAllOrders();
       </td>
     </tr>
   </transition-group>
+
+  <ConfirmModal
+    @onConfirm="deleteOrder(order)"
+    @onClose="useConfirmModal.close()"
+  />
 </template>
 <style scoped>
 .list-enter-active,

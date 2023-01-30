@@ -2,11 +2,11 @@
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import RolesStore from "@/modules/Roles/stores/RolesStore";
 import useRolesService from "@/modules/Roles/services/useRolesService";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 const emits = defineEmits(["onDelete"]);
 
 const { getRoles } = useRolesService();
-
+const AuthUser = useUserStore();
 await getRoles();
 </script>
 

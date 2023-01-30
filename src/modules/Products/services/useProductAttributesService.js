@@ -1,5 +1,5 @@
 
-import { useLoadingSpinner } from "@/components/LoadingSpinner"; import AuthUser from "@/Auth/store/AuthUser";
+import { useLoadingSpinner } from "@/components/LoadingSpinner"; import useUserStore from "@/Auth/store/userStore";
 
 import useColorsApi from "@/modules/Colors/api/useColorsApi";
 import ProductAttributesStore from "@/modules/Products/stores/ProductAttributesStore";
@@ -7,7 +7,7 @@ import useBrandsApi from "@/modules/Brands/api/useBrandsApi";
 import useCategoryApi from "@/modules/Categories/api/useCategoryApi";
 import useSizesApi from "@/modules/Sizes/api/useSizesApi";
 
-
+const AuthUser = useUserStore();
 export default function useProductAttributesService()
 {
 

@@ -8,7 +8,7 @@ import useUsersService from "@/modules/Users/services/useUsersService";
 import UsersStore from "@/modules/Users/stores/UsersStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { MainTable, TableSettings } from "@/components/MainTable";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 const { deleteUser, setShowingEntries, getAllUsers } = useUsersService();
 
 let search = ref("");
@@ -25,6 +25,7 @@ const openModal = ({ id, index }) => {
   user.value.id = id;
   user.value.index = index;
 };
+const AuthUser = useUserStore();
 </script>
 <template>
   <section class="main-section">

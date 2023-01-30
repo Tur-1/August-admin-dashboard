@@ -9,8 +9,8 @@ import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
 import { appendFormData, isNotNull } from "@/helpers";
 import useProductAttributesService from "@/modules/Products/services/useProductAttributesService";
-import AuthUser from "@/Auth/store/AuthUser";
-
+import useUserStore from "@/Auth/store/userStore";
+const AuthUser = useUserStore();
 export default function useProductsService()
 {
 

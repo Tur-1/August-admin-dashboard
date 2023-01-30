@@ -8,10 +8,10 @@ import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
 import { appendFormData } from "@/helpers";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 
 
-
+const AuthUser = useUserStore();
 export default function useBannersService()
 {
 
@@ -113,6 +113,20 @@ export default function useBannersService()
             useLoadingSpinner.hide();
         }
     };
+    const publishBanner = async (id) =>
+    {
+        if (AuthUser.userCanAccess('access-banners'))
+        {
+            useLoadingSpinner.show();
+
+
+            let response = await useBannersApi.publishBanner(id);
+            useToastNotification.open(response.data.message);
+
+            useLoadingSpinner.hide();
+        }
+    };
+
 
 
 
@@ -121,6 +135,7 @@ export default function useBannersService()
         storeNewBanner,
         getAllBanners,
         deleteBanner,
+        publishBanner,
         showBanner
     }
 

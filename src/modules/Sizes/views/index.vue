@@ -8,7 +8,7 @@ import useSizesService from "@/modules/Sizes/services/useSizesService";
 import SizesStore from "@/modules/Sizes/stores/SizesStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { MainTable } from "@/components/MainTable";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 const { deleteSize, getAllSizes } = useSizesService();
 
 let fields = ["Name", "Action"];
@@ -20,6 +20,7 @@ const openModal = ({ id, index }) => {
   Size.value.id = id;
   Size.value.index = index;
 };
+const AuthUser = useUserStore();
 </script>
 <template>
   <section class="main-section">

@@ -2,7 +2,7 @@
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import UsersStore from "@/modules/Users/stores/UsersStore";
 import useUsersService from "@/modules/Users/services/useUsersService";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 import maleAvatar from "@/assets/img/avatars/avatar_male.png";
 import femaleAvatar from "@/assets/img/avatars/avatar_female.png";
 const emits = defineEmits(["onDelete"]);
@@ -10,6 +10,8 @@ const emits = defineEmits(["onDelete"]);
 const { getAllUsers } = useUsersService();
 
 await getAllUsers();
+
+const AuthUser = useUserStore();
 </script>
 
 <template>

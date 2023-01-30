@@ -5,12 +5,13 @@ import useBannersService from "@/modules/AugustBanners/services/useBannersServic
 import BannerCard from "@/modules/AugustBanners/components/BannerCard.vue";
 import BannerCardSkeleton from "@/modules/AugustBanners/components/BannerCardSkeleton.vue";
 import { onMounted, onBeforeMount } from "vue";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 import useRouterService from "@/router/useRouterService";
 
 const { getAllBanners } = useBannersService();
 
 onMounted(getAllBanners);
+const AuthUser = useUserStore();
 </script>
 <template>
   <section class="main-section">

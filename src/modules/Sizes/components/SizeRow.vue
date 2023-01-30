@@ -2,11 +2,11 @@
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import SizesStore from "@/modules/Sizes/stores/SizesStore";
 import useSizesService from "@/modules/Sizes/services/useSizesService";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 const emits = defineEmits(["onDelete"]);
 
 const { getAllSizes } = useSizesService();
-
+const AuthUser = useUserStore();
 await getAllSizes();
 </script>
 

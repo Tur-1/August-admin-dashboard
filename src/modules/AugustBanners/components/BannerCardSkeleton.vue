@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-xl-4 col-lg-4 col-md-4 col-6" v-for="i in 12">
+    <div class="col-xl-3 col-lg-3 col-md-4 col-6" v-for="i in 12">
       <figure class="card border-1 m-3">
         <div class="card-header placeholder-wave p-0" style="height: 130px">
           <span class="card-img-top rounded-0 placeholder h-100" alt="..." />

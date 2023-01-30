@@ -8,7 +8,7 @@ import useCouponsService from "@/modules/Coupons/services/useCouponsService";
 import CouponsStore from "@/modules/Coupons/stores/CouponsStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { MainTable } from "@/components/MainTable";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 const { deleteCoupon, getAllCoupons } = useCouponsService();
 
 let fields = ["Code", "amount", "START DATE", "END DATE", "STATUS", "Action"];
@@ -20,6 +20,7 @@ const openModal = ({ id, index }) => {
   Coupon.value.id = id;
   Coupon.value.index = index;
 };
+const AuthUser = useUserStore();
 </script>
 <template>
   <section class="main-section">

@@ -3,7 +3,8 @@ import ButtonLink from "@/components/ButtonLink/index.vue";
 import PageHeader from "@/components/PageHeader/index.vue";
 import BrandCardSkeleton from "@/modules/Brands/components/BrandCardSkeleton.vue";
 import BrandCard from "@/modules/Brands/components/BrandCard.vue";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
+const AuthUser = useUserStore();
 </script>
 <template>
   <section class="main-section">
@@ -14,10 +15,8 @@ import AuthUser from "@/Auth/store/AuthUser";
         v-if="AuthUser.userCanAccess('create-brands')"
       />
     </PageHeader>
-    <div
-      class="card card-body border-0 shadow mb-4"
-      v-if="AuthUser.userCanAccess('access-brands')"
-    >
+    <div class="card card-body border-0 shadow mb-4">
+      <!-- v-if="AuthUser.userCanAccess('access-brands')" -->
       <div class="d-flex flex-wrap">
         <Suspense>
           <BrandCard />

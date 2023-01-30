@@ -2,13 +2,13 @@ import useCategoryApi from "@/modules/Categories/api/useCategoryApi";
 
 import useRouterService from "@/router/useRouterService";
 
-import { useLoadingSpinner } from "@/components/LoadingSpinner"; import AuthUser from "@/Auth/store/AuthUser";
+import { useLoadingSpinner } from "@/components/LoadingSpinner"; import useUserStore from "@/Auth/store/userStore";
 import useToastNotification from "@/components/Toast/useToastNotification";
 import { useRoute } from "vue-router";
 import { FormStore } from "@/components/BaseForm";
 import { appendFormData } from "@/helpers";
 
-
+const AuthUser = useUserStore();
 export default function useSectionService()
 {
 

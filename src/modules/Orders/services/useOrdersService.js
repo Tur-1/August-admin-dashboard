@@ -7,7 +7,9 @@ import { useRoute } from "vue-router";
 import OrderDetailsStore from "@/modules/Orders/stores/OrderDetailsStore";
 
 
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore"; import { useConfirmModal } from "@/components/ConfirmModal";
+import useToastNotification from "@/components/Toast/useToastNotification";
+const AuthUser = useUserStore();
 export default function useOrdersService()
 {
 
@@ -51,11 +53,28 @@ export default function useOrdersService()
         }
     }
 
+    const deleteOrder = async ({ id, index }) =>
+    {
+        if (AuthUser.userCanAccess('delete-orders'))
+        {
+            useConfirmModal.onProgress(true)
+            let response = await useOrdersApi.deleteOrder(id);
+
+            OrdersStore.value.filtered.splice(index, 1);
+            useConfirmModal.close();
+
+            useToastNotification.open(response.data.message);
+
+            useConfirmModal.onProgress(false)
+
+        }
+    }
 
 
 
     return {
         getAllOrders,
+        deleteOrder,
         showOrder
     }
 

@@ -5,13 +5,13 @@ import useBannersService from "@/modules/AugustBanners/services/useBannersServic
 import { ref } from "vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
 import defultImage from "@/assets/img/defult-image.png";
-import AuthUser from "@/Auth/store/AuthUser";
-const { getAllBanners, deleteBanner } = useBannersService();
+import useUserStore from "@/Auth/store/userStore";
+const { getAllBanners, deleteBanner, publishBanner } = useBannersService();
 
 await getAllBanners();
 
 let banner = ref({ id: "", index: "" });
-
+const AuthUser = useUserStore();
 const openModal = ({ id, index }) => {
   useConfirmModal.open();
   banner.value.id = id;
@@ -22,7 +22,7 @@ const openModal = ({ id, index }) => {
 <template>
   <transition-group name="list" tag="div" class="row">
     <div
-      class="col-xl-4 col-lg-4 col-md-4 col-6"
+      class="col-xl-3 col-lg-3 col-md-4 col-6"
       v-for="(banner, index) in BannersStore.list"
       :key="banner.id"
     >
@@ -30,7 +30,11 @@ const openModal = ({ id, index }) => {
         <div
           class="card-header bg-white text-center p-0 overflow-hidden d-flex justify-content-center align-items-center h-100 w-100"
         >
-          <img :src="banner.image_url ?? defultImage" class="w-100" />
+          <img
+            :src="banner.image_url ?? defultImage"
+            class="w-100"
+            style="height: 100px"
+          />
         </div>
 
         <figcaption
@@ -63,6 +67,20 @@ const openModal = ({ id, index }) => {
             </a>
           </DropdownMenu>
         </figcaption>
+
+        <div class="p-2">
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              :value="banner.is_active ?? ''"
+              :checked="banner.is_active ?? ''"
+              role="switch"
+              @change="publishBanner(banner.id)"
+              id="flexSwitchCheckChecked"
+            />
+          </div>
+        </div>
       </figure>
     </div>
   </transition-group>

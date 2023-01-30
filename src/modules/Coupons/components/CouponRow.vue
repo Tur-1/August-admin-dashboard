@@ -2,11 +2,11 @@
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import CouponsStore from "@/modules/Coupons/stores/CouponsStore";
 import useCouponsService from "@/modules/Coupons/services/useCouponsService";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 const emits = defineEmits(["onDelete"]);
 
 const { getAllCoupons } = useCouponsService();
-
+const AuthUser = useUserStore();
 await getAllCoupons();
 </script>
 

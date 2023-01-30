@@ -8,19 +8,13 @@ import useOrdersService from "@/modules/Orders/services/useOrdersService";
 import OrdersStore from "@/modules/Orders/stores/OrdersStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 
-const { deleteOrder, getAllOrders } = useOrdersService();
+const { getAllOrders } = useOrdersService();
 
 let fields = ["Code", "amount", "START DATE", "END DATE", "STATUS", "Action"];
 
-let Order = ref({ id: "", index: "" });
-
-const openModal = ({ id, index }) => {
-  useConfirmModal.open();
-  Order.value.id = id;
-  Order.value.index = index;
-};
+const AuthUser = useUserStore();
 </script>
 <template>
   <section class="main-section">

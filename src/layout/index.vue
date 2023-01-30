@@ -1,14 +1,14 @@
 <template>
-    <Sidebar />
-    <main class="main">
-        <Header />
-        <div class="container-fluid">
-            <RouterView :key="route.path" />
-        </div>
-        <Footer />
-        <Toast />
-        <LoadingSpinner />
-    </main>
+  <Sidebar />
+  <main class="main">
+    <Header />
+    <div class="container-fluid">
+      <RouterView :key="route.path" />
+    </div>
+
+    <Toast />
+    <LoadingSpinner />
+  </main>
 </template>
 
 <script setup>
@@ -22,4 +22,3 @@ import useRouterService from "@/router/useRouterService";
 
 const route = useRoute();
 </script>
-

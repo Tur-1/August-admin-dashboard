@@ -14,7 +14,7 @@ import {
   SearchCategories,
   setShowingEntries,
 } from "@/modules/Categories/helpers";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 const { getAllCategories, destroyCategory } = useCategoryService();
 
 onMounted(getAllCategories);
@@ -34,6 +34,7 @@ const openModal = ({ id, index }) => {
 };
 
 const fields = ["image", "name", "section", "Action"];
+const AuthUser = useUserStore();
 </script>
 <template>
   <section class="main-section">

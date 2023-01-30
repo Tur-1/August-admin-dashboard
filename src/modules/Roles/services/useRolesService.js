@@ -1,7 +1,7 @@
 import useRolesApi from "@/modules/Roles/api/useRolesApi";
 import useToastNotification from "@/components/Toast/useToastNotification";
 
-import { useLoadingSpinner } from "@/components/LoadingSpinner"; import AuthUser from "@/Auth/store/AuthUser";
+import { useLoadingSpinner } from "@/components/LoadingSpinner"; import useUserStore from "@/Auth/store/userStore";
 import RolesStore from "@/modules/Roles/stores/RolesStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
@@ -9,7 +9,7 @@ import { useRoute } from "vue-router";
 import useRouterService from "@/router/useRouterService";
 
 
-
+const AuthUser = useUserStore();
 export default function useRolesService()
 {
 

@@ -2,13 +2,13 @@
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import useCategoryService from "@/modules/Categories/services/useCategoryService";
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 const emits = defineEmits(["onDelete"]);
 
 const defultImage = "./src/assets/img/defult-image.png";
 
 const { getAllCategories } = useCategoryService();
-
+const AuthUser = useUserStore();
 await getAllCategories();
 </script>
 

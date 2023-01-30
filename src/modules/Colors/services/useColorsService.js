@@ -8,8 +8,8 @@ import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
 import { appendFormData } from "@/helpers";
-import AuthUser from "@/Auth/store/AuthUser";
-
+import useUserStore from "@/Auth/store/userStore";
+const AuthUser = useUserStore();
 export default function useColorsService()
 {
 

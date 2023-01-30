@@ -9,7 +9,7 @@ import { onMounted, ref } from "vue";
 import maleAvatar from "@/assets/img/avatars/avatar_male.png";
 import femaleAvatar from "@/assets/img/avatars/avatar_female.png";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 const { getAllReviews, deleteReview } = useReviewsService();
 
 onMounted(getAllReviews);
@@ -21,6 +21,8 @@ const openModal = ({ id, index }) => {
   Review.value.id = id;
   Review.value.index = index;
 };
+
+const AuthUser = useUserStore();
 </script>
 <template>
   <section class="main-section" v-if="AuthUser.userCanAccess('access-reviews')">
@@ -95,7 +97,7 @@ const openModal = ({ id, index }) => {
               </div>
             </div>
           </transition-group>
-          
+
           <h5 class="text-center" v-show="ReviewsStore.filtered.length == 0">
             No Reviews Found
           </h5>

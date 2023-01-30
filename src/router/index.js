@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Dashboard from '@/modules/Dashboard/index.vue'
 import UsersRoutes from '@/modules/Users/routes'
 import CategoriesRoutes from '@/modules/Categories/routes'
-import ColorsRoutes from '@/modules/colors/routes'
 import BrandsRoutes from '@/modules/Brands/routes'
 import SizesRoutes from '@/modules/Sizes/routes'
 import CouponsRoutes from '@/modules/Coupons/routes'
@@ -11,11 +10,14 @@ import RolesRoutes from '@/modules/Roles/routes'
 import ReviewsRoutes from '@/modules/Reviews/routes'
 import ProductsRoutes from '@/modules/Products/routes'
 import OrdersRoutes from '@/modules/Orders/routes'
-import useAuthApi from '@/Auth/api/useAuthApi'
+
+
 import useRouterService from '@/router/useRouterService'
 import { useLoadingSpinner } from '@/components/LoadingSpinner'
-import AuthUser from '@/Auth/store/AuthUser'
+
 import BannerRoutes from '@/modules/AugustBanners/routes'
+import useUserStore from '@/Auth/store/userStore'
+import ColorsRoutes from '@/modules/Colors/routes'
 
 
 
@@ -57,26 +59,20 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) =>
 {
   useRouterService.setPageTitle(to.meta.title);
-  useLoadingSpinner.show();
-  let isAuthenticated = await useAuthApi.isAuthenticated();
 
-  if (!isAuthenticated.data && to.name !== 'login')
+  const useStore = useUserStore();
+
+  if (!useStore.isAuthenticated && to.name !== 'login')
   {
-    AuthUser.isAuthenticated = false;
     return next({ name: 'login' });
   }
 
-  AuthUser.isAuthenticated = true;
-  AuthUser.setUserData(isAuthenticated.data);
 
-
-  if (isAuthenticated.data && to.meta.guest)
+  if (useStore.isAuthenticated && to.meta.guest)
   {
     return next({ name: 'dashboard' });
   }
 
-
-  useLoadingSpinner.hide();
   return next();
 })
 export default router

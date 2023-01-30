@@ -8,7 +8,7 @@ import useRolesService from "@/modules/Roles/services/useRolesService";
 import RolesStore from "@/modules/Roles/stores/RolesStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { MainTable } from "@/components/MainTable";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 const { deleteRole, getRoles } = useRolesService();
 
 let fields = ["Name", "Action"];
@@ -20,6 +20,7 @@ const openModal = ({ id, index }) => {
   Role.value.id = id;
   Role.value.index = index;
 };
+const AuthUser = useUserStore();
 </script>
 <template>
   <section class="main-section">

@@ -4,13 +4,13 @@ import useRouterService from "@/router/useRouterService";
 import BrandsStore from "@/modules/Brands/stores/BrandsStore";
 import useBrandsApi from "@/modules/Brands/api/useBrandsApi";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
 import { appendFormData } from "@/helpers";
 
-
+const AuthUser = useUserStore();
 export default function useBrandsService()
 {
 
@@ -18,15 +18,24 @@ export default function useBrandsService()
     {
         if (AuthUser.userCanAccess('access-brands'))
         {
-            let response = await useBrandsApi.getAll();
 
-            BrandsStore.value.filtered = response.data.data;
-            BrandsStore.value.list = response.data;
-            BrandsStore.value.pagination = response.data.pagination;
+            try
+            {
+                let response = await useBrandsApi.getAll();
+
+                BrandsStore.value.filtered = response.data.data;
+                BrandsStore.value.list = response.data;
+                BrandsStore.value.pagination = response.data.pagination;
+            } catch (error)
+            {
+                if (error.response.status == 401)
+                {
+                    useRouterService.redirectToRoute('login')
+                }
+
+            }
+
         }
-
-
-
     }
     const storeNewBrand = async (formData) =>
     {

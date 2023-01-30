@@ -213,11 +213,11 @@ import { onMounted } from "vue";
 import useReviewsService from "@/modules/Reviews/services/useReviewsService";
 import { useRoute } from "vue-router";
 import ReviewsStore from "@/modules/Reviews/stores/ReviewsStore";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 
 const route = useRoute();
 const { replyReview, showReview, updateReview } = useReviewsService();
-
+const AuthUser = useUserStore();
 onMounted(async () => showReview(route.params.id));
 </script>
 <style scoped>

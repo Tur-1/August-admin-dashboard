@@ -4,16 +4,15 @@ import BrandsStore from "@/modules/Brands/stores/BrandsStore";
 import useBrandsService from "@/modules/Brands/services/useBrandsService";
 import { ref } from "vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 
 const { getAllBrands, deleteBrand } = useBrandsService();
-
+const AuthUser = useUserStore();
 await getAllBrands();
 
 let Brand = ref({ id: "", index: "" });
 
-const openModal = ({ id, index }) =>
-{
+const openModal = ({ id, index }) => {
   useConfirmModal.open();
   Brand.value.id = id;
   Brand.value.index = index;
@@ -24,29 +23,50 @@ const defultImage = "./src/assets/img/defult-image.png";
 
 <template>
   <transition-group name="list">
-    <figure class="card border-1 m-3" style="width: 180px; min-height: 150px"
-      v-for="(Brand, index) in BrandsStore.filtered" :key="Brand.id">
-      <div style="min-height: 130px"
-        class="card-header bg-white text-center p-0 overflow-hidden d-flex justify-content-center align-items-center h-100 w-100">
-        <img height="76" :src="Brand.image_url ?? defultImage" class="img-fluid" alt="Logo" />
+    <figure
+      class="card border-1 m-3"
+      style="width: 170px; min-height: 150px"
+      v-for="(Brand, index) in BrandsStore.filtered"
+      :key="Brand.id"
+    >
+      <div
+        style="min-height: 130px"
+        class="card-header bg-white text-center p-0 overflow-hidden d-flex justify-content-center align-items-center h-100 w-100"
+      >
+        <img
+          height="76"
+          :src="Brand.image_url ?? defultImage"
+          class="img-fluid"
+          alt="Logo"
+        />
       </div>
 
       <figcaption class="p-2 d-flex justify-content-between align-items-center">
         <div class="Brandname">
           <h6 class="card-title m-0">{{ Brand.name }}</h6>
-          <small style="font-size: 12px">{{ Brand.products_count }} items</small>
+          <small style="font-size: 12px"
+            >{{ Brand.products_count }} products</small
+          >
         </div>
         <DropdownMenu>
-          <RouterLink v-if="AuthUser.userCanAccess('view-brands')" class="dropdown-item d-flex align-items-center" :to="{
-            name: 'brandsEdit',
-            params: { id: Brand.id },
-          }">
+          <RouterLink
+            v-if="AuthUser.userCanAccess('view-brands')"
+            class="dropdown-item d-flex align-items-center"
+            :to="{
+              name: 'brandsEdit',
+              params: { id: Brand.id },
+            }"
+          >
             <i class="fa-solid fa-pen-to-square"></i>
             Edit
           </RouterLink>
 
-          <a v-if="AuthUser.userCanAccess('delete-brands')" @click="openModal({ id: Brand.id, index: index })"
-            role="button" class="dropdown-item d-flex align-items-center text-danger">
+          <a
+            v-if="AuthUser.userCanAccess('delete-brands')"
+            @click="openModal({ id: Brand.id, index: index })"
+            role="button"
+            class="dropdown-item d-flex align-items-center text-danger"
+          >
             <i class="fa-solid fa-trash-can"></i>
             Delete
           </a>
@@ -64,7 +84,10 @@ const defultImage = "./src/assets/img/defult-image.png";
       </div>
     </div>
   </div>
-  <ConfirmModal @onConfirm="deleteBrand(Brand)" @onClose="useConfirmModal.close()" />
+  <ConfirmModal
+    @onConfirm="deleteBrand(Brand)"
+    @onClose="useConfirmModal.close()"
+  />
 </template>
 <style scoped>
 .list-enter-active,

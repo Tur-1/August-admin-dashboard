@@ -5,13 +5,13 @@ import ProductsStore from "@/modules/Products/stores/ProductsStore";
 import ButtonLink from "@/components/ButtonLink/index.vue";
 import { ref } from "vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 const { getAllProducts, deleteProduct, publishProduct } = useProductsService();
 
 await getAllProducts();
 
 let product = ref({ id: "", index: "" });
-
+const AuthUser = useUserStore();
 const openModal = ({ id, index }) => {
   useConfirmModal.open();
   product.value.id = id;

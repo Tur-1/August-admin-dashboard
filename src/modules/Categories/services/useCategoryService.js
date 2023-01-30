@@ -2,7 +2,7 @@ import useCategoryApi from "@/modules/Categories/api/useCategoryApi";
 import CategoryStore from "@/modules/Categories/stores/CategoryStore";
 import useRouterService from "@/router/useRouterService";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 import useToastNotification from "@/components/Toast/useToastNotification";
 import { FilterSections } from "@/modules/Categories/helpers";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
@@ -11,7 +11,7 @@ import { FormStore } from "@/components/BaseForm";
 import { appendFormData } from "@/helpers";
 import TableEntries from "@/components/MainTable/TableEntries";
 
-
+const AuthUser = useUserStore();
 export default function useCategoryService()
 {
 

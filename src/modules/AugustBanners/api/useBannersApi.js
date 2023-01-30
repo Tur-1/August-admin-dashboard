@@ -25,11 +25,17 @@ const deleteBanner = (id) =>
 {
     return api().post("bannersdelete/" + id);
 }
+const publishBanner = (id) =>
+{
+    return api().post("bannerspublish/" + id);
+}
+
 
 export default {
     storeNewBanner,
     updateBanner,
     getBanner,
     getAll,
-    deleteBanner
+    deleteBanner,
+    publishBanner
 }

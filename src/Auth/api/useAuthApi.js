@@ -1,7 +1,10 @@
 
+import useUserStore from "@/Auth/store/userStore";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
+// axios.defaults.headers.common['Authorization'] = `Bearer ${ userStore.access_token }`;
+
 
 const setCsrfCookie = () =>
 {
@@ -9,7 +12,13 @@ const setCsrfCookie = () =>
 }
 const logout = () =>
 {
-    return axios.post('http://localhost:8000/api/logout');
+    const userStore = useUserStore();
+    return axios.post('http://localhost:8000/api/logout', {
+        headers: {
+            "Authorization": 'Bearer ' + userStore.access_token
+        }
+    }
+    );
 }
 const isAuthenticated = () =>
 {
@@ -18,6 +27,7 @@ const isAuthenticated = () =>
 const login = (fields) =>
 {
     setCsrfCookie();
+
     return axios.post("http://localhost:8000/api/login", fields);
 }
 

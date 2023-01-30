@@ -3,7 +3,8 @@ import ButtonLink from "@/components/ButtonLink/index.vue";
 import PageHeader from "@/components/PageHeader/index.vue";
 import ColorCardSkeleton from "@/modules/Colors/components/ColorCardSkeleton.vue";
 import ColorCard from "@/modules/Colors/components/ColorCard.vue";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
+const AuthUser = useUserStore();
 </script>
 <template>
   <section class="main-section">

@@ -3,48 +3,75 @@ import loginForm from "@/Auth/store/loginForm";
 import useRouterService from "@/router/useRouterService";
 
 import useToastNotification from "@/components/Toast/useToastNotification";
-import AuthUser from "@/Auth/store/authUser";
+
+
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
+import useUserStore from "@/Auth/store/userStore";
+
 
 export default function useAuthService()
 {
+    const userStore = useUserStore();
     const login = async () =>
     {
-        useLoadingSpinner.show();
-        loginForm.clearErrors();
-        try
+        if (!userStore.isAuthenticated)
         {
-            let response = await useAuthApi.login(loginForm.fields);
+            useLoadingSpinner.show();
+            loginForm.clearErrors();
 
 
-            useRouterService.redirectToRoute('dashboard');
-
-        } catch (error)
-        {
-
-            if (error.response.status == 422)
+            try
             {
-                loginForm.setErrors(error.response);
-            }
-        }
+                let response = await useAuthApi.login(loginForm.fields);
 
-        useLoadingSpinner.hide();
+                userStore.setUserData(response.data);
+
+                useRouterService.redirectToRoute('dashboard');
+
+            } catch (error)
+            {
+
+                if (error.response.status == 422)
+                {
+                    loginForm.setErrors(error.response);
+                }
+            }
+
+            useLoadingSpinner.hide();
+
+        } else
+        {
+            useRouterService.redirectToRoute('dashboard');
+        }
     };
 
     const logout = async () =>
     {
-        useLoadingSpinner.show();
+
+        if (userStore.isAuthenticated)
+        {
+            useLoadingSpinner.show();
+
+            try
+            {
+                await useAuthApi.logout();
+
+                userStore.removeUserData();
+
+                useRouterService.redirectToRoute('login');
+            } catch (error)
+            {
+                useRouterService.redirectToRoute('login');
+
+            }
+
+            useLoadingSpinner.hide();
+        } else
+        {
+            useRouterService.redirectToRoute('login');
+        }
 
 
-        await useAuthApi.logout();;
-
-        AuthUser.permissions = [];
-        AuthUser.user = [];
-
-        useRouterService.redirectToRoute('login');
-
-
-        useLoadingSpinner.hide();
     };
     return {
         login,

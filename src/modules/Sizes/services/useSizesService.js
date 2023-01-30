@@ -1,6 +1,6 @@
 import useSizesApi from "@/modules/Sizes/api/useSizesApi";
 import useToastNotification from "@/components/Toast/useToastNotification";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import SizesStore from "@/modules/Sizes/stores/SizesStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
@@ -9,7 +9,7 @@ import { useRoute } from "vue-router";
 import useRouterService from "@/router/useRouterService";
 
 
-
+const AuthUser = useUserStore();
 export default function useSizesService()
 {
 

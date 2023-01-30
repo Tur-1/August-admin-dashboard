@@ -1,6 +1,6 @@
 <script setup>
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
-import AuthUser from "@/Auth/store/AuthUser";
+import useUserStore from "@/Auth/store/userStore";
 import PageHeader from "@/components/PageHeader/index.vue";
 import ProductCard from "@/modules/Products/components/ProductCard.vue";
 import ProductCardSkeleton from "@/modules/Products/components/ProductCardSkeleton.vue";
@@ -8,6 +8,7 @@ import useProductsService from "@/modules/Products/services/useProductsService";
 import ProductsStore from "@/modules/Products/stores/ProductsStore";
 
 const { storeNewProduct } = useProductsService();
+const AuthUser = useUserStore();
 </script>
 <template>
   <section class="main-section">
