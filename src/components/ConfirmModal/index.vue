@@ -11,7 +11,7 @@
             <h6 v-if="!slots.body">are you sure ?</h6>
             <slot name="body" />
           </div>
-          <div class="modal-footer">
+          <div class="confirm-modal-footer">
             <button
               type="button"
               class="btn btn-secondary"
@@ -27,15 +27,6 @@
               :disabled="useConfirmModal.isOnProgress"
             >
               <span>Confirm</span>
-              <div
-                class="spinner-border spinner-border-sm opacity-0"
-                role="status"
-                :class="{
-                  'opacity-100 onProgress': useConfirmModal.isOnProgress,
-                }"
-              >
-                <span class="visually-hidden">Loading...</span>
-              </div>
             </button>
           </div>
         </div>

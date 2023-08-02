@@ -2,6 +2,7 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 
+
 .datepicker {
     display: none;
 }
@@ -23608,6 +23609,7 @@ iframe {
 figcaption,
 figure,
 main {
+    position: relative;
     display: block;
     margin: 0;
 }
@@ -30006,3 +30008,8 @@ article .h6 {
 .datepicker-dropdown {
     z-index: 9999;
 }
+
+/* tr {
+    text-align: center !important;
+    vertical-align: middle !important;
+} */

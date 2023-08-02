@@ -20,6 +20,11 @@ const logout = () =>
     }
     );
 }
+const getAuthUser = () =>
+{
+    return axios.get('http://localhost:8000/api/get-authenticated-user');
+}
+
 const isAuthenticated = () =>
 {
     return axios.get('http://localhost:8000/api/isAuthenticated');
@@ -34,6 +39,7 @@ const login = (fields) =>
 export default {
     logout,
     isAuthenticated,
-    login
+    login,
+    getAuthUser
 
 }

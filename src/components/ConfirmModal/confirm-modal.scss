@@ -29,20 +29,17 @@
     justify-content: center;
     align-items: center;
 }
-
 .confirm-modal-footer {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-top: 1px solid #dee2e661;
-
-    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.75rem;
+    border-top: 0.0625rem solid #e5e7eb;
+    border-bottom-right-radius: 0.4375rem;
+    border-bottom-left-radius: 0.4375rem;
 }
 .confirm-modal-footer button {
-    background-color: transparent;
-    height: 40px;
-    font-size: 16px;
-}
-.confirm-modal-footer .cancel-btn {
-    color: #444;
-    border-right: 1px solid rgb(123 123 123 / 27%);
+    margin: 0 4px;
 }

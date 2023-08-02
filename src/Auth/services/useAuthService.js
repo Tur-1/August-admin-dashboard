@@ -73,9 +73,44 @@ export default function useAuthService()
 
 
     };
+
+    const getAuthUser = async () =>
+    {
+
+
+        if (userStore.isAuthenticated)
+        {
+            useLoadingSpinner.show();
+
+            try
+            {
+                let response = await useAuthApi.getAuthUser();
+
+                userStore.setUserData(response.data);
+
+            } catch (error)
+            {
+                console.log(error.response);
+            }
+
+            useLoadingSpinner.hide();
+
+        } else
+        {
+            useRouterService.redirectToRoute('dashboard');
+        }
+    }
+
+    const userHasPermission = (permission) =>
+    {
+
+        return userStore.permissions.includes(permission);
+    }
     return {
         login,
-        logout
+        logout,
+        getAuthUser,
+        userHasPermission,
     }
 }
 

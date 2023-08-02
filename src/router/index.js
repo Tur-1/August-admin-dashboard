@@ -1,25 +1,25 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
-import Dashboard from '@/modules/Dashboard/index.vue'
-import UsersRoutes from '@/modules/Users/routes'
-import CategoriesRoutes from '@/modules/Categories/routes'
-import BrandsRoutes from '@/modules/Brands/routes'
-import SizesRoutes from '@/modules/Sizes/routes'
-import CouponsRoutes from '@/modules/Coupons/routes'
-import RolesRoutes from '@/modules/Roles/routes'
-import ReviewsRoutes from '@/modules/Reviews/routes'
-import ProductsRoutes from '@/modules/Products/routes'
-import OrdersRoutes from '@/modules/Orders/routes'
+import Dashboard from '@/pages/Dashboard/index.vue'
+import UsersRoutes from '@/pages/Users/routes'
+import CategoriesRoutes from '@/pages/Categories/routes'
+import BrandsRoutes from '@/pages/Brands/routes'
+import SizesRoutes from '@/pages/Sizes/routes'
+import CouponsRoutes from '@/pages/Coupons/routes'
+import RolesRoutes from '@/pages/Roles/routes'
+import ReviewsRoutes from '@/pages/Reviews/routes'
+import ProductsRoutes from '@/pages/Products/routes'
+import OrdersRoutes from '@/pages/Orders/routes'
 
 
 import useRouterService from '@/router/useRouterService'
 import { useLoadingSpinner } from '@/components/LoadingSpinner'
 
-import BannerRoutes from '@/modules/AugustBanners/routes'
+import BannerRoutes from '@/pages/AugustBanners/routes'
 import useUserStore from '@/Auth/store/userStore'
-import ColorsRoutes from '@/modules/Colors/routes'
-
-
+import ColorsRoutes from '@/pages/Colors/routes'
+import ErrorsRoutes from '@/pages/Errors/routes'
+import useAuthService from '@/Auth/services/useAuthService'
 
 
 const router = createRouter({
@@ -42,6 +42,7 @@ const router = createRouter({
     ...BannerRoutes,
     ...ProductsRoutes,
     ...OrdersRoutes,
+    ...ErrorsRoutes
     , {
       path: "/login",
       name: "login",
@@ -62,6 +63,7 @@ router.beforeEach(async (to, from, next) =>
 
   const useStore = useUserStore();
 
+
   if (!useStore.isAuthenticated && to.name !== 'login')
   {
     return next({ name: 'login' });
@@ -72,6 +74,8 @@ router.beforeEach(async (to, from, next) =>
   {
     return next({ name: 'dashboard' });
   }
+
+
 
   return next();
 })
