@@ -88,10 +88,14 @@
                     <span class="fw-normal">{{ product.product_name }}</span>
                   </td>
                   <td>
-                    <span class="fw-normal">{{ product.product_brand }}</span>
+                    <span class="fw-normal">{{
+                      product.product_attributes.brand
+                    }}</span>
                   </td>
                   <td>
-                    <span class="fw-normal">{{ product.product_size }}</span>
+                    <span class="fw-normal">{{
+                      product.product_attributes.size
+                    }}</span>
                   </td>
                   <td>
                     <span class="fw-normal"
@@ -123,7 +127,7 @@
                   class="text-dark text-center"
                   style="font-size: 0.875rem"
                 >
-                  {{ OrderDetailsStore.order.subTotal }} SAR
+                  {{ OrderDetailsStore.order.sub_total }} SAR
                 </strong>
               </div>
               <div
