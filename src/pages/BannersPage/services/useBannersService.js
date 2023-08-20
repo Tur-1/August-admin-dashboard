@@ -28,111 +28,99 @@ export default function useBannersService()
     }
     const storeNewBanner = async () =>
     {
-        if (AuthUser.userCanAccess('create-banners'))
+
+        FormStore.showProgress();
+        FormStore.clearErrors();
+        try
         {
-            FormStore.showProgress();
-            FormStore.clearErrors();
-            try
-            {
-                const formData = appendFormData(FormStore.fields);
+            const formData = appendFormData(FormStore.fields);
 
-                let response = await useBannersApi.storeNewBanner(formData);
+            let response = await useBannersApi.storeNewBanner(formData);
 
-                FormStore.clearFields();
+            FormStore.clearFields();
 
-                useRouterService.redirectBack();
+            useRouterService.redirectBack();
 
-                useToastNotification.open().withMessage(response.data.message);
+            useToastNotification.open().withMessage(response.data.message);
 
-            } catch (error)
-            {
-                if (error.response.status == 403)
-                {
-                    useRouterService.redirectToRoute('Forbidden');
+        } catch (error)
+        {
 
-                }
 
-                console.log(error.response);
-                FormStore.setErrors(error);
-            }
-            FormStore.hideProgress();
+            FormStore.setErrors(error);
         }
+        FormStore.hideProgress();
+
 
     };
     const updateBanner = async () =>
     {
-        if (AuthUser.userCanAccess('update-banners'))
+
+        FormStore.showProgress();
+        FormStore.clearErrors();
+
+
+        try
         {
-            FormStore.showProgress();
-            FormStore.clearErrors();
+
+            const formData = appendFormData(FormStore.fields);
 
 
-            try
-            {
-
-                const formData = appendFormData(FormStore.fields);
-
-
-                let response = await useBannersApi.updateBanner({
-                    id: FormStore.fields.id,
-                    fields: formData
-                });
-
-                FormStore.setFields(response.data.banner);
-
-                useToastNotification.open().withMessage(response.data.message);
-            } catch (error)
-            {
-
-                FormStore.setErrors(error);
-            }
-
-            FormStore.hideProgress();
-        }
-    };
-    const deleteBanner = async ({ id, index }) =>
-    {
-        if (AuthUser.userCanAccess('delete-banners'))
-        {
-            useConfirmModal.showLoading()
-            let response = await useBannersApi.deleteBanner(id);
-
-            BannersStore.value.filtered.splice(index, 1);
-            useConfirmModal.close();
-
-            useToastNotification.open().withMessage(response.data.message);
-
-            useConfirmModal.hideLoading()
-        }
-    };
-    const showBanner = async () =>
-    {
-        if (AuthUser.userCanAccess('view-banners'))
-        {
-            useLoadingSpinner.show();
-            FormStore.clearErrors();
-
-            const route = useRoute();
-
-            let response = await useBannersApi.getBanner(route.params.id);
+            let response = await useBannersApi.updateBanner({
+                id: FormStore.fields.id,
+                fields: formData
+            });
 
             FormStore.setFields(response.data.banner);
 
-            useLoadingSpinner.hide();
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
+
+            FormStore.setErrors(error);
         }
+
+        FormStore.hideProgress();
+
+    };
+    const deleteBanner = async ({ id, index }) =>
+    {
+
+        useConfirmModal.showLoading()
+        let response = await useBannersApi.deleteBanner(id);
+
+        BannersStore.value.filtered.splice(index, 1);
+        useConfirmModal.close();
+
+        useToastNotification.open().withMessage(response.data.message);
+
+        useConfirmModal.hideLoading()
+
+    };
+    const showBanner = async (id) =>
+    {
+
+        useLoadingSpinner.show();
+        FormStore.clearErrors();
+
+        let response = await useBannersApi.getBanner(id);
+
+        FormStore.setFields(response.data.banner);
+
+        useLoadingSpinner.hide();
+
     };
     const publishBanner = async (id) =>
     {
-        if (AuthUser.userCanAccess('access-banners'))
-        {
-            useLoadingSpinner.show();
+
+        useLoadingSpinner.show();
 
 
-            let response = await useBannersApi.publishBanner(id);
-            useToastNotification.open().withMessage(response.data.message);
+        let response = await useBannersApi.publishBanner(id);
+        useToastNotification.open().withMessage(response.data.message);
 
-            useLoadingSpinner.hide();
-        }
+        useLoadingSpinner.hide();
+
     };
 
 

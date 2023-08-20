@@ -22704,8 +22704,8 @@ section.main-section {
 }
 
 .placeholder {
-    border-radius: 0.35rem;
-
+    background-color: #c1c1c1 !important;
+    border-radius: 0.25rem !important;
 }
 
 footer {
@@ -28619,6 +28619,7 @@ label {
 .card .table th {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+    vertical-align: middle;
 }
 
 .table [data-sort] {

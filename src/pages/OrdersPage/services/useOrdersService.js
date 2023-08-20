@@ -12,28 +12,26 @@ export default function useOrdersService()
     const getAllOrders = async ({ url } = {}) =>
     {
 
-
+        ordersStore.showLoading();
         let response = await useOrdersApi.getOrders({
             url: url,
         });
 
-        console.log(response.data);
         ordersStore.orders = response.data.data;
         ordersStore.paginationLinks = response.data.meta.pagination.links;
-
+        ordersStore.hideLoading();
 
     }
 
 
-    const showOrder = async () =>
+    const showOrder = async (id) =>
     {
 
         useLoadingSpinner.show();
         FormStore.clearErrors();
 
-        const route = useRoute();
 
-        let response = await useOrdersApi.getOrder(route.params.id);
+        let response = await useOrdersApi.getOrder(id);
 
         OrderDetailsStore.order = response.data.order
         OrderDetailsStore.products = response.data.products
@@ -49,7 +47,7 @@ export default function useOrdersService()
     const deleteOrder = async () =>
     {
 
-        useConfirmModal.showLoading()
+        useConfirmModal.showLoading();
         let response = await useOrdersApi.deleteOrder(ordersStore.order_id.id);
 
         ordersStore.orders.splice(ordersStore.order_id.index, 1);

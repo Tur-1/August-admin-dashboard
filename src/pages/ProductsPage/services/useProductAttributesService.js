@@ -1,14 +1,12 @@
 
-import { useLoadingSpinner } from "@/components/LoadingSpinner"; import useUserStore from "@/Auth/store/userStore";
+import { useLoadingSpinner } from "@/components/LoadingSpinner";
+import useColorsApi from "@/pages/ColorsPage/api/useColorsApi";
+import ProductAttributesStore from "@/pages/ProductsPage/stores/ProductAttributesStore";
+import useBrandsApi from "@/pages/BrandsPage/api/useBrandsApi";
+import useCategoryApi from "@/pages/CategoriesPage/api/useCategoryApi";
+import useSizesApi from "@/pages/SizesPage/api/useSizesApi";
+import useSectionApi from "@/pages/CategoriesPage/api/useSectionApi";
 
-import useColorsApi from "@/pages/Colors/api/useColorsApi";
-import ProductAttributesStore from "@/pages/Products/stores/ProductAttributesStore";
-import useBrandsApi from "@/pages/Brands/api/useBrandsApi";
-import useCategoryApi from "@/pages/Categories/api/useCategoryApi";
-import useSizesApi from "@/pages/Sizes/api/useSizesApi";
-import useSectionApi from "@/pages/Categories/api/useSectionApi";
-
-const AuthUser = useUserStore();
 export default function useProductAttributesService()
 {
 

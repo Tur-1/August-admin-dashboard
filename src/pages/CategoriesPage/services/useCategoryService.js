@@ -1,5 +1,5 @@
 import useCategoryApi from "@/pages/CategoriesPage/api/useCategoryApi";
-import CategoryStore from "@/pages/CategoriesPage/stores/CategoryStore";
+import useCategoriesStore from "@/pages/CategoriesPage/stores/CategoriesStore";
 import useRouterService from "@/router/useRouterService";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import useUserStore from "@/Auth/store/userStore";
@@ -14,44 +14,40 @@ const AuthUser = useUserStore();
 export default function useCategoryService()
 {
 
-
+    const categoriesStore = useCategoriesStore();
 
     const getAllCategories = async ({ url, query, section_id } = {}) =>
     {
 
 
-        if (AuthUser.userCanAccess('access-categories'))
-        {
-            useLoadingSpinner.show();
-            let response = await useCategoryApi.getAllCategories(
-                {
-                    url: url,
-                    query: query,
-                    section_id: section_id
+        categoriesStore.showLoading();
+        let response = await useCategoryApi.getAllCategories(
+            {
+                url: url,
+                query: query,
+                section_id: section_id
 
-                });
+            });
 
 
-            CategoryStore.list = response.data.data;
-            CategoryStore.pagination = response.data.meta.pagination;
+        categoriesStore.categories = response.data.data;
+        categoriesStore.paginationLinks = response.data.meta.pagination.links;
 
-            useLoadingSpinner.hide();
-
-        }
+        categoriesStore.hideLoading();
 
     }
 
     const getAllCategoriesBySection = async (section_id) =>
     {
 
-        if (AuthUser.userCanAccess('access-categories') && section_id)
+        if (section_id)
         {
 
             useLoadingSpinner.show();
 
             let response = await useCategoryApi.getAllCategoriesBySection(section_id);
 
-            CategoryStore.sectionCategories = response.data;
+            categoriesStore.sectionCategories = response.data;
 
             useLoadingSpinner.hide();
 
@@ -60,104 +56,105 @@ export default function useCategoryService()
 
     const storeNewCategory = async (formData) =>
     {
-        if (AuthUser.userCanAccess('create-categories'))
+
+        FormStore.showProgress();
+        FormStore.clearErrors();
+
+        try
         {
-            FormStore.showProgress();
-            FormStore.clearErrors();
+            const formData = appendFormData(FormStore.fields);
 
-            try
-            {
-                const formData = appendFormData(FormStore.fields);
+            let response = await useCategoryApi.storeNewCategory(formData);
 
-                let response = await useCategoryApi.storeNewCategory(formData);
-
-                FormStore.clearFields();
-                useRouterService.redirectBack();
-
-                useToastNotification.open().withMessage(response.data.message);
-
-
-            } catch (error)
-            {
-                FormStore.setErrors(error);
-            }
-
-            FormStore.hideProgress();
-        }
-    };
-    const updateCategory = async (formData) =>
-    {
-        if (AuthUser.userCanAccess('update-categories'))
-        {
-            FormStore.showProgress();
-            FormStore.clearErrors();
-
-            try
-            {
-                const formData = appendFormData(FormStore.fields);
-
-
-                let response = await useCategoryApi.updateCategory({
-                    formData: formData,
-                    id: FormStore.fields.id
-                });
-
-
-                FormStore.setFields(response.data.category);
-
-
-                useToastNotification.open().withMessage(response.data.message);
-
-
-            } catch (error)
-            {
-
-                console.log(error.response);
-                FormStore.setErrors(error);
-            }
-            FormStore.hideProgress();
-        }
-    };
-    const destroyCategory = async (category) =>
-    {
-
-
-        if (AuthUser.userCanAccess('delete-categories'))
-        {
-            useConfirmModal.showLoading()
-
-            let response = await useCategoryApi.deleteCategory(category.id);
-
-            CategoryStore.list.splice(category.index, 1);
-            useConfirmModal.close();
+            FormStore.clearFields();
+            useRouterService.redirectBack();
 
             useToastNotification.open().withMessage(response.data.message);
 
-            useConfirmModal.hideLoading()
+
+        } catch (error)
+        {
+            FormStore.setErrors(error);
         }
+
+        FormStore.hideProgress();
+
+    };
+    const updateCategory = async (formData) =>
+    {
+
+        FormStore.showProgress();
+        FormStore.clearErrors();
+
+        try
+        {
+            const formData = appendFormData(FormStore.fields);
+
+
+            let response = await useCategoryApi.updateCategory({
+                formData: formData,
+                id: FormStore.fields.id
+            });
+
+
+            FormStore.setFields(response.data.category);
+
+
+            useToastNotification.open().withMessage(response.data.message);
+
+
+        } catch (error)
+        {
+
+            FormStore.setErrors(error);
+        }
+        FormStore.hideProgress();
+
+    };
+    const destroyCategory = async () =>
+    {
+
+
+        useConfirmModal.showLoading();
+
+        let response = await useCategoryApi.deleteCategory(categoriesStore.category_id.id);
+
+        categoriesStore.categories.splice(categoriesStore.category_id.index, 1);
+        useConfirmModal.close();
+
+        useToastNotification.open().withMessage(response.data.message);
+
+        useConfirmModal.hideLoading();
+
 
 
     }
     const showCategory = async () =>
     {
-        if (AuthUser.userCanAccess('view-categories'))
-        {
-            useLoadingSpinner.show();
-            FormStore.clearErrors();
+
+        useLoadingSpinner.show();
+        FormStore.clearErrors();
+        const { getSections } = useSectionService();
 
 
-            const route = useRoute();
+        const route = useRoute();
 
-            let response = await useCategoryApi.getCategory(route.params.id);
+        let response = await useCategoryApi.getCategory(route.params.id);
 
-            FormStore.setFields(response.data);
-            const { getSections } = useSectionService();
+        FormStore.setFields(response.data);
 
-            await getSections();
-            await getAllCategoriesBySection(FormStore.fields.section_id);
-            useLoadingSpinner.hide();
+        await getSections();
+        await getAllCategoriesBySection(FormStore.fields.section_id);
+        useLoadingSpinner.hide();
 
-        }
+
+    };
+    const openConfirmModal = ({ id, index }) =>
+    {
+
+        useConfirmModal.open();
+        categoriesStore.category_id.id = id;
+        categoriesStore.category_id.index = index;
     };
 
     return {
@@ -166,7 +163,8 @@ export default function useCategoryService()
         storeNewCategory,
         destroyCategory,
         showCategory,
-        updateCategory
+        updateCategory,
+        openConfirmModal
     }
 
 }

@@ -185,5 +185,7 @@ import OrderDetailsStore from "@/pages/OrdersPage/stores/OrderDetailsStore";
 const route = useRoute();
 const { showOrder } = useOrdersService();
 
-onMounted(showOrder);
+onMounted(async () => {
+  await showOrder(route.params.id);
+});
 </script>

@@ -29,9 +29,9 @@ const getProduct = (id) =>
 {
     return api().post("/products/show/" + id);
 }
-const publishProduct = (id) =>
+const publishProduct = (id, publish_value) =>
 {
-    return api().post("/products/publish/" + id);
+    return api().post(`/products/${ id }/publish/` + publish_value);
 }
 const deleteProduct = (id) =>
 {

@@ -1,26 +1,27 @@
+
+
+
 import { reactive, ref } from "vue";
 import { defineStore } from 'pinia'
 
-const useOrdersStore = defineStore('OrdersStore', () =>
+const useCategoriesStore = defineStore('CategoriesStore', () =>
 {
     let isLoading = ref(false);
-    let orders = reactive([]);
+    let categories = reactive([]);
+    let sectionCategories = reactive([]);
+    let sections = reactive([]);
     let paginationLinks = reactive([]);
-    let order_id = reactive({
+    let category_id = reactive({
         id: null,
         index: null
     });
 
-
     let tableColumns = [
         { label: "#", field: "id" },
-        { label: "Name", field: "user_name" },
-        { label: "Date", field: "date" },
-        { label: "Total", field: "total" },
-        { label: "Status", field: "status" },
-        { label: "Actions", Actions: { routeName: "ordersEdit" } },
+        { label: "Name", field: "name" },
+        { label: "section", field: "section_name" },
+        { label: "Actions", Actions: { routeName: "categoriesEdit" } },
     ];
-
     const showLoading = () => 
     {
         isLoading.value = true;
@@ -35,11 +36,13 @@ const useOrdersStore = defineStore('OrdersStore', () =>
         isLoading,
         showLoading,
         hideLoading,
-        orders,
-        order_id,
+        categories,
+        category_id,
         paginationLinks,
         tableColumns,
+        sectionCategories,
+        sections
     }
 })
 
-export default useOrdersStore;
+export default useCategoriesStore;

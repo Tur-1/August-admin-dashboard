@@ -1,8 +1,6 @@
 <script setup>
 import { onMounted } from "vue";
 import useCategoryService from "@/pages/CategoriesPage/services/useCategoryService";
-import CategoryTree from "@/pages/CategoriesPage/components/CategoryTree.vue";
-import CategoryStore from "@/pages/CategoriesPage/stores/CategoryStore";
 
 import {
   FormStore,
@@ -11,11 +9,16 @@ import {
   FormInput,
   FormFileUpload,
 } from "@/components/BaseForm";
+import useCategoriesStore from "@/pages/CategoriesPage/stores/CategoriesStore";
+import { useRoute } from "vue-router";
 
 const { showCategory, updateCategory, getAllCategoriesBySection } =
   useCategoryService();
-
-onMounted(showCategory);
+const categoriesStore = useCategoriesStore();
+const route = useRoute();
+onMounted(async () => {
+  await showCategory(route.params.id);
+});
 </script>
 <template>
   <section class="main-section">
@@ -36,7 +39,7 @@ onMounted(showCategory);
             @change="getAllCategoriesBySection(FormStore.fields.section_id)"
           >
             <option
-              v-for="(section, index) in CategoryStore.sections"
+              v-for="(section, index) in categoriesStore.sections"
               :key="index"
               :value="section.id"
               :selected="FormStore.fields.section_id == section.id"
@@ -53,14 +56,15 @@ onMounted(showCategory);
             id="category"
             defaultOption="-- main category --"
           >
-            <CategoryTree
-              v-for="category in CategoryStore.sectionCategories"
-              :category="category"
+            <option
+              v-for="category in categoriesStore.sectionCategories"
+              :value="category.id"
               :key="category.id"
               :selected="FormStore.fields.parent_id == category.id"
-            />
+            >
+              <span>{{ category.name }}</span>
+            </option>
           </FormSelect>
-
           <!-- category name input-->
           <FormInput
             label="Name *"
@@ -80,3 +84,4 @@ onMounted(showCategory);
     </BaseForm>
   </section>
 </template>
+@/pages/CategoriesPage/stores/CategoriesStore

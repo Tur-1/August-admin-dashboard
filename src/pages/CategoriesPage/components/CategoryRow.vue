@@ -1,34 +1,24 @@
 <script setup>
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
-import CategoryStore from "@/pages/CategoriesPage/stores/CategoryStore";
-import useUserStore from "@/Auth/store/userStore";
-import useCategoryService from "@/pages/CategoriesPage/services/useCategoryService";
+import useCategoriesStore from "@/pages/CategoriesPage/stores/CategoriesStore";
+import { CategoryRowSkeleton } from "@/pages/CategoriesPage/components";
+import defultImage from "@/assets/img/defult-image.png";
 
-const { getAllCategories } = useCategoryService();
 const emits = defineEmits(["onDelete"]);
 
-const defultImage = "./src/assets/img/defult-image.png";
-
-const AuthUser = useUserStore();
-
-await getAllCategories();
+const categoriesStore = useCategoriesStore();
 </script>
 
 <template>
-  <transition-group name="list">
-    <tr v-for="(category, index) in CategoryStore.list" :key="category.id">
+  <transition-group name="list" v-if="!categoriesStore.isLoading">
+    <tr
+      v-for="(category, index) in categoriesStore.categories"
+      :key="category.id"
+    >
       <td>
-        <div class="form-check dashboard-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="userCheck1"
-          />
-          <label class="form-check-label" for="userCheck1"></label>
-        </div>
+        <span class="fw-normal">{{ category.id }}</span>
       </td>
-      <td>
+      <td class="d-flex align-items-center">
         <a href="#" class="d-flex align-items-center">
           <img
             :src="category.image_url ?? defultImage"
@@ -37,10 +27,9 @@ await getAllCategories();
             alt="Avatar"
           />
         </a>
+        <span class="fw-normal ms-2">{{ category.name }}</span>
       </td>
-      <td>
-        <span class="fw-normal">{{ category.name }}</span>
-      </td>
+
       <td>
         <span class="fw-normal">
           {{ category.section_name ?? "..." }}
@@ -49,7 +38,6 @@ await getAllCategories();
       <td>
         <DropdownMenu>
           <RouterLink
-            v-if="AuthUser.userCanAccess('view-categories')"
             class="dropdown-item d-flex align-items-center"
             :to="{
               name: category.is_section ? 'sectionEdit' : 'categoriesEdit',
@@ -61,7 +49,6 @@ await getAllCategories();
           </RouterLink>
 
           <a
-            v-if="AuthUser.userCanAccess('delete-categories')"
             @click="$emit('onDelete', { id: category.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"
@@ -73,6 +60,7 @@ await getAllCategories();
       </td>
     </tr>
   </transition-group>
+  <CategoryRowSkeleton v-if="categoriesStore.isLoading" />
 </template>
 <style scoped>
 .list-enter-active,

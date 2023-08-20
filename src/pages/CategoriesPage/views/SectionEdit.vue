@@ -7,9 +7,13 @@ import {
   FormInput,
   FormStore,
 } from "@/components/BaseForm";
+import { useRoute } from "vue-router";
 
 const { updateSection, showSection } = useSectionService();
-onMounted(showSection);
+const route = useRoute();
+onMounted(async () => {
+  await showSection(route.params.id);
+});
 </script>
 <template>
   <section class="main-section">

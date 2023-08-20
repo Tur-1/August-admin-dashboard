@@ -4,28 +4,42 @@ import {
   TableHead,
   TableRow,
   NoRecordsFound,
+  TableSettings,
 } from "@/components/BaseTable";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
 import Pagination from "@/components/Pagination/index.vue";
 
-const emtis = defineEmits(["onDelete", "onPageChange", "onDeleteConfirm"]);
+const emtis = defineEmits([
+  "onDelete",
+  "onPageChange",
+  "onDeleteConfirm",
+  "onSearch",
+]);
 
 const props = defineProps({
   isLoading: Boolean,
   noRecordsFoundTitle: String,
   confirmTitle: String,
   pagination_links: Array,
+  modelValue: String,
+  searchable: Boolean,
   columns: {
     type: Array,
     require: true,
   },
   data: {
     type: Array,
-    require: true,
   },
 });
 </script>
 <template>
+  <TableSettings
+    :searchable="searchable"
+    @onSearch="(search) => $emit('onSearch', search)"
+  >
+    <slot name="tableSettings" />
+  </TableSettings>
+
   <div class="card shadow">
     <div class="card-body">
       <table class="table table-hover">
@@ -40,12 +54,12 @@ const props = defineProps({
             />
 
             <TableSkeleton v-if="props.isLoading" :columns="columns" />
-            <NoRecordsFound
-              :show="!props.isLoading && data.length == 0"
-              :columns="columns"
-              :noRecordsFoundTitle="noRecordsFoundTitle"
-            />
           </template>
+          <NoRecordsFound
+            :show="!props.isLoading && data?.length == 0"
+            :columns="columns"
+            :noRecordsFoundTitle="noRecordsFoundTitle"
+          />
           <slot name="row" />
         </tbody>
       </table>

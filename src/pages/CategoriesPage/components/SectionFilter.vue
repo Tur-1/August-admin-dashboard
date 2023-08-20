@@ -1,18 +1,22 @@
 <script setup>
-import CategoryStore from "@/pages/CategoriesPage/stores/CategoryStore";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { ListBox, ListBoxItem } from "@/components/ListBox";
 import useCategoryService from "@/pages/CategoriesPage/services/useCategoryService";
-import { isNotNull } from "@/helpers";
+import useCategoriesStore from "@/pages/CategoriesPage/stores/CategoriesStore";
+import useSectionService from "@/pages/CategoriesPage/services/useSectionService";
 
 let activeSection = ref("All");
 const { getAllCategories } = useCategoryService();
+const { getSections } = useSectionService();
 
+const categoriesStore = useCategoriesStore();
 const selectSection = async ({ id, name }) => {
   activeSection.value = name;
 
   await getAllCategories({ section_id: id });
 };
+
+onMounted(getSections);
 </script>
 
 <template>
@@ -23,7 +27,7 @@ const selectSection = async ({ id, name }) => {
       :active="activeSection == 'All'"
     />
     <ListBoxItem
-      v-for="section in CategoryStore.sections"
+      v-for="section in categoriesStore.sections"
       :label="section.name"
       @click="selectSection({ id: section.id, name: section.name })"
       :active="activeSection == section.name"

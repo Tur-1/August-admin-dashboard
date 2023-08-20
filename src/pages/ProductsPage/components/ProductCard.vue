@@ -1,36 +1,28 @@
 <script setup>
 import defultImage from "@/assets/img/defult-image.png";
 import useProductsService from "@/pages/ProductsPage/services/useProductsService";
-import ProductsStore from "@/pages/ProductsPage/stores/ProductsStore";
 import ButtonLink from "@/components/ButtonLink/index.vue";
-import { ref } from "vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
-import useUserStore from "@/Auth/store/userStore";
-const { getAllProducts, deleteProduct, publishProduct } = useProductsService();
+import useProductsStore from "@/pages/ProductsPage/stores/ProductsStore";
+const { getAllProducts, deleteProduct, publishProduct, openConfirmModal } =
+  useProductsService();
 
 await getAllProducts();
 
-let product = ref({ id: "", index: "" });
-const AuthUser = useUserStore();
-const openModal = ({ id, index }) => {
-  useConfirmModal.open();
-  product.value.id = id;
-  product.value.index = index;
-};
+const productsStore = useProductsStore();
 </script>
 
 <template>
   <transition-group name="list">
     <div
       class="product-list-card"
-      v-for="(product, index) in ProductsStore.filtered"
+      v-for="(product, index) in productsStore.products"
       :key="product.id"
     >
       <button
         type="button"
-        v-if="AuthUser.userCanAccess('delete-products')"
         class="product-list-card-delete-btn"
-        @click="openModal({ id: product.id, index: index })"
+        @click="openConfirmModal({ id: product.id, index: index })"
       >
         <i class="fa-solid fa-circle-xmark"></i>
       </button>
@@ -89,13 +81,12 @@ const openModal = ({ id, index }) => {
               :value="product.status ?? ''"
               :checked="product.status ?? ''"
               role="switch"
-              @change="publishProduct(product.id)"
-              id="flexSwitchCheckChecked"
+              @change="publishProduct(product.id, $event.target.checked)"
+              :id="`product-switch-${product.id}`"
             />
           </div>
         </div>
         <ButtonLink
-          v-if="AuthUser.userCanAccess('view-products')"
           title="view details"
           routeName="productsEdit"
           :params="{ id: product.id }"
@@ -106,10 +97,7 @@ const openModal = ({ id, index }) => {
     </div>
   </transition-group>
 
-  <ConfirmModal
-    @onConfirm="deleteProduct(product)"
-    @onClose="useConfirmModal.close()"
-  />
+  <ConfirmModal @onConfirm="deleteProduct" @onClose="useConfirmModal.close()" />
 </template>
 <style scoped>
 .list-enter-active,

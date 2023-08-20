@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted } from "vue";
 import useCategoryService from "@/pages/CategoriesPage/services/useCategoryService";
-import CategoryTree from "@/pages/CategoriesPage/components/CategoryTree.vue";
-import CategoryStore from "@/pages/CategoriesPage/stores/CategoryStore";
+import useSectionService from "@/pages/CategoriesPage/services/useSectionService";
+import useCategoriesStore from "@/pages/CategoriesPage/stores/CategoriesStore";
 import {
   FormStore,
   BaseForm,
@@ -10,19 +10,19 @@ import {
   FormSelect,
   FormFileUpload,
 } from "@/components/BaseForm";
-import useSectionService from "@/pages/CategoriesPage/services/useSectionService";
 
+const categoriesStore = useCategoriesStore();
 const { getAllCategoriesBySection, storeNewCategory } = useCategoryService();
 const { getSections } = useSectionService();
 
 onMounted(async () => {
+  categoriesStore.sectionCategories = [];
   FormStore.setFields({
     parent_id: "",
     section_id: "",
     name: "",
     image: "",
   });
-  CategoryStore.sectionCategories = [];
 
   await getSections();
 });
@@ -45,7 +45,7 @@ onMounted(async () => {
             @change="getAllCategoriesBySection(FormStore.fields.section_id)"
           >
             <option
-              v-for="(section, index) in CategoryStore.sections"
+              v-for="(section, index) in categoriesStore.sections"
               :key="index"
               :value="section.id"
             >
@@ -60,13 +60,8 @@ onMounted(async () => {
             id="category"
             defaultOption="-- main category --"
           >
-            <!-- <CategoryTree
-              v-for="category in CategoryStore.sectionCategories"
-              :category="category"
-              :key="category.id"
-            /> -->
             <option
-              v-for="category in CategoryStore.sectionCategories"
+              v-for="category in categoriesStore.sectionCategories"
               :value="category.id"
               :key="category.id"
             >

@@ -1,6 +1,6 @@
 <script setup>
 import { FormStore, FormInput, FormSelect } from "@/components/BaseForm";
-import CategoryTree from "@/pages/Categories/components/CategoryTree.vue";
+
 import {
   ProductImages,
   SizeOptions,
@@ -14,6 +14,7 @@ import SubmitButton from "@/components/SubmitButton/index.vue";
 
 import { onMounted } from "vue";
 import useProductAttributesService from "@/pages/ProductsPage/services/useProductAttributesService";
+import { useRoute } from "vue-router";
 
 const { updateProduct, showProduct, deleteProductImage } = useProductsService();
 const {
@@ -23,17 +24,12 @@ const {
   getAllCategoriesBySection,
   getSizeOptions,
 } = useProductAttributesService();
-
+const route = useRoute();
 onMounted(async () => {
   FormStore.clearErrors();
 
-  Promise.all([
-    showProduct(),
-    getColors(),
-    getBrands(),
-    getSections(),
-    getSizeOptions(),
-  ]);
+  await showProduct(route.params.id);
+  Promise.all([getColors(), getBrands(), getSections(), getSizeOptions()]);
 });
 </script>
 <template>
@@ -115,12 +111,14 @@ onMounted(async () => {
                 id="category"
                 defaultOption="-- select category --"
               >
-                <CategoryTree
+                <option
                   v-for="category in ProductAttributesStore.categories"
-                  :category="category"
+                  :value="category.id"
                   :key="category.id"
-                  :selected="FormStore.fields.category_id == category.id"
-                />
+                  :selected="FormStore.fields.parent_id == category.id"
+                >
+                  <span>{{ category.name }}</span>
+                </option>
               </FormSelect>
               <FormInput
                 label="shipping cost *"
