@@ -22,9 +22,9 @@
 
             <button
               type="button"
-              class="btn btn-primary"
+              class="btn btn-primary d-flex justify-content-center"
               @click="$emit('onConfirm')"
-              :disabled="useConfirmModal.isOnProgress"
+              :disabled="useConfirmModal.isLoading"
             >
               <span>Confirm</span>
             </button>

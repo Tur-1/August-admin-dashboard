@@ -12,7 +12,14 @@
       <div class="d-flex align-items-center justify-content-between">
         <div class="toast-body">
           <span style="margin-right: 10px; font-size: 18px">
-            <i class="fa-sharp fa-solid fa-circle-check" />
+            <i
+              class="fa-sharp fa-solid fa-circle-check"
+              v-show="!useToastNotification.error"
+            />
+            <i
+              class="bi bi-x-circle-fill"
+              v-show="useToastNotification.error"
+            />
           </span>
 
           {{ useToastNotification.message }}

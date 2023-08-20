@@ -28,6 +28,7 @@ let FormStore = reactive({
     },
     setFields(fields)
     {
+        this.clearErrors();
         this.fields = fields;
     },
     appendFields(newFields)
@@ -52,9 +53,9 @@ let FormStore = reactive({
             this.fields[field] = '';
         }
     },
-    setErrors(response) 
+    setErrors(error) 
     {
-        if (response.status == 422)
+        if (error && error.response?.status == 422)
         {
             this.errors = response.data.errors;
         }

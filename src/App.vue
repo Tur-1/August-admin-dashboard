@@ -1,13 +1,22 @@
 <script setup>
+import { RouterView, useRoute } from "vue-router";
+import Header from "@/layout/Header/index.vue";
+import Sidebar from "@/layout/Sidebar/index.vue";
+import Footer from "@/layout/Footer/index.vue";
+import Toast from "@/components/Toast/index.vue";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 
-import layout from "@/layout/index.vue";
-
+const route = useRoute();
 </script>
 <template>
+  <Sidebar />
+  <main class="main">
+    <Header />
+    <div class="container-fluid">
+      <RouterView :key="route.path" />
+    </div>
 
-
-  <layout />
-
-
-
+    <Toast />
+    <LoadingSpinner />
+  </main>
 </template>

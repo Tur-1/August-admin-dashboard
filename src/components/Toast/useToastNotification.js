@@ -4,32 +4,49 @@ let backgroundErrorColor = 'bg-alert-danger';
 let backgroundSuccessColor = 'bg-alert-success';
 
 
+
+
 let useToastNotification = reactive({
 
     message: '',
     background: backgroundSuccessColor,
     isOpen: false,
-    time: 3500,
+    error: false,
+    time: 3200,
 
 
-    open(message, success = true)
+    open({ error } = {})
     {
+
         this.isOpen = true;
-        this.message = message;
 
-        this.background = success ? backgroundSuccessColor : backgroundErrorColor;
+        const withMessage = (message) =>
+        {
+            this.message = message;
+        }
 
 
+        this.setBackground(error);
         setTimeout(() =>
         {
             this.isOpen = false;
         }, this.time);
+
+        return {
+            withMessage
+        }
     },
     close()
     {
         this.isOpen = false;
         this.message = '';
-    }
+    },
+    setBackground(error) 
+    {
+        this.error = error ? error : false;
+        this.background = error ? backgroundErrorColor : backgroundSuccessColor;
+    },
+
 })
 
 export default useToastNotification;

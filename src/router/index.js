@@ -1,25 +1,20 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
-import Dashboard from '@/pages/Dashboard/index.vue'
-import UsersRoutes from '@/pages/Users/routes'
-import CategoriesRoutes from '@/pages/Categories/routes'
-import BrandsRoutes from '@/pages/Brands/routes'
-import SizesRoutes from '@/pages/Sizes/routes'
-import CouponsRoutes from '@/pages/Coupons/routes'
-import RolesRoutes from '@/pages/Roles/routes'
-import ReviewsRoutes from '@/pages/Reviews/routes'
-import ProductsRoutes from '@/pages/Products/routes'
-import OrdersRoutes from '@/pages/Orders/routes'
-
-
+import Dashboard from '@/pages/DashboardPage/index.vue'
+import UsersRoutes from '@/pages/UsersPage/routes'
+import CategoriesRoutes from '@/pages/CategoriesPage/routes'
+import BrandsRoutes from '@/pages/BrandsPage/routes'
+import SizesRoutes from '@/pages/SizesPage/routes'
+import CouponsRoutes from '@/pages/CouponsPage/routes'
+import RolesRoutes from '@/pages/RolesPage/routes'
+import ReviewsRoutes from '@/pages/ReviewsPage/routes'
+import ProductsRoutes from '@/pages/ProductsPage/routes'
+import OrdersRoutes from '@/pages/OrdersPage/routes'
 import useRouterService from '@/router/useRouterService'
-import { useLoadingSpinner } from '@/components/LoadingSpinner'
-
-import BannerRoutes from '@/pages/AugustBanners/routes'
+import BannerRoutes from '@/pages/BannersPage/routes'
 import useUserStore from '@/Auth/store/userStore'
-import ColorsRoutes from '@/pages/Colors/routes'
+import ColorsRoutes from '@/pages/ColorsPage/routes'
 import ErrorsRoutes from '@/pages/Errors/routes'
-import useAuthService from '@/Auth/services/useAuthService'
 
 
 const router = createRouter({

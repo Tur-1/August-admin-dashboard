@@ -3,12 +3,15 @@ import { reactive } from "vue";
 
 const useConfirmModal = reactive({
     isOpen: false,
-    isOnProgress: false,
-    onProgress(BooleanValue)
+    isLoading: false,
+    showLoading()
     {
-        this.isOnProgress = BooleanValue;
+        this.isLoading = true;
     },
-
+    hideLoading()
+    {
+        this.isLoading = false;
+    },
     open()
     {
 
