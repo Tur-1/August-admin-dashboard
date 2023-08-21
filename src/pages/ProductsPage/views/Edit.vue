@@ -1,20 +1,18 @@
 <script setup>
 import { FormStore, FormInput, FormSelect } from "@/components/BaseForm";
-
+import { useRoute } from "vue-router";
 import {
   ProductImages,
   SizeOptions,
-  ProductCoupon,
+  ProductDiscount,
   ProductDetails,
 } from "@/pages/ProductsPage/components";
-
 import useProductsService from "@/pages/ProductsPage/services/useProductsService";
 import ProductAttributesStore from "@/pages/ProductsPage/stores/ProductAttributesStore";
 import SubmitButton from "@/components/SubmitButton/index.vue";
 
 import { onMounted } from "vue";
 import useProductAttributesService from "@/pages/ProductsPage/services/useProductAttributesService";
-import { useRoute } from "vue-router";
 
 const { updateProduct, showProduct, deleteProductImage } = useProductsService();
 const {
@@ -144,20 +142,16 @@ onMounted(async () => {
         </div>
       </div>
 
-      <ProductCoupon />
+      <ProductDiscount />
 
       <ProductDetails />
 
       <div class="row">
-        <div class="col-12 col-lg-6">
-          <SizeOptions />
-        </div>
-        <div class="col-12 col-lg-6">
-          <ProductImages
-            @onDelete="async (image_id) => await deleteProductImage(image_id)"
-            :images="FormStore.fields.images"
-          />
-        </div>
+        <SizeOptions />
+        <ProductImages
+          @onDelete="async (image_id) => await deleteProductImage(image_id)"
+          :images="FormStore.fields.images"
+        />
       </div>
     </form>
   </section>

@@ -11,7 +11,7 @@
             aria-expanded="false"
             aria-controls="panelsStayOpen-collapseTwo"
           >
-            Coupon
+            Discount
           </button>
         </h2>
       </div>
