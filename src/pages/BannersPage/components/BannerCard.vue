@@ -5,13 +5,13 @@ import useBannersService from "@/pages/BannersPage/services/useBannersService";
 import { ref } from "vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
 import defultImage from "@/assets/img/defult-image.png";
-import useUserStore from "@/Auth/store/userStore";
+
 const { getAllBanners, deleteBanner, publishBanner } = useBannersService();
 
 await getAllBanners();
 
 let banner = ref({ id: "", index: "" });
-const AuthUser = useUserStore();
+
 const openModal = ({ id, index }) => {
   useConfirmModal.open();
   banner.value.id = id;
@@ -45,7 +45,6 @@ const openModal = ({ id, index }) => {
           </div>
           <DropdownMenu>
             <RouterLink
-              v-if="AuthUser.userCanAccess('view-banners')"
               class="dropdown-item d-flex align-items-center"
               :to="{
                 name: 'bannersEdit',
@@ -57,7 +56,6 @@ const openModal = ({ id, index }) => {
             </RouterLink>
 
             <a
-              v-if="AuthUser.userCanAccess('delete-banners')"
               @click="openModal({ id: banner.id, index: index })"
               role="button"
               class="dropdown-item d-flex align-items-center text-danger"

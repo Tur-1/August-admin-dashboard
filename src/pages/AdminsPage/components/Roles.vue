@@ -8,7 +8,7 @@
     defaultOption="-- select role --"
   >
     <option
-      v-for="role in usersStore.roles"
+      v-for="role in adminsStore.roles"
       :value="role.id"
       :selected="FormStore.fields.role_id == role.id"
     >
@@ -19,9 +19,9 @@
 
 <script setup>
 import { FormSelect, FormStore } from "@/components/BaseForm";
-import useUsersStore from "@/pages/UsersPage/stores/UsersStore";
-import useUsersService from "@/pages/UsersPage/services/useUsersService";
+import useAdminsService from "@/pages/AdminsPage/services/useAdminsService";
+import useAdminsStore from "@/pages/AdminsPage/stores/AdminsStore";
 
-const { getRolePermissions } = useUsersService();
-const usersStore = useUsersStore();
+const { getRolePermissions } = useAdminsService();
+const adminsStore = useAdminsStore();
 </script>

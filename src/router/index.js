@@ -1,7 +1,10 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 import Dashboard from '@/pages/DashboardPage/index.vue'
-import UsersRoutes from '@/pages/UsersPage/routes'
+import AdminsRoutes from '@/pages/AdminsPage/routes'
+import CustomersRoutes from '@/pages/CustomersPage/routes'
+
+
 import CategoriesRoutes from '@/pages/CategoriesPage/routes'
 import BrandsRoutes from '@/pages/BrandsPage/routes'
 import SizesRoutes from '@/pages/SizesPage/routes'
@@ -12,7 +15,8 @@ import ProductsRoutes from '@/pages/ProductsPage/routes'
 import OrdersRoutes from '@/pages/OrdersPage/routes'
 import useRouterService from '@/router/useRouterService'
 import BannerRoutes from '@/pages/BannersPage/routes'
-import useUserStore from '@/Auth/store/userStore'
+import useAuthStore from "@/Auth/store/AuthStore";
+
 import ColorsRoutes from '@/pages/ColorsPage/routes'
 import ErrorsRoutes from '@/pages/Errors/routes'
 
@@ -26,7 +30,8 @@ const router = createRouter({
       component: Dashboard,
 
     },
-    ...UsersRoutes,
+    ...AdminsRoutes,
+    ...CustomersRoutes,
     ...CategoriesRoutes,
     ...ColorsRoutes,
     ...BrandsRoutes,
@@ -57,16 +62,22 @@ router.beforeEach(async (to, from, next) =>
 {
   useRouterService.setPageTitle(to.meta.title);
 
-  const useStore = useUserStore();
+  const authStore = useAuthStore();
 
 
-  if (!useStore.isAuthenticated && to.name !== 'login')
+  if (!authStore.isAuthenticated && to.name !== 'login')
   {
     return next({ name: 'login' });
   }
 
 
-  if (useStore.isAuthenticated && to.meta.guest)
+  if (to.meta.permission && !authStore.userCan(to.meta.permission))
+  {
+    return next({ name: 'dashboard' });
+  }
+
+
+  if (authStore.isAuthenticated && to.meta.guest)
   {
     return next({ name: 'dashboard' });
   }

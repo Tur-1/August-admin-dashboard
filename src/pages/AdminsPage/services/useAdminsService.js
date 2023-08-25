@@ -1,32 +1,32 @@
-import useUsersApi from "@/pages/UsersPage/api/useUsersApi";
+import useAdminsApi from "@/pages/AdminsPage/api/useAdminsApi";
 import useToastNotification from "@/components/Toast/useToastNotification";
 import useRouterService from "@/router/useRouterService";
+import useRolesApi from "@/pages/RolesPage/api/useRolesApi";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
-import useUsersStore from "@/pages/UsersPage/stores/UsersStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
-import useRolesApi from "@/pages/Roles/api/useRolesApi";
+import useAdminsStore from "@/pages/AdminsPage/stores/AdminsStore";
 
-export default function useUsersService()
+export default function useAdminsService()
 {
-    const UsersStore = useUsersStore();
+    const adminsStore = useAdminsStore();
 
 
-    const getAllUsers = async ({ url, search } = {}) =>
+    const getAllAdmins = async ({ url, search } = {}) =>
     {
-        UsersStore.showLoading();
-        let response = await useUsersApi.getUsers({
+        adminsStore.showLoading();
+        let response = await useAdminsApi.getAllAdmins({
             url: url,
             search: search
         });
 
-        UsersStore.users = response.data.data;
-        UsersStore.paginationLinks = response.data.meta.pagination.links;
+        adminsStore.admins = response.data.data;
+        adminsStore.paginationLinks = response.data.meta.pagination.links;
 
-        UsersStore.hideLoading();
+        adminsStore.hideLoading();
 
     }
-    const storeNewUser = async () =>
+    const storeNewAdmin = async () =>
     {
 
         FormStore.showProgress();
@@ -34,7 +34,7 @@ export default function useUsersService()
 
         try
         {
-            let response = await useUsersApi.storeNewUser(FormStore.fields);
+            let response = await useAdminsApi.storeNewAdmin(FormStore.fields);
 
             FormStore.clearFields();
 
@@ -50,7 +50,7 @@ export default function useUsersService()
         FormStore.hideProgress();
 
     };
-    const updateUser = async (id) =>
+    const updateAdmin = async (id) =>
     {
 
         FormStore.showProgress();
@@ -59,15 +59,14 @@ export default function useUsersService()
         try
         {
 
-            let response = await useUsersApi.updateUser(FormStore.fields, id);
+            let response = await useAdminsApi.updateAdmin(FormStore.fields, id);
 
 
-            FormStore.setFields(response.data.user);
+            FormStore.setFields(response.data.admin);
 
             useToastNotification.open().withMessage(response.data.message);
         } catch (error)
         {
-
             FormStore.setErrors(error);
         }
 
@@ -77,31 +76,40 @@ export default function useUsersService()
     const openConfirmModal = ({ id, index }) =>
     {
         useConfirmModal.open();
-        UsersStore.user_id.id = id;
-        UsersStore.user_id.index = index;
+        adminsStore.admin_id.id = id;
+        adminsStore.admin_id.index = index;
     };
-    const deleteUser = async () =>
+    const deleteAdmin = async () =>
     {
 
-        useConfirmModal.showLoading()
-        let response = await useUsersApi.deleteUser(UsersStore.user_id.id);
+        useLoadingSpinner.show();
+        try
+        {
 
-        UsersStore.users.splice(UsersStore.user_id.index, 1);
-        useConfirmModal.close();
+            let response = await useAdminsApi.deleteAdmin(adminsStore.admin_id.id);
 
-        useToastNotification.open().withMessage(response.data.message);
+            adminsStore.admins.splice(adminsStore.admin_id.index, 1);
+            useConfirmModal.close();
 
-        useConfirmModal.hideLoading()
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
+            console.log(error.response);
+            // useToastNotification.open({ error: true }).withMessage(error.response.message);
+
+        }
+
+        useLoadingSpinner.hide();
 
     };
-    const showUser = async (user_id) =>
+    const showAdmin = async (admin_id) =>
     {
 
         useLoadingSpinner.show();
         FormStore.clearErrors();
 
 
-        let response = await useUsersApi.getUser(user_id);
+        let response = await useAdminsApi.getAdmin(admin_id);
 
 
         FormStore.setFields(response.data);
@@ -119,7 +127,7 @@ export default function useUsersService()
 
         let response = await useRolesApi.getAllRoles();
 
-        UsersStore.roles = response.data;
+        adminsStore.roles = response.data;
 
         useLoadingSpinner.hide();
     }
@@ -131,12 +139,12 @@ export default function useUsersService()
 
             let response = await useRolesApi.getRolePermission(role_id);
 
-            UsersStore.rolePermissions = response.data;
+            adminsStore.rolePermissions = response.data;
 
             useLoadingSpinner.hide();
         } else
         {
-            UsersStore.rolePermissions = [];
+            adminsStore.rolePermissions = [];
         }
 
     }
@@ -144,12 +152,12 @@ export default function useUsersService()
 
     return {
         getRoles,
-        updateUser,
-        storeNewUser,
-        getAllUsers,
+        updateAdmin,
+        storeNewAdmin,
+        getAllAdmins,
         getRolePermissions,
-        deleteUser,
-        showUser,
+        deleteAdmin,
+        showAdmin,
         openConfirmModal
     }
 

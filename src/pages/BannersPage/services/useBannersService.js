@@ -3,17 +3,15 @@ import useToastNotification from "@/components/Toast/useToastNotification";
 import useRouterService from "@/router/useRouterService";
 import BannersStore from "@/pages/BannersPage/stores/BannersStore";
 import useBannersApi from "@/pages/BannersPage/api/useBannersApi";
-import useUserStore from "@/Auth/store/userStore";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
-import { useRoute } from "vue-router";
 import { appendFormData } from "@/helpers";
 
 
 
 
-const AuthUser = useUserStore();
+
 export default function useBannersService()
 {
 

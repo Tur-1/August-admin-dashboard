@@ -1,3 +1,10 @@
+<script setup>
+import useAuthStore from "@/Auth/store/AuthStore";
+import SidebarLink from "./SidebarLink.vue";
+
+const authStore = useAuthStore();
+</script>
+
 <template>
   <aside class="sidenav">
     <div class="d-flex flex-column flex-shrink-0 p-3 w-100">
@@ -15,7 +22,6 @@
 
       <ul class="sidenav-items">
         <SidebarLink
-          v-if="AuthUser.userCanAccess('access-dashboard')"
           toRoute="dashboard"
           title="Dashboard"
           :activeRouteNames="['dashboard']"
@@ -25,17 +31,17 @@
           </template>
         </SidebarLink>
         <SidebarLink
-          v-if="AuthUser.userCanAccess('access-users')"
-          toRoute="users"
-          title="Users"
-          :activeRouteNames="['usersCreate', 'usersEdit', 'users']"
+          v-if="authStore.userCan('access-admins')"
+          toRoute="admins"
+          title="Admins"
+          :activeRouteNames="['adminsCreate', 'adminsEdit', 'admins']"
         >
           <template #icon>
             <i class="fa-solid fa-users"></i>
           </template>
         </SidebarLink>
         <SidebarLink
-          v-if="AuthUser.userCanAccess('access-roles')"
+          v-if="authStore.userCan('access-roles')"
           toRoute="roles"
           title="Roles"
           :activeRouteNames="['rolesCreate', 'rolesEdit', 'roles']"
@@ -45,7 +51,7 @@
           </template>
         </SidebarLink>
         <SidebarLink
-          v-if="AuthUser.userCanAccess('access-orders')"
+          v-if="authStore.userCan('access-orders')"
           toRoute="orders"
           title="orders"
           :activeRouteNames="['ordersEdit', 'orders']"
@@ -55,7 +61,17 @@
           </template>
         </SidebarLink>
         <SidebarLink
-          v-if="AuthUser.userCanAccess('access-products')"
+          v-if="authStore.userCan('access-customers')"
+          toRoute="customers"
+          title="Customers"
+          :activeRouteNames="['customersCreate', 'customersEdit', 'customers']"
+        >
+          <template #icon>
+            <i class="fa-solid fa-users"></i>
+          </template>
+        </SidebarLink>
+        <SidebarLink
+          v-if="authStore.userCan('access-products')"
           toRoute="products"
           title="products"
           :activeRouteNames="['productsCreate', 'productsEdit', 'products']"
@@ -65,7 +81,7 @@
           </template>
         </SidebarLink>
         <SidebarLink
-          v-if="AuthUser.userCanAccess('access-categories')"
+          v-if="authStore.userCan('access-categories')"
           toRoute="categories"
           title="Categories"
           :activeRouteNames="[
@@ -79,7 +95,7 @@
           </template>
         </SidebarLink>
         <SidebarLink
-          v-if="AuthUser.userCanAccess('access-colors')"
+          v-if="authStore.userCan('access-colors')"
           toRoute="colors"
           title="Colors"
           :activeRouteNames="['colorsCreate', 'colorsEdit', 'colors']"
@@ -89,7 +105,7 @@
           </template>
         </SidebarLink>
         <SidebarLink
-          v-if="AuthUser.userCanAccess('access-brands')"
+          v-if="authStore.userCan('access-brands')"
           toRoute="brands"
           title="brands"
           :activeRouteNames="['brandsCreate', 'brandsEdit', 'brands']"
@@ -99,7 +115,7 @@
           </template>
         </SidebarLink>
         <SidebarLink
-          v-if="AuthUser.userCanAccess('access-reviews')"
+          v-if="authStore.userCan('access-reviews')"
           toRoute="reviews"
           title="reviews"
           :activeRouteNames="['reviewsCreate', 'reviewsEdit', 'reviews']"
@@ -110,7 +126,7 @@
         </SidebarLink>
 
         <SidebarLink
-          v-if="AuthUser.userCanAccess('access-banners')"
+          v-if="authStore.userCan('access-banners')"
           toRoute="banners"
           title="banners"
           :activeRouteNames="['bannersCreate', 'bannersEdit', 'banners']"
@@ -120,7 +136,7 @@
           </template>
         </SidebarLink>
         <SidebarLink
-          v-if="AuthUser.userCanAccess('access-coupons')"
+          v-if="authStore.userCan('access-coupons')"
           toRoute="coupons"
           title="coupons"
           :activeRouteNames="['couponsCreate', 'couponsEdit', 'coupons']"
@@ -130,7 +146,7 @@
           </template>
         </SidebarLink>
         <SidebarLink
-          v-if="AuthUser.userCanAccess('access-size-options')"
+          v-if="authStore.userCan('access-sizes')"
           toRoute="sizes"
           title="sizes"
           :activeRouteNames="['sizesCreate', 'sizesEdit', 'sizes']"
@@ -143,10 +159,3 @@
     </div>
   </aside>
 </template>
-
-<script setup>
-import SidebarLink from "./SidebarLink.vue";
-import useUserStore from "@/Auth/store/userStore";
-
-const AuthUser = useUserStore();
-</script>

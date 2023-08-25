@@ -5,7 +5,8 @@ const CouponsRoutes = [
         name: 'coupons',
         component: () => import('@/pages/CouponsPage/views/index.vue'),
         meta: {
-            title: 'coupons'
+            title: 'coupons',
+            permission: 'access-coupons'
         }
 
     },
@@ -15,14 +16,16 @@ const CouponsRoutes = [
         component: () => import('@/pages/CouponsPage/views/Create.vue')
         ,
         meta: {
-            title: 'coupons'
+            title: 'coupons',
+            permission: 'create-coupons'
         }
     }, {
         path: "/coupons/:id/edit",
         name: "couponsEdit",
         component: () => import('@/pages/CouponsPage/views/Edit.vue'),
         meta: {
-            title: 'coupons'
+            title: 'coupons',
+            permission: 'update-coupons'
         }
     }
 

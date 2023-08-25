@@ -4,126 +4,121 @@ import useRouterService from "@/router/useRouterService";
 import BrandsStore from "@/pages/BrandsPage/stores/BrandsStore";
 import useBrandsApi from "@/pages/BrandsPage/api/useBrandsApi";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
-import useUserStore from "@/Auth/store/userStore";
+
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
 import { appendFormData } from "@/helpers";
 
-const AuthUser = useUserStore();
+
 export default function useBrandsService()
 {
 
     const getAllBrands = async () =>
     {
-        if (AuthUser.userCanAccess('access-brands'))
+
+
+        try
         {
+            let response = await useBrandsApi.getAll();
 
-            try
+            BrandsStore.value.filtered = response.data.data;
+            BrandsStore.value.list = response.data;
+            BrandsStore.value.pagination = response.data.pagination;
+        } catch (error)
+        {
+            if (error.response.status == 401)
             {
-                let response = await useBrandsApi.getAll();
-
-                BrandsStore.value.filtered = response.data.data;
-                BrandsStore.value.list = response.data;
-                BrandsStore.value.pagination = response.data.pagination;
-            } catch (error)
-            {
-                if (error.response.status == 401)
-                {
-                    useRouterService.redirectToRoute('login')
-                }
-
+                useRouterService.redirectToRoute('login')
             }
 
         }
+
+
     }
     const storeNewBrand = async (formData) =>
     {
-        if (AuthUser.userCanAccess('create-brands'))
+
+        FormStore.showProgress();
+        FormStore.clearErrors();
+
+        try
         {
-            FormStore.showProgress();
-            FormStore.clearErrors();
+            const formData = appendFormData(FormStore.fields);
 
-            try
-            {
-                const formData = appendFormData(FormStore.fields);
+            let response = await useBrandsApi.storeNewBrand(formData);
 
-                let response = await useBrandsApi.storeNewBrand(formData);
+            FormStore.clearFields();
 
-                FormStore.clearFields();
-
-                useRouterService.redirectBack();
-
-                useToastNotification.open().withMessage(response.data.message);
-
-            } catch (error)
-            {
-
-                FormStore.setErrors(error);
-            }
-            FormStore.hideProgress();
-        }
-    };
-    const updateBrand = async (formData) =>
-    {
-        if (AuthUser.userCanAccess('update-brands'))
-        {
-            FormStore.showProgress();
-            FormStore.clearErrors();
-
-
-            try
-            {
-
-                const formData = appendFormData(FormStore.fields);
-                let response = await useBrandsApi.updateBrand({
-                    id: FormStore.fields.id,
-                    fields: formData
-                });
-
-                FormStore.setFields(response.data.brand);
-
-                useToastNotification.open().withMessage(response.data.message);
-            } catch (error)
-            {
-
-                FormStore.setErrors(error);
-            }
-
-            FormStore.hideProgress();
-        }
-    };
-    const deleteBrand = async ({ id, index }) =>
-    {
-        if (AuthUser.userCanAccess('delete-brands'))
-        {
-            useConfirmModal.showLoading()
-            let response = await useBrandsApi.deleteBrand(id);
-
-            BrandsStore.value.filtered.splice(index, 1);
-            useConfirmModal.close();
+            useRouterService.redirectBack();
 
             useToastNotification.open().withMessage(response.data.message);
 
-            useConfirmModal.hideLoading()
-        }
-    };
-    const showBrand = async () =>
-    {
-        if (AuthUser.userCanAccess('view-brands'))
+        } catch (error)
         {
-            useLoadingSpinner.show();
-            FormStore.clearErrors();
 
-            const route = useRoute();
+            FormStore.setErrors(error);
+        }
+        FormStore.hideProgress();
+
+    };
+    const updateBrand = async (formData) =>
+    {
+
+        FormStore.showProgress();
+        FormStore.clearErrors();
 
 
-            let response = await useBrandsApi.getBrand(route.params.id);
+        try
+        {
+
+            const formData = appendFormData(FormStore.fields);
+            let response = await useBrandsApi.updateBrand({
+                id: FormStore.fields.id,
+                fields: formData
+            });
 
             FormStore.setFields(response.data.brand);
 
-            useLoadingSpinner.hide();
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
+
+            FormStore.setErrors(error);
         }
+
+        FormStore.hideProgress();
+
+    };
+    const deleteBrand = async ({ id, index }) =>
+    {
+
+        useConfirmModal.showLoading()
+        let response = await useBrandsApi.deleteBrand(id);
+
+        BrandsStore.value.filtered.splice(index, 1);
+        useConfirmModal.close();
+
+        useToastNotification.open().withMessage(response.data.message);
+
+        useConfirmModal.hideLoading()
+
+    };
+    const showBrand = async () =>
+    {
+
+        useLoadingSpinner.show();
+        FormStore.clearErrors();
+
+        const route = useRoute();
+
+
+        let response = await useBrandsApi.getBrand(route.params.id);
+
+        FormStore.setFields(response.data.brand);
+
+        useLoadingSpinner.hide();
+
     };
 
 

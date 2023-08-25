@@ -2,7 +2,7 @@ import useCategoryApi from "@/pages/CategoriesPage/api/useCategoryApi";
 import useCategoriesStore from "@/pages/CategoriesPage/stores/CategoriesStore";
 import useRouterService from "@/router/useRouterService";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
-import useUserStore from "@/Auth/store/userStore";
+
 import useToastNotification from "@/components/Toast/useToastNotification";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { useRoute } from "vue-router";
@@ -10,7 +10,7 @@ import { FormStore } from "@/components/BaseForm";
 import { appendFormData } from "@/helpers";
 import useSectionService from "@/pages/CategoriesPage/services/useSectionService";
 
-const AuthUser = useUserStore();
+
 export default function useCategoryService()
 {
 

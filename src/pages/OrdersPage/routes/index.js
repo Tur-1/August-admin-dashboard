@@ -6,7 +6,8 @@ const OrdersRoutes = [
         component: () => import('@/pages/OrdersPage/views/index.vue'),
 
         meta: {
-            title: 'orders'
+            title: 'orders',
+            permission: 'access-orders'
         }
     },
     {
@@ -14,7 +15,8 @@ const OrdersRoutes = [
         name: "ordersEdit",
         component: () => import('@/pages/OrdersPage/views/Edit.vue'),
         meta: {
-            title: 'orders'
+            title: 'orders',
+            permission: 'view-orders'
         }
     }
 

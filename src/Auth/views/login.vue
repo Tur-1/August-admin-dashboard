@@ -31,14 +31,14 @@
                   </svg>
                 </span>
                 <input
-                  v-model="loginForm.fields.email"
+                  v-model="FormStore.fields.email"
                   type="email"
                   class="form-control"
                   placeholder="example@company.com"
                   id="email"
                 />
               </div>
-              <span v-for="err in loginForm.errors.email">
+              <span class="text-danger" v-for="err in FormStore.errors.email">
                 {{ err }}
               </span>
             </div>
@@ -59,17 +59,21 @@
                         fill-rule="evenodd"
                         d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
                         clip-rule="evenodd"
-                      ></path></svg
-                  ></span>
+                      ></path>
+                    </svg>
+                  </span>
                   <input
-                    v-model="loginForm.fields.password"
+                    v-model="FormStore.fields.password"
                     type="password"
                     placeholder="Password"
                     class="form-control"
                     id="password"
                   />
                 </div>
-                <span v-for="err in loginForm.errors.password">
+                <span
+                  class="text-danger"
+                  v-for="err in FormStore.errors.password"
+                >
                   {{ err }}
                 </span>
               </div>
@@ -86,7 +90,7 @@
 
 <script setup>
 import useAuthService from "@/Auth/services/useAuthService";
-import loginForm from "@/Auth/store/loginForm";
+import { FormStore } from "@/components/BaseForm";
 
 const { login } = useAuthService();
 </script>

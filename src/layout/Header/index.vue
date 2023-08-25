@@ -1,7 +1,7 @@
 <template>
   <header>
     <form class="form-inline"></form>
-    <div class="d-flex align-items-center" v-if="AuthUser.isAuthenticated">
+    <div class="d-flex align-items-center">
       <div class="dropdown ms-lg-3">
         <a
           class="nav-link dropdown-toggle pt-1 px-0"
@@ -14,14 +14,12 @@
             <img
               class="avatar rounded-circle"
               alt="Image placeholder"
-              :src="AuthUser.user?.gender == 'Male' ? maleAvatar : femaleAvatar"
+              :src="femaleAvatar"
             />
             <div
               class="media-body ms-2 text-dark align-items-center d-none d-lg-block"
             >
-              <span class="mb-0 font-small fw-bold text-gray-900">{{
-                AuthUser.user?.name
-              }}</span>
+              <span class="mb-0 font-small fw-bold text-gray-900">admin</span>
             </div>
           </div>
         </a>
@@ -55,13 +53,9 @@
 </template>
 
 <script setup>
-import useUserStore from "@/Auth/store/userStore";
-
 import maleAvatar from "@/assets/img/avatars/avatar_male.png";
 import femaleAvatar from "@/assets/img/avatars/avatar_female.png";
 import useAuthService from "@/Auth/services/useAuthService";
 
 const { logout } = useAuthService();
-
-const AuthUser = useUserStore();
 </script>

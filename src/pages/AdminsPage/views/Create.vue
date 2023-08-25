@@ -1,6 +1,6 @@
 <template>
   <section class="main-section">
-    <BaseForm @onSubmit="storeNewUser" submitTitle="create" title="new user">
+    <BaseForm @onSubmit="storeNewAdmin" submitTitle="create" title="new Admin">
       <div class="row">
         <div class="col-12 col-lg-6">
           <FormInput
@@ -56,11 +56,11 @@ import {
   FormInput,
   FormSelect,
 } from "@/components/BaseForm";
-import useUsersService from "@/pages/UsersPage/services/useUsersService";
-import { Roles, Permissions } from "@/pages/UsersPage/components";
+import useAdminsService from "@/pages/AdminsPage/services/useAdminsService";
+import { Roles, Permissions } from "@/pages/AdminsPage/components";
 import { onMounted } from "vue";
 
-const { storeNewUser, getRoles } = useUsersService();
+const { storeNewAdmin, getRoles } = useAdminsService();
 
 onMounted(async () => {
   await getRoles();
@@ -70,7 +70,7 @@ onMounted(async () => {
     name: "",
     phone_number: "",
     password: "",
-    gender: "",
+    gender: "Male",
     role_id: "",
     permissions_id: [],
   });

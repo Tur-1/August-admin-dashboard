@@ -5,7 +5,8 @@ const ProductsRoutes = [
         name: 'products',
         component: () => import('@/pages/ProductsPage/views/index.vue'),
         meta: {
-            title: 'products'
+            title: 'products',
+            permission: 'access-products'
         }
 
     }, {
@@ -13,7 +14,8 @@ const ProductsRoutes = [
         name: "productsEdit",
         component: () => import('@/pages/ProductsPage/views/Edit.vue'),
         meta: {
-            title: 'products'
+            title: 'products',
+            permission: 'update-products'
         }
     }
 

@@ -22,7 +22,7 @@
         <div class="accordion-body row">
           <div
             class="col-12 col-lg-6"
-            v-for="(permission, key) in usersStore.rolePermissions"
+            v-for="(permission, key) in adminsStore.rolePermissions"
           >
             <div class="role">
               <h6 class="permission-page-name">{{ key }}</h6>
@@ -51,7 +51,7 @@
 
 <script setup>
 import { FormStore } from "@/components/BaseForm";
-import useUsersStore from "@/pages/UsersPage/stores/UsersStore";
+import useAdminsStore from "@/pages/AdminsPage/stores/AdminsStore";
 
-const usersStore = useUsersStore();
+const adminsStore = useAdminsStore();
 </script>

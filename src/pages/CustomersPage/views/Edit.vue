@@ -1,7 +1,7 @@
 <template>
   <section class="main-section">
     <BaseForm
-      @onSubmit="updateUser(route.params.id)"
+      @onSubmit="updateCustomer(route.params.id)"
       submitTitle="update"
       title="update user"
     >
@@ -44,31 +44,26 @@
             id="gender"
             :options="['Male', 'Female']"
           />
-          <Roles />
         </div>
       </div>
-
-      <Permissions />
     </BaseForm>
   </section>
 </template>
 
 <script setup>
+import { onMounted } from "vue";
+import { useRoute } from "vue-router";
 import {
   FormStore,
   BaseForm,
   FormInput,
   FormSelect,
 } from "@/components/BaseForm";
-import { onMounted } from "vue";
-import useUsersService from "@/pages/UsersPage/services/useUsersService";
-import { useRoute } from "vue-router";
-import { Roles, Permissions } from "@/pages/UsersPage/components";
+import useCustomersService from "@/pages/CustomersPage/services/useCustomersService";
 
+const { updateCustomer, showCustomer } = useCustomersService();
 const route = useRoute();
-const { updateUser, showUser } = useUsersService();
-
 onMounted(async () => {
-  await showUser(route.params.id);
+  await showCustomer(route.params.id);
 });
 </script>

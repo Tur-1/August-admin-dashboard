@@ -4,10 +4,9 @@ import maleAvatar from "@/assets/img/avatars/avatar_male.png";
 import femaleAvatar from "@/assets/img/avatars/avatar_female.png";
 import { useRoute } from "vue-router";
 import { FormStore } from "@/components/BaseForm";
-import useUserStore from "@/Auth/store/userStore";
+
 const { replyReview } = useReviewsService();
 const route = useRoute();
-const AuthUser = useUserStore();
 </script>
 
 <template>
@@ -21,12 +20,12 @@ const AuthUser = useUserStore();
         <div class="d-flex flex-column">
           <div class="d-flex align-items-center">
             <img
-              :src="AuthUser.user.gender == 'Male' ? maleAvatar : femaleAvatar"
+              :src="maleAvatar"
               alt=""
               width="40"
               class="rounded-circle me-2 mb-2"
             />
-            <small style="font-size: 12px">{{ AuthUser.user.name }} </small>
+            <small style="font-size: 12px">admin </small>
           </div>
 
           <textarea

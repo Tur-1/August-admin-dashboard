@@ -1,6 +1,6 @@
 import useCouponsApi from "@/pages/CouponsPage/api/useCouponsApi";
 import useToastNotification from "@/components/Toast/useToastNotification";
-import useUserStore from "@/Auth/store/userStore";
+
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
@@ -8,7 +8,7 @@ import useRouterService from "@/router/useRouterService";
 import useCouponsStore from "@/pages/CouponsPage/stores/CouponsStore";
 
 
-const AuthUser = useUserStore();
+
 export default function useCouponsService()
 {
     const couponStore = useCouponsStore();

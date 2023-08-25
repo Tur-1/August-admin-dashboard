@@ -1,0 +1,29 @@
+<script setup>
+import { onMounted } from "vue";
+import ButtonLink from "@/components/ButtonLink/index.vue";
+import PageHeader from "@/components/PageHeader/index.vue";
+import { BaseTable } from "@/components/BaseTable";
+import useAdminsService from "@/pages/AdminsPage/services/useAdminsService";
+import useAdminsStore from "@/pages/AdminsPage/stores/AdminsStore";
+
+const AdminsStore = useAdminsStore();
+const { getAllAdmins, openConfirmModal, deleteAdmin } = useAdminsService();
+onMounted(getAllAdmins);
+</script>
+<template>
+  <section class="main-section">
+    <PageHeader title="Admins List">
+      <ButtonLink title="New Admin" routeName="adminsCreate" />
+    </PageHeader>
+
+    <BaseTable
+      :columns="AdminsStore.tableColumns"
+      :data="AdminsStore.admins"
+      :isLoading="AdminsStore.isLoading"
+      :pagination_links="AdminsStore.paginationLinks"
+      @onDelete="(admin) => openConfirmModal(admin)"
+      @onDeleteConfirm="deleteAdmin"
+      @onPageChange="async (url) => await getAllAdmins({ url: url })"
+    />
+  </section>
+</template>

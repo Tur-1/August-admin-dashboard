@@ -42,27 +42,29 @@ const props = defineProps({
 
   <div class="card shadow">
     <div class="card-body">
-      <table class="table table-hover">
-        <TableHead :columns="columns" />
-        <tbody>
-          <template v-if="!$slots.row">
-            <TableRow
-              v-if="!props.isLoading"
-              :columns="columns"
-              :data="data"
-              @onDelete="(object) => $emit('onDelete', object)"
-            />
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <TableHead :columns="columns" />
+          <tbody>
+            <template v-if="!$slots.row">
+              <TableRow
+                v-if="!props.isLoading"
+                :columns="columns"
+                :data="data"
+                @onDelete="(object) => $emit('onDelete', object)"
+              />
 
-            <TableSkeleton v-if="props.isLoading" :columns="columns" />
-          </template>
-          <NoRecordsFound
-            :show="!props.isLoading && data?.length == 0"
-            :columns="columns"
-            :noRecordsFoundTitle="noRecordsFoundTitle"
-          />
-          <slot name="row" />
-        </tbody>
-      </table>
+              <TableSkeleton v-if="props.isLoading" :columns="columns" />
+            </template>
+            <NoRecordsFound
+              :show="!props.isLoading && data?.length == 0"
+              :columns="columns"
+              :noRecordsFoundTitle="noRecordsFoundTitle"
+            />
+            <slot name="row" />
+          </tbody>
+        </table>
+      </div>
     </div>
     <Pagination
       :links="pagination_links"
