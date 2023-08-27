@@ -1,29 +1,27 @@
 <script setup>
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
-import BannersStore from "@/pages/BannersPage/stores/BannersStore";
 import useBannersService from "@/pages/BannersPage/services/useBannersService";
-import { ref } from "vue";
-import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
+import BannerCardSkeleton from "@/pages/BannersPage/components/BannerCardSkeleton.vue";
+import { ConfirmModal } from "@/components/ConfirmModal";
 import defultImage from "@/assets/img/defult-image.png";
+import useBannersStore from "@/pages/BannersPage/stores/BannersStore";
+import { skeletonLoading } from "@/helpers";
 
-const { getAllBanners, deleteBanner, publishBanner } = useBannersService();
+const { deleteBanner, publishBanner, openConfirmModal } = useBannersService();
 
-await getAllBanners();
-
-let banner = ref({ id: "", index: "" });
-
-const openModal = ({ id, index }) => {
-  useConfirmModal.open();
-  banner.value.id = id;
-  banner.value.index = index;
-};
+const BannersStore = useBannersStore();
 </script>
 
 <template>
-  <transition-group name="list" tag="div" class="row">
+  <transition-group
+    name="list"
+    tag="div"
+    class="row"
+    v-if="!skeletonLoading.isLoading"
+  >
     <div
       class="col-xl-3 col-lg-3 col-md-4 col-6"
-      v-for="(banner, index) in BannersStore.list"
+      v-for="(banner, index) in BannersStore.banners"
       :key="banner.id"
     >
       <figure class="card border-1 m-3">
@@ -56,7 +54,7 @@ const openModal = ({ id, index }) => {
             </RouterLink>
 
             <a
-              @click="openModal({ id: banner.id, index: index })"
+              @click="openConfirmModal({ id: banner.id, index: index })"
               role="button"
               class="dropdown-item d-flex align-items-center text-danger"
             >
@@ -86,16 +84,15 @@ const openModal = ({ id, index }) => {
   <div class="container">
     <div class="row">
       <div class="d-flex justify-content-center align-items-center">
-        <div v-show="BannersStore.list.length == 0">
+        <div v-show="BannersStore.banners.length == 0">
           <h5 class="text-center">No Banners Found</h5>
         </div>
       </div>
     </div>
   </div>
-  <ConfirmModal
-    @onConfirm="deleteBanner(banner)"
-    @onClose="useConfirmModal.close()"
-  />
+
+  <BannerCardSkeleton v-if="skeletonLoading.isLoading" />
+  <ConfirmModal @onConfirm="deleteBanner" />
 </template>
 <style scoped>
 .list-enter-active,

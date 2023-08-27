@@ -10,7 +10,7 @@ const getRoles = (obj) =>
 
 const getAllRoles = () =>
 {
-    return api().get("/roles/all");
+    return api().get("/get-all-roles");
 }
 const getRolePermission = (role_id) =>
 {

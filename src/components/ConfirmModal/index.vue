@@ -12,11 +12,7 @@
             <slot name="body" />
           </div>
           <div class="confirm-modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="$emit('onClose')"
-            >
+            <button type="button" class="btn btn-secondary" @click="closeModal">
               <span>Close</span>
             </button>
 
@@ -42,6 +38,12 @@ const props = defineProps(["id"]);
 const emits = defineEmits(["onClose", "onConfirm"]);
 
 const slots = useSlots();
+
+const closeModal = () => {
+  useConfirmModal.close();
+
+  emits("onClose");
+};
 </script>
 <style scoped>
 .slide-enter-active {

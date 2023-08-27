@@ -25,6 +25,13 @@ const useRouterService = reactive({
         {
             document.title = config.APP_NAME;
         }
+    },
+    redirectUnauthorizedUser(error, routeName = 'dashboard') 
+    {
+        if (error && error.response.status == 401)
+        {
+            redirectToRoute(routeName);
+        }
     }
 });
 

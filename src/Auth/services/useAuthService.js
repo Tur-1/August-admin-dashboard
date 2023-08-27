@@ -68,10 +68,21 @@ export default function useAuthService()
 
     };
 
+    const getUserPermissions = async () =>
+    {
 
+        useLoadingSpinner.show();
+
+        let response = await useAuthApi.getUserPermissions();
+
+        authStore.permissions = response.data.permissions;
+
+        useLoadingSpinner.hide();
+    }
     return {
         login,
         logout,
+        getUserPermissions
     }
 }
 

@@ -6,6 +6,7 @@ import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import useAdminsStore from "@/pages/AdminsPage/stores/AdminsStore";
+import { skeletonLoading } from "@/helpers";
 
 export default function useAdminsService()
 {
@@ -14,7 +15,7 @@ export default function useAdminsService()
 
     const getAllAdmins = async ({ url, search } = {}) =>
     {
-        adminsStore.showLoading();
+        skeletonLoading.show();
         let response = await useAdminsApi.getAllAdmins({
             url: url,
             search: search
@@ -23,7 +24,7 @@ export default function useAdminsService()
         adminsStore.admins = response.data.data;
         adminsStore.paginationLinks = response.data.meta.pagination.links;
 
-        adminsStore.hideLoading();
+        skeletonLoading.hide();
 
     }
     const storeNewAdmin = async () =>
@@ -94,8 +95,8 @@ export default function useAdminsService()
             useToastNotification.open().withMessage(response.data.message);
         } catch (error)
         {
-            console.log(error.response);
-            // useToastNotification.open({ error: true }).withMessage(error.response.message);
+
+            useToastNotification.open({ error: true }).withMessage(error.response.message);
 
         }
 

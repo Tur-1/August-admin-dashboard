@@ -1,4 +1,5 @@
 
+import { reactive } from 'vue'
 export const isNotNull = (value) =>
 {
     return value != null;
@@ -47,4 +48,17 @@ export const appendFormData = (formFields) =>
     }
     return formData;
 }
+
+export const skeletonLoading = reactive({
+    isLoading: false,
+    show()
+    {
+        this.isLoading = true;
+    },
+    hide()
+    {
+        this.isLoading = false;
+    }
+});
+
 

@@ -19,6 +19,7 @@ import useAuthStore from "@/Auth/store/AuthStore";
 
 import ColorsRoutes from '@/pages/ColorsPage/routes'
 import ErrorsRoutes from '@/pages/Errors/routes'
+import useAuthService from '@/Auth/services/useAuthService';
 
 
 const router = createRouter({
@@ -61,8 +62,9 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) =>
 {
   useRouterService.setPageTitle(to.meta.title);
-
+  const { getUserPermissions } = useAuthService();
   const authStore = useAuthStore();
+
 
 
   if (!authStore.isAuthenticated && to.name !== 'login')
@@ -70,18 +72,19 @@ router.beforeEach(async (to, from, next) =>
     return next({ name: 'login' });
   }
 
-
-  if (to.meta.permission && !authStore.userCan(to.meta.permission))
-  {
-    return next({ name: 'dashboard' });
-  }
-
-
   if (authStore.isAuthenticated && to.meta.guest)
   {
     return next({ name: 'dashboard' });
   }
 
+  if (authStore.isAuthenticated)
+  {
+    await getUserPermissions();
+  }
+  if (to.meta.permission && !authStore.userCan(to.meta.permission))
+  {
+    return next({ name: 'dashboard' });
+  }
 
   return next();
 })

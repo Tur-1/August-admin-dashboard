@@ -1,12 +1,13 @@
 
 import useToastNotification from "@/components/Toast/useToastNotification";
 import useRouterService from "@/router/useRouterService";
-import BannersStore from "@/pages/BannersPage/stores/BannersStore";
+import useBannersStore from "@/pages/BannersPage/stores/BannersStore";
 import useBannersApi from "@/pages/BannersPage/api/useBannersApi";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
-import { appendFormData } from "@/helpers";
+import { appendFormData, skeletonLoading } from "@/helpers";
+import useAuthStore from "@/Auth/store/AuthStore";
 
 
 
@@ -14,14 +15,19 @@ import { appendFormData } from "@/helpers";
 
 export default function useBannersService()
 {
+    const authStore = useAuthStore();
 
+    const BannersStore = useBannersStore();
     const getAllBanners = async () =>
     {
+        skeletonLoading.show();
 
 
         let response = await useBannersApi.getAll();
 
-        BannersStore.value.list = response.data;
+        BannersStore.banners = response.data;
+
+        skeletonLoading.hide();
 
     }
     const storeNewBanner = async () =>
@@ -81,13 +87,13 @@ export default function useBannersService()
         FormStore.hideProgress();
 
     };
-    const deleteBanner = async ({ id, index }) =>
+    const deleteBanner = async () =>
     {
 
         useConfirmModal.showLoading()
-        let response = await useBannersApi.deleteBanner(id);
+        let response = await useBannersApi.deleteBanner(BannersStore.banner_id.id);
 
-        BannersStore.value.filtered.splice(index, 1);
+        BannersStore.banners.splice(BannersStore.banner_id.index, 1);
         useConfirmModal.close();
 
         useToastNotification.open().withMessage(response.data.message);
@@ -121,7 +127,12 @@ export default function useBannersService()
 
     };
 
-
+    const openConfirmModal = ({ id, index }) =>
+    {
+        useConfirmModal.open();
+        BannersStore.banner_id.id = id;
+        BannersStore.banner_id.index = index;
+    };
 
 
     return {
@@ -130,7 +141,8 @@ export default function useBannersService()
         getAllBanners,
         deleteBanner,
         publishBanner,
-        showBanner
+        showBanner,
+        openConfirmModal
     }
 
 }

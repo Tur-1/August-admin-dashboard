@@ -1,8 +1,14 @@
 <script setup>
+import { onMounted } from "vue";
+
 import ButtonLink from "@/components/ButtonLink/index.vue";
 import PageHeader from "@/components/PageHeader/index.vue";
 import BannerCard from "@/pages/BannersPage/components/BannerCard.vue";
-import BannerCardSkeleton from "@/pages/BannersPage/components/BannerCardSkeleton.vue";
+import useBannersService from "@/pages/BannersPage/services/useBannersService";
+
+const { getAllBanners } = useBannersService();
+
+onMounted(getAllBanners);
 </script>
 <template>
   <section class="main-section">
@@ -10,13 +16,7 @@ import BannerCardSkeleton from "@/pages/BannersPage/components/BannerCardSkeleto
       <ButtonLink title="New Banner" routeName="bannersCreate" />
     </PageHeader>
     <div class="card card-body border-0 shadow mb-4">
-      <Suspense>
-        <BannerCard />
-
-        <template #fallback>
-          <BannerCardSkeleton />
-        </template>
-      </Suspense>
+      <BannerCard />
     </div>
   </section>
 </template>

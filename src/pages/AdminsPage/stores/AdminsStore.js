@@ -5,7 +5,7 @@ import { defineStore } from 'pinia'
 
 const useAdminsStore = defineStore('AdminsStore', () =>
 {
-    let isLoading = ref(false);
+
 
     let admin_id = reactive({
         id: null,
@@ -24,20 +24,9 @@ const useAdminsStore = defineStore('AdminsStore', () =>
         { label: "Role", field: "role_name" },
         { label: "Actions", Actions: { routeName: "adminsEdit" } },
     ];
-    const showLoading = () => 
-    {
-        isLoading.value = true;
 
-    }
-    const hideLoading = () => 
-    {
-        isLoading.value = false;
-    }
 
     return {
-        isLoading,
-        showLoading,
-        hideLoading,
         admins,
         permissions,
         roles,

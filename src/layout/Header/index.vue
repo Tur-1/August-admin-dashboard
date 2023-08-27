@@ -14,12 +14,16 @@
             <img
               class="avatar rounded-circle"
               alt="Image placeholder"
-              :src="femaleAvatar"
+              :src="
+                authStore.user?.gender == 'Male' ? maleAvatar : femaleAvatar
+              "
             />
             <div
               class="media-body ms-2 text-dark align-items-center d-none d-lg-block"
             >
-              <span class="mb-0 font-small fw-bold text-gray-900">admin</span>
+              <span class="mb-0 font-small fw-bold text-gray-900">
+                {{ authStore.user.name }}
+              </span>
             </div>
           </div>
         </a>
@@ -56,6 +60,7 @@
 import maleAvatar from "@/assets/img/avatars/avatar_male.png";
 import femaleAvatar from "@/assets/img/avatars/avatar_female.png";
 import useAuthService from "@/Auth/services/useAuthService";
-
+import useAuthStore from "@/Auth/store/AuthStore";
+const authStore = useAuthStore();
 const { logout } = useAuthService();
 </script>

@@ -11,12 +11,16 @@ const useAuthStore = defineStore('AuthStore', () =>
     let permissions = ref([]);
     let access_token = ref(null);
 
-
+    const updatePermissions = (errorResponse) => 
+    {
+        if (errorResponse.status == 403)
+        {
+            permissions.value = errorResponse.data.data.permissions;
+        }
+    }
     const userCan = (permission) => 
     {
-
         return permissions.value.includes(permission);
-
     }
 
     const reset = () =>
@@ -34,7 +38,7 @@ const useAuthStore = defineStore('AuthStore', () =>
         access_token,
         userCan,
         reset,
-        isAuthenticated
+        isAuthenticated, updatePermissions
     }
 }, {
     persist: true,

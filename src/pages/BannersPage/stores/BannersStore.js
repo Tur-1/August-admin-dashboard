@@ -1,10 +1,24 @@
-import { ref } from 'vue';
 
-let BannersStore = ref({
-    list: [],
-    filtered: [],
-    pagination: [],
-});
+import { reactive, ref } from "vue";
+
+import { defineStore } from 'pinia'
+
+const useBannersStore = defineStore('BannersStore', () =>
+{
 
 
-export default BannersStore;
+    let banner_id = reactive({
+        id: null,
+        index: null
+    });
+    let banners = reactive([]);
+    let paginationLinks = reactive([]);
+
+    return {
+        banners,
+        banner_id,
+        paginationLinks,
+    }
+})
+
+export default useBannersStore;
