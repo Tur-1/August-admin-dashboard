@@ -1,31 +1,23 @@
 <script setup>
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
-import BrandsStore from "@/pages/BrandsPage/stores/BrandsStore";
+import useBrandsStore from "@/pages/BrandsPage/stores/BrandsStore";
 import useBrandsService from "@/pages/BrandsPage/services/useBrandsService";
-import { ref } from "vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
+import { skeletonLoading } from "@/helpers";
+import BrandCardSkeleton from "@/pages/BrandsPage/components/BrandCardSkeleton.vue";
 
-const { getAllBrands, deleteBrand } = useBrandsService();
-
-await getAllBrands();
-
-let Brand = ref({ id: "", index: "" });
-
-const openModal = ({ id, index }) => {
-  useConfirmModal.open();
-  Brand.value.id = id;
-  Brand.value.index = index;
-};
+const { deleteBrand, openConfirmModal } = useBrandsService();
 
 const defultImage = "./src/assets/img/defult-image.png";
+const BrandsStore = useBrandsStore();
 </script>
 
 <template>
-  <transition-group name="list">
+  <transition-group name="list" v-if="!skeletonLoading.isLoading">
     <figure
       class="card border-1 m-3"
       style="width: 170px; min-height: 150px"
-      v-for="(Brand, index) in BrandsStore.filtered"
+      v-for="(Brand, index) in BrandsStore.brands"
       :key="Brand.id"
     >
       <div
@@ -60,7 +52,7 @@ const defultImage = "./src/assets/img/defult-image.png";
           </RouterLink>
 
           <a
-            @click="openModal({ id: Brand.id, index: index })"
+            @click="openConfirmModal({ id: Brand.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"
           >
@@ -71,20 +63,19 @@ const defultImage = "./src/assets/img/defult-image.png";
       </figcaption>
     </figure>
   </transition-group>
-
+  <BrandCardSkeleton v-if="skeletonLoading.isLoading" />
   <div class="container">
     <div class="row">
       <div class="d-flex justify-content-center align-items-center">
-        <div v-show="BrandsStore.filtered.length == 0">
+        <div
+          v-show="BrandsStore.brands.length == 0 && !skeletonLoading.isLoading"
+        >
           <h5 class="text-center">No Brands Found</h5>
         </div>
       </div>
     </div>
   </div>
-  <ConfirmModal
-    @onConfirm="deleteBrand(Brand)"
-    @onClose="useConfirmModal.close()"
-  />
+  <ConfirmModal @onConfirm="deleteBrand" @onClose="useConfirmModal.close()" />
 </template>
 <style scoped>
 .list-enter-active,

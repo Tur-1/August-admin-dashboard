@@ -7,7 +7,7 @@ import useToastNotification from "@/components/Toast/useToastNotification";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { useRoute } from "vue-router";
 import { FormStore } from "@/components/BaseForm";
-import { appendFormData } from "@/helpers";
+import { appendFormData, skeletonLoading } from "@/helpers";
 import useSectionService from "@/pages/CategoriesPage/services/useSectionService";
 
 
@@ -20,7 +20,8 @@ export default function useCategoryService()
     {
 
 
-        categoriesStore.showLoading();
+        skeletonLoading.show();
+
         let response = await useCategoryApi.getAllCategories(
             {
                 url: url,
@@ -33,7 +34,8 @@ export default function useCategoryService()
         categoriesStore.categories = response.data.data;
         categoriesStore.paginationLinks = response.data.meta.pagination.links;
 
-        categoriesStore.hideLoading();
+        skeletonLoading.hide();
+
 
     }
 

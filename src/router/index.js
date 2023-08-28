@@ -50,7 +50,8 @@ const router = createRouter({
       component: () => import('@/Auth/views/login.vue'),
       meta: {
         guest: true,
-      }
+      },
+
 
     }
 
@@ -83,7 +84,7 @@ router.beforeEach(async (to, from, next) =>
   }
   if (to.meta.permission && !authStore.userCan(to.meta.permission))
   {
-    return next({ name: 'dashboard' });
+    return next({ name: 'Forbidden' });
   }
 
   return next();

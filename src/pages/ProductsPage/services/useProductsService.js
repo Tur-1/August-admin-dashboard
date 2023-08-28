@@ -3,7 +3,7 @@ import useToastNotification from "@/components/Toast/useToastNotification";
 import { useLoadingSpinner } from '@/components/LoadingSpinner';
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
-import { appendFormData, isNotNull } from "@/helpers";
+import { appendFormData, isNotNull, skeletonLoading } from "@/helpers";
 import useProductsApi from "@/pages/ProductsPage/api/useProductsApi";
 import useProductAttributesService from "@/pages/ProductsPage/services/useProductAttributesService";
 import useProductsStore from "@/pages/ProductsPage/stores/ProductsStore";
@@ -15,10 +15,13 @@ export default function useProductsService()
     const getAllProducts = async () =>
     {
 
+        skeletonLoading.show();
         let response = await useProductsApi.getAllProducts();
 
         productsStore.products = response.data.data;
         productsStore.paginationLinks = response.data.meta.pagination.links;
+
+        skeletonLoading.hide();
 
     }
     const storeNewProduct = async () =>

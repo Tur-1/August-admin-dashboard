@@ -9,7 +9,7 @@ const logout = () =>
 }
 const setCSRFCookie = () =>
 {
-    api().get("http://localhost:8000/sanctum/csrf-cookie");
+    api().get("http://api.localhost:8000/sanctum/csrf-cookie");
 }
 
 const login = (fields) =>

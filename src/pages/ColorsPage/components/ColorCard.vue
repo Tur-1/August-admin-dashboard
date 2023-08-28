@@ -1,30 +1,23 @@
 <script setup>
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
-import ColorsStore from "@/pages/ColorsPage/stores/ColorsStore";
+import useColorsStore from "@/pages/ColorsPage/stores/ColorsStore";
 import useColorsService from "@/pages/ColorsPage/services/useColorsService";
-import { ref } from "vue";
+import ColorCardSkeleton from "@/pages/ColorsPage/components/ColorCardSkeleton.vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
 import defultImage from "@/assets/img/defult-image.png";
+import { skeletonLoading } from "@/helpers";
 
-const { getAllColors, deleteColor } = useColorsService();
+const ColorsStore = useColorsStore();
 
-await getAllColors();
-
-let color = ref({ id: "", index: "" });
-
-const openModal = ({ id, index }) => {
-  useConfirmModal.open();
-  color.value.id = id;
-  color.value.index = index;
-};
+const { openConfirmModal, deleteColor } = useColorsService();
 </script>
 
 <template>
-  <transition-group name="list">
+  <transition-group name="list" v-if="!skeletonLoading.isLoading">
     <figure
       class="card border-1 m-3"
       style="width: 170px; min-height: 130px"
-      v-for="(color, index) in ColorsStore.filtered"
+      v-for="(color, index) in ColorsStore.colors"
       :key="color.id"
     >
       <div
@@ -59,7 +52,7 @@ const openModal = ({ id, index }) => {
           </RouterLink>
 
           <a
-            @click="openModal({ id: color.id, index: index })"
+            @click="openConfirmModal({ id: color.id, index: index })"
             role="button"
             class="dropdown-item d-flex align-items-center text-danger"
           >
@@ -74,16 +67,17 @@ const openModal = ({ id, index }) => {
   <div class="container">
     <div class="row">
       <div class="d-flex justify-content-center align-items-center">
-        <div v-show="ColorsStore.filtered.length == 0">
+        <div
+          v-show="ColorsStore.colors.length == 0 && !skeletonLoading.isLoading"
+        >
           <h5 class="text-center">No Colors Found</h5>
         </div>
       </div>
     </div>
   </div>
-  <ConfirmModal
-    @onConfirm="deleteColor(color)"
-    @onClose="useConfirmModal.close()"
-  />
+
+  <ColorCardSkeleton v-if="skeletonLoading.isLoading" />
+  <ConfirmModal @onConfirm="deleteColor" @onClose="useConfirmModal.close()" />
 </template>
 <style scoped>
 .list-enter-active,

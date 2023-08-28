@@ -5,6 +5,7 @@ import useCustomersStore from "@/pages/CustomersPage/stores/CustomersStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import useRouterService from "@/router/useRouterService";
+import { skeletonLoading } from "@/helpers";
 
 export default function useCustomersService()
 {
@@ -13,7 +14,7 @@ export default function useCustomersService()
 
     const getAllCustomers = async ({ url, search } = {}) =>
     {
-        CustomersStore.showLoading();
+        skeletonLoading.show();
         let response = await useCustomersApi.getCustomers({
             url: url,
             search: search
@@ -22,7 +23,7 @@ export default function useCustomersService()
         CustomersStore.customers = response.data.data;
         CustomersStore.paginationLinks = response.data.meta.pagination.links;
 
-        CustomersStore.hideLoading();
+        skeletonLoading.hide();
 
     }
     const storeNewCustomer = async () =>

@@ -8,6 +8,7 @@ import {
 } from "@/components/BaseTable";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
 import Pagination from "@/components/Pagination/index.vue";
+import { skeletonLoading } from "@/helpers";
 
 const emtis = defineEmits([
   "onDelete",
@@ -48,16 +49,19 @@ const props = defineProps({
           <tbody>
             <template v-if="!$slots.row">
               <TableRow
-                v-if="!props.isLoading"
+                v-if="!skeletonLoading.isLoading"
                 :columns="columns"
                 :data="data"
                 @onDelete="(object) => $emit('onDelete', object)"
               />
 
-              <TableSkeleton v-if="props.isLoading" :columns="columns" />
+              <TableSkeleton
+                v-if="skeletonLoading.isLoading"
+                :columns="columns"
+              />
             </template>
             <NoRecordsFound
-              :show="!props.isLoading && data?.length == 0"
+              :show="!skeletonLoading.isLoading && data?.length == 0"
               :columns="columns"
               :noRecordsFoundTitle="noRecordsFoundTitle"
             />
@@ -81,3 +85,8 @@ const props = defineProps({
     </template>
   </ConfirmModal>
 </template>
+<style scoped>
+table.table {
+  margin-bottom: 95px !important;
+}
+</style>

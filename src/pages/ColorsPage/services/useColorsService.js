@@ -1,24 +1,27 @@
 
 import useToastNotification from "@/components/Toast/useToastNotification";
 import useRouterService from "@/router/useRouterService";
-import ColorsStore from "@/pages/ColorsPage/stores/ColorsStore";
+import useColorsStore from "@/pages/ColorsPage/stores/ColorsStore";
 import useColorsApi from "@/pages/ColorsPage/api/useColorsApi";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
-import { appendFormData } from "@/helpers";
+import { appendFormData, skeletonLoading } from "@/helpers";
 
 export default function useColorsService()
 {
 
+    const ColorsStore = useColorsStore();
     const getAllColors = async () =>
     {
 
+        skeletonLoading.show();
         let response = await useColorsApi.getAll();
 
-        ColorsStore.value.filtered = response.data.data;
-        ColorsStore.value.list = response.data;
-        ColorsStore.value.pagination = response.data.pagination;
+        ColorsStore.colors = response.data.data;
+        ColorsStore.paginationLinks = response.data.meta.pagination.links;
+
+        skeletonLoading.hide();
 
     }
     const storeNewColor = async () =>
@@ -77,13 +80,13 @@ export default function useColorsService()
         FormStore.hideProgress();
 
     };
-    const deleteColor = async ({ id, index }) =>
+    const deleteColor = async () =>
     {
 
         useConfirmModal.showLoading()
-        let response = await useColorsApi.deleteColor(id);
+        let response = await useColorsApi.deleteColor(ColorsStore.color_id.id);
 
-        ColorsStore.value.filtered.splice(index, 1);
+        ColorsStore.colors.splice(ColorsStore.color_id.index, 1);
         useConfirmModal.close();
 
         useToastNotification.open().withMessage(response.data.message);
@@ -106,14 +109,20 @@ export default function useColorsService()
 
     };
 
-
+    const openConfirmModal = ({ id, index }) =>
+    {
+        useConfirmModal.open();
+        ColorsStore.color_id.id = id;
+        ColorsStore.color_id.index = index;
+    };
 
     return {
         updateColor,
         storeNewColor,
         getAllColors,
         deleteColor,
-        showColor
+        showColor,
+        openConfirmModal
     }
 
 }

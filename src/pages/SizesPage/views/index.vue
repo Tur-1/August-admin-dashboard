@@ -5,6 +5,7 @@ import PageHeader from "@/components/PageHeader/index.vue";
 import useSizesService from "@/pages/SizesPage/services/useSizesService";
 import { BaseTable } from "@/components/BaseTable";
 import useSizeStore from "@/pages/SizesPage/stores/SizeStore";
+import { skeletonLoading } from "@/helpers";
 const { deleteSize, getAllSizes, openConfirmModal } = useSizesService();
 const sizeStore = useSizeStore();
 onMounted(getAllSizes);
@@ -17,7 +18,6 @@ onMounted(getAllSizes);
     <BaseTable
       :columns="sizeStore.tableColumns"
       :data="sizeStore.sizes"
-      :isLoading="sizeStore.isLoading"
       :pagination_links="sizeStore.paginationLinks"
       @onDelete="(size) => openConfirmModal(size)"
       @onDeleteConfirm="deleteSize"

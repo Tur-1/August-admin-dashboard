@@ -2,13 +2,15 @@
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import PageHeader from "@/components/PageHeader/index.vue";
 import ProductCard from "@/pages/ProductsPage/components/ProductCard.vue";
-import ProductCardSkeleton from "@/pages/ProductsPage/components/ProductCardSkeleton.vue";
 import useProductsService from "@/pages/ProductsPage/services/useProductsService";
+import { onMounted } from "vue";
+import { skeletonLoading } from "@/helpers";
 import useProductsStore from "@/pages/ProductsPage/stores/ProductsStore";
 
-const { storeNewProduct } = useProductsService();
-
 const productsStore = useProductsStore();
+const { getAllProducts, storeNewProduct } = useProductsService();
+
+onMounted(getAllProducts);
 </script>
 <template>
   <section class="main-section">
@@ -24,18 +26,16 @@ const productsStore = useProductsStore();
     </PageHeader>
     <div class="card card-body border-0 shadow mb-4">
       <div class="product-list">
-        <Suspense>
-          <ProductCard />
-
-          <template #fallback>
-            <ProductCardSkeleton />
-          </template>
-        </Suspense>
+        <ProductCard />
       </div>
       <div class="container">
         <div class="row">
           <div class="d-flex justify-content-center align-items-center">
-            <div v-show="productsStore.products.length == 0">
+            <div
+              v-show="
+                productsStore.products.length == 0 && !skeletonLoading.isLoading
+              "
+            >
               <h5 class="text-center">No Products Found</h5>
             </div>
           </div>

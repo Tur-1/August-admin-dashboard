@@ -9,6 +9,15 @@ const ErrorsRoutes = [
         }
 
     },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'pageNotFound',
+        meta: {
+            title: 'Not Found',
+        },
+        component: () => import('@/pages/Errors/views/NotFound.vue'),
+
+    },
 
 
 ];

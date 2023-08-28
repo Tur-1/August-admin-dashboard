@@ -5,6 +5,7 @@ import useSizeStore from "@/pages/SizesPage/stores/SizeStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import useRouterService from "@/router/useRouterService";
+import { skeletonLoading } from "@/helpers";
 
 
 export default function useSizesService()
@@ -12,7 +13,7 @@ export default function useSizesService()
     const sizeStore = useSizeStore();
     const getAllSizes = async ({ url } = {}) =>
     {
-        sizeStore.showLoading();
+        skeletonLoading.show();
 
         let response = await useSizesApi.getSizes({
             url: url,
@@ -20,7 +21,7 @@ export default function useSizesService()
 
         sizeStore.sizes = response.data.data;
         sizeStore.paginationLinks = response.data.pagination.links;
-        sizeStore.hideLoading();
+        skeletonLoading.hide();
     }
     const storeNewSize = async () =>
     {

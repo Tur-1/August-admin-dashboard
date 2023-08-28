@@ -4,16 +4,17 @@ import useProductsService from "@/pages/ProductsPage/services/useProductsService
 import ButtonLink from "@/components/ButtonLink/index.vue";
 import { ConfirmModal, useConfirmModal } from "@/components/ConfirmModal";
 import useProductsStore from "@/pages/ProductsPage/stores/ProductsStore";
-const { getAllProducts, deleteProduct, publishProduct, openConfirmModal } =
-  useProductsService();
+import ProductCardSkeleton from "@/pages/ProductsPage/components/ProductCardSkeleton.vue";
+import { skeletonLoading } from "@/helpers";
 
-await getAllProducts();
+const { deleteProduct, publishProduct, openConfirmModal } =
+  useProductsService();
 
 const productsStore = useProductsStore();
 </script>
 
 <template>
-  <transition-group name="list">
+  <transition-group name="list" v-if="!skeletonLoading.isLoading">
     <div
       class="product-list-card"
       v-for="(product, index) in productsStore.products"
@@ -97,6 +98,7 @@ const productsStore = useProductsStore();
     </div>
   </transition-group>
 
+  <ProductCardSkeleton v-if="skeletonLoading.isLoading" />
   <ConfirmModal @onConfirm="deleteProduct" @onClose="useConfirmModal.close()" />
 </template>
 <style scoped>

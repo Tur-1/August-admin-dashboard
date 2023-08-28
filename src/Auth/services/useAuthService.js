@@ -59,6 +59,7 @@ export default function useAuthService()
         } catch (error)
         {
 
+            authStore.reset();
             useRouterService.redirectToRoute('login');
 
         }

@@ -5,6 +5,7 @@ import OrderDetailsStore from "@/pages/OrdersPage/stores/OrderDetailsStore";
 import { useConfirmModal } from "@/components/ConfirmModal";
 import useToastNotification from "@/components/Toast/useToastNotification";
 import useOrdersStore from "@/pages/OrdersPage/stores/OrdersStore";
+import { skeletonLoading } from "@/helpers";
 
 export default function useOrdersService()
 {
@@ -12,7 +13,7 @@ export default function useOrdersService()
     const getAllOrders = async ({ url } = {}) =>
     {
 
-        ordersStore.showLoading();
+        skeletonLoading.show();
         let response = await useOrdersApi.getOrders({
             url: url,
         });
@@ -20,6 +21,7 @@ export default function useOrdersService()
         ordersStore.orders = response.data.data;
         ordersStore.paginationLinks = response.data.meta.pagination.links;
         ordersStore.hideLoading();
+        skeletonLoading.hide();
 
     }
 

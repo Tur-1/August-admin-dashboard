@@ -9,13 +9,7 @@ const authStore = useAuthStore();
   <aside class="sidenav">
     <div class="d-flex flex-column flex-shrink-0 p-3 w-100">
       <RouterLink to="/" class="d-flex align-items-center text-white">
-        <span class="sidebar-icon">
-          <img
-            src="/src/assets/img/brand/light.svg"
-            height="20"
-            width="20"
-            alt="Volt Logo" /></span
-        ><span class="mt-1 ms-1 sidebar-text">AUGUST </span>
+        <span class="mt-1 ms-1 sidebar-text">AUGUST </span>
       </RouterLink>
 
       <hr />

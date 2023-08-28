@@ -6,6 +6,7 @@ import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import useRouterService from "@/router/useRouterService";
 import useCouponsStore from "@/pages/CouponsPage/stores/CouponsStore";
+import { skeletonLoading } from "@/helpers";
 
 
 
@@ -14,6 +15,7 @@ export default function useCouponsService()
     const couponStore = useCouponsStore();
     const getAllCoupons = async ({ url } = {}) =>
     {
+        skeletonLoading.show();
 
 
         let response = await useCouponsApi.getCoupons({
@@ -22,6 +24,7 @@ export default function useCouponsService()
 
         couponStore.coupons = response.data.data;
         couponStore.paginationLinks = response.data.meta.pagination.links;
+        skeletonLoading.hide();
 
     }
     const storeNewCoupon = async () =>

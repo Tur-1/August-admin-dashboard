@@ -5,6 +5,7 @@ import useRolesStore from "@/pages/RolesPage/stores/RolesStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import useRouterService from "@/router/useRouterService";
+import { skeletonLoading } from "@/helpers";
 
 export default function useRolesService()
 {
@@ -22,13 +23,14 @@ export default function useRolesService()
 
     const getRoles = async ({ url } = {}) =>
     {
-
+        skeletonLoading.show();
         let response = await useRolesApi.getRoles({
             url: url,
         });
 
         roleStore.roles = response.data.data;
         roleStore.pagination = response.data.meta.pagination.links;
+        skeletonLoading.hide();
 
     }
     const storeNewRole = async () =>

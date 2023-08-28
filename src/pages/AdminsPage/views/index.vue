@@ -5,7 +5,6 @@ import PageHeader from "@/components/PageHeader/index.vue";
 import { BaseTable } from "@/components/BaseTable";
 import useAdminsService from "@/pages/AdminsPage/services/useAdminsService";
 import useAdminsStore from "@/pages/AdminsPage/stores/AdminsStore";
-import { skeletonLoading } from "@/helpers";
 import useAuthStore from "@/Auth/store/AuthStore";
 
 const AdminsStore = useAdminsStore();
@@ -27,7 +26,6 @@ onMounted(getAllAdmins);
     <BaseTable
       :columns="AdminsStore.tableColumns"
       :data="AdminsStore.admins"
-      :isLoading="skeletonLoading.isLoading"
       :pagination_links="AdminsStore.paginationLinks"
       @onDelete="(admin) => openConfirmModal(admin)"
       @onDeleteConfirm="deleteAdmin"

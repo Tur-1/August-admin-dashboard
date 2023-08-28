@@ -3,6 +3,7 @@ import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import useCategoriesStore from "@/pages/CategoriesPage/stores/CategoriesStore";
 import { CategoryRowSkeleton } from "@/pages/CategoriesPage/components";
 import defultImage from "@/assets/img/defult-image.png";
+import { skeletonLoading } from "@/helpers";
 
 const emits = defineEmits(["onDelete"]);
 
@@ -10,7 +11,7 @@ const categoriesStore = useCategoriesStore();
 </script>
 
 <template>
-  <transition-group name="list" v-if="!categoriesStore.isLoading">
+  <transition-group name="list" v-if="!skeletonLoading.isLoading">
     <tr
       v-for="(category, index) in categoriesStore.categories"
       :key="category.id"
@@ -60,7 +61,7 @@ const categoriesStore = useCategoriesStore();
       </td>
     </tr>
   </transition-group>
-  <CategoryRowSkeleton v-if="categoriesStore.isLoading" />
+  <CategoryRowSkeleton v-if="skeletonLoading.isLoading" />
 </template>
 <style scoped>
 .list-enter-active,

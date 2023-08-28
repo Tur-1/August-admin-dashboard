@@ -5,6 +5,7 @@ import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import useReviewsStore from "@/pages/ReviewsPage/stores/ReviewsStore";
 import useRouterService from "@/router/useRouterService";
+import { skeletonLoading } from "@/helpers";
 
 
 export default function useReviewsService()
@@ -14,14 +15,14 @@ export default function useReviewsService()
     const getAllReviews = async ({ url } = {}) =>
     {
 
-        reviewsStore.showLoading();
+        skeletonLoading.show();
         let response = await useReviewsApi.getReviews({
             url: url,
         });
 
         reviewsStore.reviews = response.data.data;
         reviewsStore.paginationLinks = response.data.meta.pagination.links;
-        reviewsStore.hideLoading();
+        skeletonLoading.hide();
 
     }
 

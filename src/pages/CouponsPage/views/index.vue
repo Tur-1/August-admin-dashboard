@@ -19,7 +19,6 @@ onMounted(getAllCoupons);
     <BaseTable
       :columns="couponStore.tableColumns"
       :data="couponStore.coupons"
-      :isLoading="couponStore.isLoading"
       :pagination_links="couponStore.paginationLinks"
       @onDelete="(coupon) => openConfirmModal(coupon)"
       @onDeleteConfirm="deleteCoupon"

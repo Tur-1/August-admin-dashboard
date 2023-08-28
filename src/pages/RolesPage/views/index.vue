@@ -5,6 +5,7 @@ import useRolesService from "@/pages/RolesPage/services/useRolesService";
 import useRolesStore from "@/pages/RolesPage/stores/RolesStore";
 import { BaseTable } from "@/components/BaseTable";
 import { onMounted } from "vue";
+import { skeletonLoading } from "@/helpers";
 
 const { deleteRole, getRoles, openConfirmModal } = useRolesService();
 const roleStore = useRolesStore();
@@ -19,7 +20,6 @@ onMounted(getRoles);
     <BaseTable
       :columns="roleStore.tableColumns"
       :data="roleStore.roles"
-      :isLoading="roleStore.isLoading"
       :pagination_links="roleStore.paginationLinks"
       @onDelete="(role) => openConfirmModal(role)"
       @onDeleteConfirm="deleteRole"

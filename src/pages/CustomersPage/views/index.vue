@@ -20,7 +20,6 @@ onMounted(getAllCustomers);
     <BaseTable
       :columns="CustomersStore.tableColumns"
       :data="CustomersStore.customers"
-      :isLoading="CustomersStore.isLoading"
       :pagination_links="CustomersStore.paginationLinks"
       @onDelete="(customer) => openConfirmModal(customer)"
       @onDeleteConfirm="deleteCustomer"

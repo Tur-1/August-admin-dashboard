@@ -15,7 +15,6 @@ onMounted(getAllOrders);
     <BaseTable
       :columns="ordersStore.tableColumns"
       :data="ordersStore.orders"
-      :isLoading="ordersStore.isLoading"
       :pagination_links="ordersStore.paginationLinks"
       @onDelete="(order) => openConfirmModal(order)"
       @onDeleteConfirm="deleteOrder"

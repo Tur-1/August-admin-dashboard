@@ -23,7 +23,6 @@ onMounted(getAllCategories);
     <BaseTable
       :columns="categoriesStore.tableColumns"
       :data="categoriesStore.categories"
-      :isLoading="categoriesStore.isLoading"
       :pagination_links="categoriesStore.paginationLinks"
       @onDeleteConfirm="destroyCategory"
       @onPageChange="async (url) => await getAllCategories({ url: url })"
