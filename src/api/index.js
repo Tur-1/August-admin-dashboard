@@ -17,13 +17,14 @@ export default (url = config.APP_API_URL) =>
     create.interceptors.response.use(function (response)
     {
 
+
         // Optional: Do something with response data
         return response;
     }, function (error)
     {
         // Do whatever you want with the response error here:
 
-        if (error.response.status == 403)
+        if (error && error.response?.status == 403)
         {
             useRouterService.redirectToRoute('Forbidden');
 

@@ -16,20 +16,11 @@ onMounted(getAllAdmins);
 <template>
   <section class="main-section">
     <PageHeader title="Admins List">
-      <ButtonLink
-        title="New Admin"
-        routeName="adminsCreate"
-        v-if="authStore.userCan('create-admins')"
-      />
+      <ButtonLink title="New Admin" routeName="adminsCreate" v-if="authStore.userCan('create-admins')" />
     </PageHeader>
 
-    <BaseTable
-      :columns="AdminsStore.tableColumns"
-      :data="AdminsStore.admins"
-      :pagination_links="AdminsStore.paginationLinks"
-      @onDelete="(admin) => openConfirmModal(admin)"
-      @onDeleteConfirm="deleteAdmin"
-      @onPageChange="async (url) => await getAllAdmins({ url: url })"
-    />
+    <BaseTable :columns="AdminsStore.tableColumns" :data="AdminsStore.admins"
+      :pagination_links="AdminsStore.paginationLinks" @onDelete="(admin) => openConfirmModal(admin)"
+      @onDeleteConfirm="deleteAdmin" @onPageChange="async (url) => await getAllAdmins({ url: url })" />
   </section>
 </template>

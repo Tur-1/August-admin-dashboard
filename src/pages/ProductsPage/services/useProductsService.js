@@ -15,13 +15,13 @@ export default function useProductsService()
     const getAllProducts = async () =>
     {
 
-        skeletonLoading.show();
+        useLoadingSpinner.show();
         let response = await useProductsApi.getAllProducts();
 
         productsStore.products = response.data.data;
         productsStore.paginationLinks = response.data.meta.pagination.links;
 
-        skeletonLoading.hide();
+        useLoadingSpinner.hide();
 
     }
     const storeNewProduct = async () =>

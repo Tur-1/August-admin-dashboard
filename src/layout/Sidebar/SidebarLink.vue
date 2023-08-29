@@ -1,20 +1,15 @@
 <template>
-  <li
-    class="sidenav-item mb-2"
-    :class="{ active: props.activeRouteNames.includes(route.name) }"
-  >
-    <RouterLink :to="{ name: props.toRoute }" class="sidenav-link row">
-      <span class="sidebar-icon col-1">
+  <li class="nav-item " :class="{ active: props.activeRouteNames.includes(route.name) }">
+    <RouterLink :to="{ name: props.toRoute }" class="nav-link ">
+      <span class="sidebar-icon">
         <slot name="icon" />
       </span>
-
-      <span class="sidebar-text col">{{ props.title }}</span>
+      <span class="sidebar-text">{{ props.title }}</span>
     </RouterLink>
   </li>
 </template>
 
 <script setup>
-import { ref } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();

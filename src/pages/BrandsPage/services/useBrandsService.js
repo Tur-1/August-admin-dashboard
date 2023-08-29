@@ -87,7 +87,7 @@ export default function useBrandsService()
         useConfirmModal.showLoading()
         let response = await useBrandsApi.deleteBrand(BrandsStore.brand_id.id);
 
-        BrandsStore.brands.splice(iBrandsStore.brand_id.ndex, 1);
+        BrandsStore.brands.splice(BrandsStore.brand_id.index, 1);
         useConfirmModal.close();
 
         useToastNotification.open().withMessage(response.data.message);

@@ -1,35 +1,18 @@
 <template>
   <Transition name="slide-fade">
-    <div
-      v-if="useToastNotification.isOpen"
-      id="toast-alert"
-      :class="useToastNotification.background"
-      class="toast show align-items-center border-0"
-      role="alert"
-      aria-live="assertive"
-      aria-atomic="true"
-    >
+    <div v-if="useToastNotification.isOpen" id="toast-alert" :class="useToastNotification.background"
+      class="toast show align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="d-flex align-items-center justify-content-between">
         <div class="toast-body">
           <span style="margin-right: 10px; font-size: 18px">
-            <i
-              class="fa-sharp fa-solid fa-circle-check"
-              v-show="!useToastNotification.error"
-            />
-            <i
-              class="bi bi-x-circle-fill"
-              v-show="useToastNotification.error"
-            />
+            <i class="fa-sharp fa-solid fa-circle-check" v-show="!useToastNotification.error" />
+            <i class="bi bi-x-circle-fill" v-show="useToastNotification.error" />
           </span>
 
           {{ useToastNotification.message }}
         </div>
-        <button
-          type="button"
-          class="btn-close btn-close-white me-2 m-auto"
-          @click="useToastNotification.close()"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" @click="useToastNotification.close()"
+          aria-label="Close"></button>
       </div>
     </div>
   </Transition>
