@@ -24,7 +24,7 @@ npm run dev
  
  # screenshots :
  
- <a href="https://ibb.co/JHWJkPT"><img src="https://i.ibb.co/BBHMsRJ/Screenshot-2023-01-10-220946.png" alt="Screenshot-2023-01-10-220946" width="500" height="400" border="0"></a>
+ <a href="https://ibb.co/JHWJkPT"><img src="https://i.ibb.co/BBHMsRJ/Screenshot-2023-01-10-220946.png" alt="Screenshot-2023-01-10-220946" style="width:100%" height="400" border="0"></a>
 <a href="https://ibb.co/7vpGg0w"><img src="https://i.ibb.co/2qMj8pD/Screenshot-2023-01-10-221229.png" alt="Screenshot-2023-01-10-221229" width="500" height="400" border="0"></a>
 <a href="https://ibb.co/cDwCfSW"><img src="https://i.ibb.co/J5qy6wY/Screenshot-2023-01-10-221321.png" alt="Screenshot-2023-01-10-221321" width="500" height="400" border="0"></a>
 <a href="https://ibb.co/wWfVDzW"><img src="https://i.ibb.co/WyLZS2y/Screenshot-20230110-094822.png" alt="Screenshot-20230110-094822" width="500" height="400" border="0"></a>
