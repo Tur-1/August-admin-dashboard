@@ -5805,16 +5805,15 @@ fieldset:disabled .btn {
 }
 
 .btn-gray-800:hover {
-    color: #ffffff;
-    background-color: #1a232f;
-    border-color: #19212c;
+    color: #ffffff !important;
+    background-color: #1F2937 !important;
+    border-color: #1F2937 !important;
 }
 
 .btn-check:focus+.btn-gray-800,
 .btn-gray-800:focus {
     color: #ffffff;
-    background-color: #1a232f;
-    border-color: #19212c;
+ 
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(17, 24, 39, 0.075), 0 0 0 0.18rem rgba(65, 73, 85, 0.5);
 }
 
@@ -5850,11 +5849,6 @@ fieldset:disabled .btn {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(17, 24, 39, 0.075);
 }
 
-.btn-gray-900:hover {
-    color: #ffffff;
-    background-color: #0e1421;
-    border-color: #0e131f;
-}
 
 .btn-check:focus+.btn-gray-900,
 .btn-gray-900:focus {
@@ -24597,10 +24591,7 @@ label {
     }
 }
 
-.btn-primary:hover {
-    background-color: #161d27;
-    border-color: #161d27;
-}
+.btn-primary:hover {}
 
 .btn-secondary:hover {
     background-color: #eeb15d;
@@ -24655,56 +24646,6 @@ label {
 .btn-yellow-200:hover {
     background-color: #f2d0a2;
     border-color: #f2d0a2;
-}
-
-.btn-gray-50:hover {
-    background-color: #eaedf1;
-    border-color: #eaedf1;
-}
-
-.btn-gray-100:hover {
-    background-color: #e3e7ec;
-    border-color: #e3e7ec;
-}
-
-.btn-gray-200:hover {
-    background-color: #d7dae0;
-    border-color: #d7dae0;
-}
-
-.btn-gray-300:hover {
-    background-color: #c3c8d0;
-    border-color: #c3c8d0;
-}
-
-.btn-gray-400:hover {
-    background-color: #8e96a4;
-    border-color: #8e96a4;
-}
-
-.btn-gray-500:hover {
-    background-color: #5f6672;
-    border-color: #5f6672;
-}
-
-.btn-gray-600:hover {
-    background-color: #404954;
-    border-color: #404954;
-}
-
-.btn-gray-700:hover {
-    background-color: #2d3542;
-    border-color: #2d3542;
-}
-
-.btn-gray-800:hover {
-    background-color: #161d27;
-    border-color: #161d27;
-}
-
-.btn-gray-900:hover {
-    background-color: #090d15;
-    border-color: #090d15;
 }
 
 .btn-facebook {
