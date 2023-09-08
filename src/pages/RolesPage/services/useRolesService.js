@@ -5,7 +5,7 @@ import useRolesStore from "@/pages/RolesPage/stores/RolesStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import useRouterService from "@/router/useRouterService";
-import { skeletonLoading } from "@/helpers";
+import { isNotFound, skeletonLoading } from "@/helpers";
 
 export default function useRolesService()
 {
@@ -13,9 +13,16 @@ export default function useRolesService()
     const getAllPermissions = async () =>
     {
         useLoadingSpinner.show();
-        let response = await useRolesApi.getAllPermissions();
 
-        roleStore.permissions = response.data
+        try
+        {
+            let response = await useRolesApi.getAllPermissions();
+
+            roleStore.permissions = response.data;
+        } catch (error)
+        {
+
+        }
 
         useLoadingSpinner.hide();
 
@@ -24,12 +31,18 @@ export default function useRolesService()
     const getRoles = async ({ url } = {}) =>
     {
         skeletonLoading.show();
-        let response = await useRolesApi.getRoles({
-            url: url,
-        });
+        try
+        {
+            let response = await useRolesApi.getRoles({
+                url: url,
+            });
 
-        roleStore.roles = response.data.data;
-        roleStore.pagination = response.data.meta.pagination.links;
+            roleStore.roles = response.data.data;
+            roleStore.pagination = response.data.meta.pagination.links;
+        } catch (error)
+        {
+
+        }
         skeletonLoading.hide();
 
     }
@@ -51,7 +64,7 @@ export default function useRolesService()
 
         } catch (error)
         {
-            FormStore.setErrors(error);
+
         }
         FormStore.hideProgress();
 
@@ -75,7 +88,7 @@ export default function useRolesService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
+
         }
 
         FormStore.hideProgress();
@@ -85,13 +98,19 @@ export default function useRolesService()
     {
 
         useConfirmModal.showLoading()
-        let response = await useRolesApi.deleteRole(roleStore.role_id.id);
+        try
+        {
+            let response = await useRolesApi.deleteRole(roleStore.role_id.id);
 
-        roleStore.roles.splice(roleStore.role_id.index, 1);
-        useConfirmModal.close();
+            roleStore.roles.splice(roleStore.role_id.index, 1);
+            useConfirmModal.close();
 
-        useToastNotification.open().withMessage(response.data.message);
+            useToastNotification.open().withMessage(response.data.message);
 
+        } catch (error)
+        {
+
+        }
         useConfirmModal.hideLoading()
 
     };
@@ -99,15 +118,20 @@ export default function useRolesService()
     {
 
         useLoadingSpinner.show();
-        FormStore.clearErrors();
+        try
+        {
+            let response = await useRolesApi.getRole(id);
 
+            FormStore.setFields(response.data.role);
+            FormStore.fields.permissions = FormStore.fields.permissions_ids;
 
-        let response = await useRolesApi.getRole(id);
-
-
-        FormStore.setFields(response.data.role);
-        FormStore.fields.permissions = FormStore.fields.permissions_ids;
-
+        } catch (error)
+        {
+            if (isNotFound(error))
+            {
+                useRouterService.redirectToRoute('roles');
+            }
+        }
         useLoadingSpinner.hide();
 
     };

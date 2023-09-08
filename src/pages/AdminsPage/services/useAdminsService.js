@@ -6,7 +6,7 @@ import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import useAdminsStore from "@/pages/AdminsPage/stores/AdminsStore";
-import { skeletonLoading } from "@/helpers";
+import { isNotFound, skeletonLoading } from "@/helpers";
 
 export default function useAdminsService()
 {
@@ -16,13 +16,19 @@ export default function useAdminsService()
     const getAllAdmins = async ({ url, search } = {}) =>
     {
         skeletonLoading.show();
-        let response = await useAdminsApi.getAllAdmins({
-            url: url,
-            search: search
-        });
+        try
+        {
+            let response = await useAdminsApi.getAllAdmins({
+                url: url,
+                search: search
+            });
 
-        adminsStore.admins = response.data.data;
-        adminsStore.paginationLinks = response.data.meta.pagination.links;
+            adminsStore.admins = response.data.data;
+            adminsStore.paginationLinks = response.data.meta.pagination.links;
+        } catch (error)
+        {
+
+        }
 
         skeletonLoading.hide();
 
@@ -46,7 +52,7 @@ export default function useAdminsService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
+
         }
         FormStore.hideProgress();
 
@@ -68,7 +74,7 @@ export default function useAdminsService()
             useToastNotification.open().withMessage(response.data.message);
         } catch (error)
         {
-            FormStore.setErrors(error);
+
         }
 
         FormStore.hideProgress();
@@ -110,14 +116,24 @@ export default function useAdminsService()
         FormStore.clearErrors();
 
 
-        let response = await useAdminsApi.getAdmin(admin_id);
+        try
+        {
+
+            let response = await useAdminsApi.getAdmin(admin_id);
 
 
-        FormStore.setFields(response.data);
+            FormStore.setFields(response.data);
 
 
-        await getRoles();
-        await getRolePermissions(response.data.role_id);
+            await getRoles();
+            await getRolePermissions(response.data.role_id);
+        } catch (error)
+        {
+            if (isNotFound(error))
+            {
+                useRouterService.redirectToRoute('admins');
+            }
+        }
 
         useLoadingSpinner.hide();
 
@@ -126,9 +142,16 @@ export default function useAdminsService()
     {
         useLoadingSpinner.show();
 
-        let response = await useRolesApi.getAllRoles();
 
-        adminsStore.roles = response.data;
+        try
+        {
+            let response = await useRolesApi.getAllRoles();
+
+            adminsStore.roles = response.data;
+        } catch (error)
+        {
+
+        }
 
         useLoadingSpinner.hide();
     }
@@ -138,9 +161,15 @@ export default function useAdminsService()
         {
             useLoadingSpinner.show();
 
-            let response = await useRolesApi.getRolePermission(role_id);
+            try
+            {
+                let response = await useRolesApi.getRolePermission(role_id);
 
-            adminsStore.rolePermissions = response.data;
+                adminsStore.rolePermissions = response.data;
+            } catch (error)
+            {
+
+            }
 
             useLoadingSpinner.hide();
         } else

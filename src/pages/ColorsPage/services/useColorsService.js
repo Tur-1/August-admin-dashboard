@@ -6,7 +6,7 @@ import useColorsApi from "@/pages/ColorsPage/api/useColorsApi";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
-import { appendFormData, skeletonLoading } from "@/helpers";
+import { appendFormData, isNotFound, skeletonLoading } from "@/helpers";
 
 export default function useColorsService()
 {
@@ -16,10 +16,17 @@ export default function useColorsService()
     {
 
         skeletonLoading.show();
-        let response = await useColorsApi.getAll();
 
-        ColorsStore.colors = response.data.data;
-        ColorsStore.paginationLinks = response.data.meta.pagination.links;
+        try
+        {
+            let response = await useColorsApi.getAll();
+
+            ColorsStore.colors = response.data.data;
+            ColorsStore.paginationLinks = response.data.meta.pagination.links;
+        } catch (error)
+        {
+
+        }
 
         skeletonLoading.hide();
 
@@ -45,7 +52,7 @@ export default function useColorsService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
+
         }
         FormStore.hideProgress();
 
@@ -74,7 +81,7 @@ export default function useColorsService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
+
         }
 
         FormStore.hideProgress();
@@ -84,13 +91,20 @@ export default function useColorsService()
     {
 
         useConfirmModal.showLoading()
-        let response = await useColorsApi.deleteColor(ColorsStore.color_id.id);
 
-        ColorsStore.colors.splice(ColorsStore.color_id.index, 1);
-        useConfirmModal.close();
+        try
+        {
+            let response = await useColorsApi.deleteColor(ColorsStore.color_id.id);
 
-        useToastNotification.open().withMessage(response.data.message);
+            ColorsStore.colors.splice(ColorsStore.color_id.index, 1);
+            useConfirmModal.close();
 
+            useToastNotification.open().withMessage(response.data.message);
+
+        } catch (error)
+        {
+
+        }
         useConfirmModal.hideLoading()
 
     };
@@ -101,9 +115,19 @@ export default function useColorsService()
         FormStore.clearErrors();
 
 
-        let response = await useColorsApi.getColor(id);
+        try
+        {
 
-        FormStore.setFields(response.data.color);
+            let response = await useColorsApi.getColor(id);
+
+            FormStore.setFields(response.data.color);
+        } catch (error)
+        {
+            if (isNotFound(error))
+            {
+                useRouterService.redirectToRoute('colors');
+            }
+        }
 
         useLoadingSpinner.hide();
 

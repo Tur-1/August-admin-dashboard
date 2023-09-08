@@ -5,7 +5,7 @@ import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import useReviewsStore from "@/pages/ReviewsPage/stores/ReviewsStore";
 import useRouterService from "@/router/useRouterService";
-import { skeletonLoading } from "@/helpers";
+import { isNotFound, skeletonLoading } from "@/helpers";
 
 
 export default function useReviewsService()
@@ -16,12 +16,18 @@ export default function useReviewsService()
     {
 
         skeletonLoading.show();
-        let response = await useReviewsApi.getReviews({
-            url: url,
-        });
+        try
+        {
+            let response = await useReviewsApi.getReviews({
+                url: url,
+            });
 
-        reviewsStore.reviews = response.data.data;
-        reviewsStore.paginationLinks = response.data.meta.pagination.links;
+            reviewsStore.reviews = response.data.data;
+            reviewsStore.paginationLinks = response.data.meta.pagination.links;
+        } catch (error)
+        {
+
+        }
         skeletonLoading.hide();
 
     }
@@ -31,13 +37,18 @@ export default function useReviewsService()
     {
 
         useConfirmModal.showLoading();
-        let response = await useReviewsApi.deleteReview(reviewsStore.review_id.id);
+        try
+        {
+            let response = await useReviewsApi.deleteReview(reviewsStore.review_id.id);
 
-        reviewsStore.reviews.splice(reviewsStore.review_id.index, 1);
+            reviewsStore.reviews.splice(reviewsStore.review_id.index, 1);
+            useConfirmModal.close();
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
 
+        }
         useConfirmModal.hideLoading();
-        useConfirmModal.close();
-        useToastNotification.open().withMessage(response.data.message);
 
     };
     const showReview = async (review_id) =>
@@ -54,10 +65,8 @@ export default function useReviewsService()
             reviewsStore.reviews.push(response.data.review?.reply);
         } catch (error)
         {
-
-            if (error && error.response.status == 404)
+            if (isNotFound(error))
             {
-
                 useRouterService.redirectToRoute('reviews');
             }
         }
@@ -82,7 +91,7 @@ export default function useReviewsService()
             FormStore.clearFields();
         } catch (error)
         {
-            FormStore.setErrors(error);
+
         }
 
         useLoadingSpinner.hide();

@@ -5,7 +5,10 @@ import api from "@/api";
 const getRoles = (obj) =>
 {
 
-    return api().get(obj.url ?? "/roles");
+    return api().get(obj.url ?? "/roles").catch(error =>
+    {
+
+    });
 }
 
 const getAllRoles = () =>

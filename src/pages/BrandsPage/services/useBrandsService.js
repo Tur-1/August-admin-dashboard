@@ -8,7 +8,7 @@ import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import { useRoute } from "vue-router";
-import { appendFormData, skeletonLoading } from "@/helpers";
+import { appendFormData, isNotFound, skeletonLoading } from "@/helpers";
 
 
 export default function useBrandsService()
@@ -21,9 +21,16 @@ export default function useBrandsService()
         skeletonLoading.show();
         let response = await useBrandsApi.getAll();
 
-        BrandsStore.brands = response.data.data;
-        BrandsStore.paginationLinks = response.data.meta.pagination.links;
+        try
+        {
 
+            BrandsStore.brands = response.data.data;
+            BrandsStore.paginationLinks = response.data.meta.pagination.links;
+
+        } catch (error)
+        {
+
+        }
         skeletonLoading.hide();
 
     }
@@ -48,7 +55,6 @@ export default function useBrandsService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
         }
         FormStore.hideProgress();
 
@@ -75,7 +81,7 @@ export default function useBrandsService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
+
         }
 
         FormStore.hideProgress();
@@ -85,13 +91,20 @@ export default function useBrandsService()
     {
 
         useConfirmModal.showLoading()
-        let response = await useBrandsApi.deleteBrand(BrandsStore.brand_id.id);
 
-        BrandsStore.brands.splice(BrandsStore.brand_id.index, 1);
-        useConfirmModal.close();
+        try
+        {
+            let response = await useBrandsApi.deleteBrand(BrandsStore.brand_id.id);
 
-        useToastNotification.open().withMessage(response.data.message);
+            BrandsStore.brands.splice(BrandsStore.brand_id.index, 1);
+            useConfirmModal.close();
 
+            useToastNotification.open().withMessage(response.data.message);
+
+        } catch (error)
+        {
+
+        }
         useConfirmModal.hideLoading()
 
     };
@@ -101,12 +114,22 @@ export default function useBrandsService()
         useLoadingSpinner.show();
         FormStore.clearErrors();
 
-        const route = useRoute();
+        try
+        {
+
+            const route = useRoute();
 
 
-        let response = await useBrandsApi.getBrand(route.params.id);
+            let response = await useBrandsApi.getBrand(route.params.id);
 
-        FormStore.setFields(response.data.brand);
+            FormStore.setFields(response.data.brand);
+        } catch (error)
+        {
+            if (isNotFound(error))
+            {
+                useRouterService.redirectToRoute('brands');
+            }
+        }
 
         useLoadingSpinner.hide();
 

@@ -5,7 +5,8 @@ import OrderDetailsStore from "@/pages/OrdersPage/stores/OrderDetailsStore";
 import { useConfirmModal } from "@/components/ConfirmModal";
 import useToastNotification from "@/components/Toast/useToastNotification";
 import useOrdersStore from "@/pages/OrdersPage/stores/OrdersStore";
-import { skeletonLoading } from "@/helpers";
+import { isNotFound, skeletonLoading } from "@/helpers";
+import useRouterService from "@/router/useRouterService";
 
 export default function useOrdersService()
 {
@@ -14,13 +15,19 @@ export default function useOrdersService()
     {
 
         skeletonLoading.show();
-        let response = await useOrdersApi.getOrders({
-            url: url,
-        });
 
-        ordersStore.orders = response.data.data;
-        ordersStore.paginationLinks = response.data.meta.pagination.links;
-        ordersStore.hideLoading();
+        try
+        {
+            let response = await useOrdersApi.getOrders({
+                url: url,
+            });
+
+            ordersStore.orders = response.data.data;
+            ordersStore.paginationLinks = response.data.meta.pagination.links;
+        } catch (error)
+        {
+
+        }
         skeletonLoading.hide();
 
     }
@@ -30,18 +37,23 @@ export default function useOrdersService()
     {
 
         useLoadingSpinner.show();
-        FormStore.clearErrors();
+        try
+        {
 
+            let response = await useOrdersApi.getOrder(id);
 
-        let response = await useOrdersApi.getOrder(id);
+            OrderDetailsStore.order = response.data.order
+            OrderDetailsStore.products = response.data.products
+            OrderDetailsStore.coupon = response.data.coupon
+            OrderDetailsStore.address = response.data.address
 
-        OrderDetailsStore.order = response.data.order
-        OrderDetailsStore.products = response.data.products
-        OrderDetailsStore.coupon = response.data.coupon
-        OrderDetailsStore.address = response.data.address
-
-
-
+        } catch (error)
+        {
+            if (isNotFound(error))
+            {
+                useRouterService.redirectToRoute('orders');
+            }
+        }
         useLoadingSpinner.hide();
 
     }
@@ -50,13 +62,18 @@ export default function useOrdersService()
     {
 
         useConfirmModal.showLoading();
-        let response = await useOrdersApi.deleteOrder(ordersStore.order_id.id);
+        try
+        {
+            let response = await useOrdersApi.deleteOrder(ordersStore.order_id.id);
 
-        ordersStore.orders.splice(ordersStore.order_id.index, 1);
-        useConfirmModal.close();
+            ordersStore.orders.splice(ordersStore.order_id.index, 1);
+            useConfirmModal.close();
 
-        useToastNotification.open().withMessage(response.data.message);
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
 
+        }
         useConfirmModal.hideLoading();
 
 

@@ -22,18 +22,25 @@ export default function useCategoryService()
 
         skeletonLoading.show();
 
-        let response = await useCategoryApi.getAllCategories(
-            {
-                url: url,
-                query: query,
-                section_id: section_id
+        try
+        {
 
-            });
+            let response = await useCategoryApi.getAllCategories(
+                {
+                    url: url,
+                    query: query,
+                    section_id: section_id
+
+                });
 
 
-        categoriesStore.categories = response.data.data;
-        categoriesStore.paginationLinks = response.data.meta.pagination.links;
+            categoriesStore.categories = response.data.data;
+            categoriesStore.paginationLinks = response.data.meta.pagination.links;
 
+        } catch (error)
+        {
+
+        }
         skeletonLoading.hide();
 
 
@@ -47,9 +54,19 @@ export default function useCategoryService()
 
             useLoadingSpinner.show();
 
-            let response = await useCategoryApi.getAllCategoriesBySection(section_id);
 
-            categoriesStore.sectionCategories = response.data;
+            try
+            {
+                let response = await useCategoryApi.getAllCategoriesBySection(section_id);
+
+                categoriesStore.sectionCategories = response.data;
+            } catch (error)
+            {
+                if (isNotFound(error))
+                {
+                    useRouterService.redirectToRoute('categories');
+                }
+            }
 
             useLoadingSpinner.hide();
 
@@ -76,7 +93,7 @@ export default function useCategoryService()
 
         } catch (error)
         {
-            FormStore.setErrors(error);
+
         }
 
         FormStore.hideProgress();
@@ -108,7 +125,6 @@ export default function useCategoryService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
         }
         FormStore.hideProgress();
 
@@ -119,12 +135,19 @@ export default function useCategoryService()
 
         useConfirmModal.showLoading();
 
-        let response = await useCategoryApi.deleteCategory(categoriesStore.category_id.id);
+        try
+        {
 
-        categoriesStore.categories.splice(categoriesStore.category_id.index, 1);
-        useConfirmModal.close();
+            let response = await useCategoryApi.deleteCategory(categoriesStore.category_id.id);
 
-        useToastNotification.open().withMessage(response.data.message);
+            categoriesStore.categories.splice(categoriesStore.category_id.index, 1);
+            useConfirmModal.close();
+
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
+
+        }
 
         useConfirmModal.hideLoading();
 
@@ -136,17 +159,27 @@ export default function useCategoryService()
 
         useLoadingSpinner.show();
         FormStore.clearErrors();
-        const { getSections } = useSectionService();
+
+        try
+        {
+            const { getSections } = useSectionService();
 
 
-        const route = useRoute();
+            const route = useRoute();
 
-        let response = await useCategoryApi.getCategory(route.params.id);
+            let response = await useCategoryApi.getCategory(route.params.id);
 
-        FormStore.setFields(response.data);
+            FormStore.setFields(response.data);
 
-        await getSections();
-        await getAllCategoriesBySection(FormStore.fields.section_id);
+            await getSections();
+            await getAllCategoriesBySection(FormStore.fields.section_id);
+        } catch (error)
+        {
+            if (isNotFound(error))
+            {
+                useRouterService.redirectToRoute('categories');
+            }
+        }
         useLoadingSpinner.hide();
 
 

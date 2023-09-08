@@ -25,7 +25,6 @@ export default function useAuthService()
 
 
             authStore.user = response.data.user;
-            authStore.access_token = response.data.access_token;
             authStore.permissions = response.data.permissions;
 
             authStore.isAuthenticated = true;
@@ -33,8 +32,6 @@ export default function useAuthService()
 
         } catch (error)
         {
-
-            FormStore.setErrors(error);
 
         }
 
@@ -59,9 +56,7 @@ export default function useAuthService()
         } catch (error)
         {
 
-            authStore.reset();
-            useRouterService.redirectToRoute('login');
-
+            console.log(error);
         }
 
         useLoadingSpinner.hide();
@@ -69,12 +64,12 @@ export default function useAuthService()
 
     };
 
-    const getUserPermissions = async () =>
+    const getAdminPermissions = async () =>
     {
 
         useLoadingSpinner.show();
 
-        let response = await useAuthApi.getUserPermissions();
+        let response = await useAuthApi.getAdminPermissions();
 
         authStore.permissions = response.data.permissions;
 
@@ -83,7 +78,7 @@ export default function useAuthService()
     return {
         login,
         logout,
-        getUserPermissions
+        getAdminPermissions
     }
 }
 

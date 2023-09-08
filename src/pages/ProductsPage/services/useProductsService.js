@@ -3,10 +3,11 @@ import useToastNotification from "@/components/Toast/useToastNotification";
 import { useLoadingSpinner } from '@/components/LoadingSpinner';
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
-import { appendFormData, isNotNull, skeletonLoading } from "@/helpers";
+import { appendFormData, isNotFound, isNotNull, skeletonLoading } from "@/helpers";
 import useProductsApi from "@/pages/ProductsPage/api/useProductsApi";
 import useProductAttributesService from "@/pages/ProductsPage/services/useProductAttributesService";
 import useProductsStore from "@/pages/ProductsPage/stores/ProductsStore";
+import useRouterService from "@/router/useRouterService";
 
 export default function useProductsService()
 {
@@ -15,13 +16,18 @@ export default function useProductsService()
     const getAllProducts = async () =>
     {
 
-        useLoadingSpinner.show();
-        let response = await useProductsApi.getAllProducts();
+        skeletonLoading.show();
+        try
+        {
+            let response = await useProductsApi.getAllProducts();
 
-        productsStore.products = response.data.data;
-        productsStore.paginationLinks = response.data.meta.pagination.links;
+            productsStore.products = response.data.data;
+            productsStore.paginationLinks = response.data.meta.pagination.links;
+        } catch (error)
+        {
 
-        useLoadingSpinner.hide();
+        }
+        skeletonLoading.hide();
 
     }
     const storeNewProduct = async () =>
@@ -41,9 +47,6 @@ export default function useProductsService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
-
-
         }
         useLoadingSpinner.hide();
 
@@ -51,34 +54,34 @@ export default function useProductsService()
     const showProduct = async (id) =>
     {
         useLoadingSpinner.show();
-
-
-        FormStore.clearErrors();
-
-
-        let response = await useProductsApi.getProduct(id);
-
-        FormStore.setFields(response.data.product);
-
-        if (FormStore.fields.sizes.length == 0)
+        try
         {
-            FormStore.fields.sizes.push({
-                id: null,
-                size_id: null,
-                stock: null,
-            });
-        }
-        if (isNotNull(FormStore.fields.section_id))
+            let response = await useProductsApi.getProduct(id);
+            FormStore.setFields(response.data.product);
+
+            if (FormStore.fields.sizes.length == 0)
+            {
+                FormStore.fields.sizes.push({
+                    id: null,
+                    size_id: null,
+                    stock: null,
+                });
+            }
+            if (isNotNull(FormStore.fields.section_id))
+            {
+                const { getAllCategoriesBySection } = useProductAttributesService();
+
+                await getAllCategoriesBySection(FormStore.fields.section_id);
+            }
+
+        } catch (error)
         {
-            const { getAllCategoriesBySection } = useProductAttributesService();
-
-            await getAllCategoriesBySection(FormStore.fields.section_id);
+            if (isNotFound(error))
+            {
+                useRouterService.redirectToRoute('products');
+            }
         }
-
-
         useLoadingSpinner.hide();
-
-
 
     };
 
@@ -105,8 +108,6 @@ export default function useProductsService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
-
         }
 
         FormStore.hideProgress();
@@ -116,13 +117,18 @@ export default function useProductsService()
     {
 
         useConfirmModal.showLoading()
-        let response = await useProductsApi.deleteProduct(productsStore.product_id.id);
+        try
+        {
+            let response = await useProductsApi.deleteProduct(productsStore.product_id.id);
 
-        productsStore.products.splice(productsStore.product_id.index, 1);
-        useConfirmModal.close();
+            productsStore.products.splice(productsStore.product_id.index, 1);
+            useConfirmModal.close();
 
-        useToastNotification.open().withMessage(response.data.message);
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
 
+        }
         useConfirmModal.hideLoading()
 
     };
@@ -131,11 +137,17 @@ export default function useProductsService()
 
         useConfirmModal.showLoading()
 
-        let response = await useProductsApi.deleteProductImage(id);
+        try
+        {
+            let response = await useProductsApi.deleteProductImage(id);
 
-        useConfirmModal.close();
+            useConfirmModal.close();
 
-        useToastNotification.open().withMessage(response.data.message);
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
+
+        }
 
         useConfirmModal.hideLoading()
 
@@ -144,11 +156,15 @@ export default function useProductsService()
     {
 
         useLoadingSpinner.show();
+        try
+        {
+            let response = await useProductsApi.changeProductMainImage(id);
 
-        let response = await useProductsApi.changeProductMainImage(id);
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
 
-        useToastNotification.open().withMessage(response.data.message);
-
+        }
         useLoadingSpinner.hide();
 
     };
@@ -157,11 +173,16 @@ export default function useProductsService()
 
 
         useLoadingSpinner.show();
+        try
+        {
 
-        let response = await useProductsApi.publishProduct(id, publish_value);
+            let response = await useProductsApi.publishProduct(id, publish_value);
 
-        useToastNotification.open().withMessage(response.data.message);
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
 
+        }
         useLoadingSpinner.hide();
 
     };

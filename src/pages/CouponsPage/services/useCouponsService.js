@@ -6,7 +6,7 @@ import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import useRouterService from "@/router/useRouterService";
 import useCouponsStore from "@/pages/CouponsPage/stores/CouponsStore";
-import { skeletonLoading } from "@/helpers";
+import { isNotFound, skeletonLoading } from "@/helpers";
 
 
 
@@ -16,14 +16,19 @@ export default function useCouponsService()
     const getAllCoupons = async ({ url } = {}) =>
     {
         skeletonLoading.show();
+        try
+        {
 
+            let response = await useCouponsApi.getCoupons({
+                url: url,
+            });
 
-        let response = await useCouponsApi.getCoupons({
-            url: url,
-        });
+            couponStore.coupons = response.data.data;
+            couponStore.paginationLinks = response.data.meta.pagination.links;
+        } catch (error)
+        {
 
-        couponStore.coupons = response.data.data;
-        couponStore.paginationLinks = response.data.meta.pagination.links;
+        }
         skeletonLoading.hide();
 
     }
@@ -46,7 +51,7 @@ export default function useCouponsService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
+
         }
         FormStore.hideProgress();
 
@@ -70,7 +75,7 @@ export default function useCouponsService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
+
         }
 
         FormStore.hideProgress();
@@ -80,12 +85,19 @@ export default function useCouponsService()
     {
 
         useConfirmModal.showLoading()
-        let response = await useCouponsApi.deleteCoupon(couponStore.coupon_id.id);
 
-        couponStore.coupons.splice(couponStore.coupon_id.index, 1);
-        useConfirmModal.close();
+        try
+        {
+            let response = await useCouponsApi.deleteCoupon(couponStore.coupon_id.id);
 
-        useToastNotification.open().withMessage(response.data.message);
+            couponStore.coupons.splice(couponStore.coupon_id.index, 1);
+            useConfirmModal.close();
+
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
+
+        }
 
         useConfirmModal.hideLoading()
 
@@ -96,10 +108,20 @@ export default function useCouponsService()
         useLoadingSpinner.show();
         FormStore.clearErrors();
 
-        let response = await useCouponsApi.getCoupon(id);
+        try
+        {
 
-        FormStore.setFields(response.data.coupon);
+            let response = await useCouponsApi.getCoupon(id);
 
+            FormStore.setFields(response.data.coupon);
+
+        } catch (error)
+        {
+            if (isNotFound(error))
+            {
+                useRouterService.redirectToRoute('coupons');
+            }
+        }
         useLoadingSpinner.hide();
 
     };

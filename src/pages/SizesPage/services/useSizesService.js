@@ -5,7 +5,7 @@ import useSizeStore from "@/pages/SizesPage/stores/SizeStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import useRouterService from "@/router/useRouterService";
-import { skeletonLoading } from "@/helpers";
+import { isNotFound, skeletonLoading } from "@/helpers";
 
 
 export default function useSizesService()
@@ -14,13 +14,19 @@ export default function useSizesService()
     const getAllSizes = async ({ url } = {}) =>
     {
         skeletonLoading.show();
+        try
+        {
 
-        let response = await useSizesApi.getSizes({
-            url: url,
-        });
+            let response = await useSizesApi.getSizes({
+                url: url,
+            });
 
-        sizeStore.sizes = response.data.data;
-        sizeStore.paginationLinks = response.data.pagination.links;
+            sizeStore.sizes = response.data.data;
+            sizeStore.paginationLinks = response.data.pagination.links;
+        } catch (error)
+        {
+
+        }
         skeletonLoading.hide();
     }
     const storeNewSize = async () =>
@@ -41,8 +47,6 @@ export default function useSizesService()
 
         } catch (error)
         {
-
-            FormStore.setErrors(error);
 
         }
         FormStore.hideProgress();
@@ -67,7 +71,6 @@ export default function useSizesService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
 
         }
         FormStore.hideProgress();
@@ -77,13 +80,18 @@ export default function useSizesService()
     {
 
         useConfirmModal.showLoading()
-        let response = await useSizesApi.deleteSize(sizeStore.size_id.id);
+        try
+        {
+            let response = await useSizesApi.deleteSize(sizeStore.size_id.id);
 
-        sizeStore.sizes.splice(sizeStore.size_id.index, 1);
-        useConfirmModal.close();
+            sizeStore.sizes.splice(sizeStore.size_id.index, 1);
+            useConfirmModal.close();
 
-        useToastNotification.open().withMessage(response.data.message);
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
 
+        }
         useConfirmModal.hideLoading()
 
     };
@@ -93,9 +101,19 @@ export default function useSizesService()
         FormStore.clearErrors();
         useLoadingSpinner.show();
 
-        let response = await useSizesApi.getSize(id);
+        try
+        {
 
-        FormStore.setFields(response.data.size);
+            let response = await useSizesApi.getSize(id);
+
+            FormStore.setFields(response.data.size);
+        } catch (error)
+        {
+            if (isNotFound(error))
+            {
+                useRouterService.redirectToRoute('sizes');
+            }
+        }
 
         useLoadingSpinner.hide();
 

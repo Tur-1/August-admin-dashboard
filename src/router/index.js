@@ -63,10 +63,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) =>
 {
   useRouterService.setPageTitle(to.meta.title);
-  const { getUserPermissions } = useAuthService();
   const authStore = useAuthStore();
-
-
 
   if (!authStore.isAuthenticated && to.name !== 'login')
   {
@@ -78,10 +75,6 @@ router.beforeEach(async (to, from, next) =>
     return next({ name: 'dashboard' });
   }
 
-  if (authStore.isAuthenticated)
-  {
-    await getUserPermissions();
-  }
   if (to.meta.permission && !authStore.userCan(to.meta.permission))
   {
     return next({ name: 'Forbidden' });

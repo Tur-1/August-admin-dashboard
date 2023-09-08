@@ -40,7 +40,7 @@ export default function useSectionService()
 
         } catch (error)
         {
-            FormStore.setErrors(error);
+
         }
         FormStore.hideProgress();
 
@@ -51,9 +51,16 @@ export default function useSectionService()
         useLoadingSpinner.show();
 
 
-        let response = await useCategoryApi.getCategory(id);
 
-        FormStore.setFields(response.data);
+        try
+        {
+            let response = await useCategoryApi.getCategory(id);
+
+            FormStore.setFields(response.data);
+        } catch (error)
+        {
+
+        }
 
         useLoadingSpinner.hide();
 
@@ -80,7 +87,6 @@ export default function useSectionService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
         }
         FormStore.hideProgress();
 

@@ -62,3 +62,24 @@ export const skeletonLoading = reactive({
 });
 
 
+export const isUnprocessableContent = (error) =>
+{
+    return error && error.response?.status == 422
+}
+
+
+export const isNotAuthenticated = (error) =>
+{
+    return error && error.response?.status == 401
+}
+export const isNotAuthorized = (error) =>
+{
+    return error && error.response?.status == 403
+}
+export const isNotFound = (error) =>
+{
+    return error && error.response?.status == 404
+}
+
+
+

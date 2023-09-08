@@ -6,7 +6,7 @@ import useBannersApi from "@/pages/BannersPage/api/useBannersApi";
 import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
-import { appendFormData, skeletonLoading } from "@/helpers";
+import { appendFormData, isNotFound, skeletonLoading } from "@/helpers";
 import useAuthStore from "@/Auth/store/AuthStore";
 
 
@@ -23,10 +23,16 @@ export default function useBannersService()
         skeletonLoading.show();
 
 
-        let response = await useBannersApi.getAll();
+        try
+        {
+            let response = await useBannersApi.getAll();
 
-        BannersStore.banners = response.data;
+            BannersStore.banners = response.data;
 
+        } catch (error)
+        {
+
+        }
         skeletonLoading.hide();
 
     }
@@ -50,8 +56,6 @@ export default function useBannersService()
         } catch (error)
         {
 
-
-            FormStore.setErrors(error);
         }
         FormStore.hideProgress();
 
@@ -81,7 +85,6 @@ export default function useBannersService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
         }
 
         FormStore.hideProgress();
@@ -91,12 +94,19 @@ export default function useBannersService()
     {
 
         useConfirmModal.showLoading()
-        let response = await useBannersApi.deleteBanner(BannersStore.banner_id.id);
 
-        BannersStore.banners.splice(BannersStore.banner_id.index, 1);
-        useConfirmModal.close();
+        try
+        {
+            let response = await useBannersApi.deleteBanner(BannersStore.banner_id.id);
 
-        useToastNotification.open().withMessage(response.data.message);
+            BannersStore.banners.splice(BannersStore.banner_id.index, 1);
+            useConfirmModal.close();
+
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
+
+        }
 
         useConfirmModal.hideLoading()
 
@@ -107,9 +117,19 @@ export default function useBannersService()
         useLoadingSpinner.show();
         FormStore.clearErrors();
 
-        let response = await useBannersApi.getBanner(id);
+        try
+        {
 
-        FormStore.setFields(response.data.banner);
+            let response = await useBannersApi.getBanner(id);
+
+            FormStore.setFields(response.data.banner);
+        } catch (error)
+        {
+            if (isNotFound(error))
+            {
+                useRouterService.redirectToRoute('banners');
+            }
+        }
 
         useLoadingSpinner.hide();
 
@@ -119,9 +139,15 @@ export default function useBannersService()
 
         useLoadingSpinner.show();
 
+        try
+        {
 
-        let response = await useBannersApi.publishBanner(id);
-        useToastNotification.open().withMessage(response.data.message);
+            let response = await useBannersApi.publishBanner(id);
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
+
+        }
 
         useLoadingSpinner.hide();
 

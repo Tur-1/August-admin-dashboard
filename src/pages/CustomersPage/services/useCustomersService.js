@@ -5,7 +5,7 @@ import useCustomersStore from "@/pages/CustomersPage/stores/CustomersStore";
 import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import useRouterService from "@/router/useRouterService";
-import { skeletonLoading } from "@/helpers";
+import { isNotFound, skeletonLoading } from "@/helpers";
 
 export default function useCustomersService()
 {
@@ -15,14 +15,19 @@ export default function useCustomersService()
     const getAllCustomers = async ({ url, search } = {}) =>
     {
         skeletonLoading.show();
-        let response = await useCustomersApi.getCustomers({
-            url: url,
-            search: search
-        });
+        try
+        {
+            let response = await useCustomersApi.getCustomers({
+                url: url,
+                search: search
+            });
 
-        CustomersStore.customers = response.data.data;
-        CustomersStore.paginationLinks = response.data.meta.pagination.links;
+            CustomersStore.customers = response.data.data;
+            CustomersStore.paginationLinks = response.data.meta.pagination.links;
+        } catch (error)
+        {
 
+        }
         skeletonLoading.hide();
 
     }
@@ -45,7 +50,7 @@ export default function useCustomersService()
         } catch (error)
         {
 
-            FormStore.setErrors(error);
+
         }
         FormStore.hideProgress();
 
@@ -67,7 +72,7 @@ export default function useCustomersService()
             useToastNotification.open().withMessage(response.data.message);
         } catch (error)
         {
-            FormStore.setErrors(error);
+
         }
 
         FormStore.hideProgress();
@@ -83,13 +88,18 @@ export default function useCustomersService()
     {
 
         useConfirmModal.showLoading()
-        let response = await useCustomersApi.deleteCustomer(CustomersStore.customer_id.id);
+        try
+        {
+            let response = await useCustomersApi.deleteCustomer(CustomersStore.customer_id.id);
 
-        CustomersStore.customers.splice(CustomersStore.customer_id.index, 1);
-        useConfirmModal.close();
+            CustomersStore.customers.splice(CustomersStore.customer_id.index, 1);
+            useConfirmModal.close();
 
-        useToastNotification.open().withMessage(response.data.message);
+            useToastNotification.open().withMessage(response.data.message);
+        } catch (error)
+        {
 
+        }
         useConfirmModal.hideLoading()
 
     };
@@ -98,15 +108,17 @@ export default function useCustomersService()
 
         useLoadingSpinner.show();
         FormStore.clearErrors();
-
-
-        let response = await useCustomersApi.getCustomer(customer_id);
-
-
-        FormStore.setFields(response.data);
-
-
-
+        try
+        {
+            let response = await useCustomersApi.getCustomer(customer_id);
+            FormStore.setFields(response.data);
+        } catch (error)
+        {
+            if (isNotFound(error))
+            {
+                useRouterService.redirectToRoute('customers');
+            }
+        }
         useLoadingSpinner.hide();
 
     };

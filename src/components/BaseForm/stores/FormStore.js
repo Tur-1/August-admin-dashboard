@@ -55,10 +55,7 @@ let FormStore = reactive({
     },
     setErrors(error) 
     {
-        if (error && error.response?.status == 422)
-        {
-            this.errors = error.response.data.errors;
-        }
+        this.errors = error.response.data.errors;
     }
 })
 
