@@ -97,5 +97,7 @@ import { useRoute } from "vue-router";
 const route = useRoute();
 const { updateCoupon, showCoupon } = useCouponsService();
 
-onMounted(showCoupon);
+onMounted(async () => {
+  await showCoupon(route.params.id);
+});
 </script>

@@ -113,11 +113,12 @@ onMounted(async () => {
                   v-for="category in ProductAttributesStore.categories"
                   :value="category.id"
                   :key="category.id"
-                  :selected="FormStore.fields.parent_id == category.id"
+                  :selected="FormStore.fields.category_id == category.id"
                 >
                   <span>{{ category.name }}</span>
                 </option>
               </FormSelect>
+
               <FormInput
                 label="shipping cost *"
                 v-model="FormStore.fields.shipping_cost"

@@ -16,7 +16,6 @@ export default function useProductsService()
     const getAllProducts = async () =>
     {
 
-        skeletonLoading.show();
         try
         {
             let response = await useProductsApi.getAllProducts();
@@ -27,7 +26,6 @@ export default function useProductsService()
         {
 
         }
-        skeletonLoading.hide();
 
     }
     const storeNewProduct = async () =>

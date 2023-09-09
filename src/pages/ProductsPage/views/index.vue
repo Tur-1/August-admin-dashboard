@@ -10,7 +10,11 @@ import useProductsStore from "@/pages/ProductsPage/stores/ProductsStore";
 const productsStore = useProductsStore();
 const { getAllProducts, storeNewProduct } = useProductsService();
 
-onMounted(getAllProducts);
+onMounted(async () => {
+  skeletonLoading.show();
+  await getAllProducts();
+  skeletonLoading.hide();
+});
 </script>
 <template>
   <section class="main-section">
