@@ -1,24 +1,20 @@
 <template>
+  <MobileNavbar />
   <Sidebar />
-  <main class="main">
-    <Header />
-    <div class="container-fluid">
-      <RouterView :key="route.path" />
-    </div>
+  <Teleport to="#app">
+    <Navbar />
+    <RouterView :key="route.path" />
 
-    <Toast />
-    <LoadingSpinner />
-  </main>
+    <Footer />
+  </Teleport>
 </template>
 
 <script setup>
 import { RouterView, useRoute } from "vue-router";
-import Header from "@/layout/Header/index.vue";
 import Sidebar from "@/layout/Sidebar/index.vue";
 import Footer from "@/layout/Footer/index.vue";
-import Toast from "@/components/Toast/index.vue";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
-import useRouterService from "@/router/useRouterService";
+import Navbar from "@/layout/Navbar/index.vue";
+import MobileNavbar from "@/layout/MobileNavbar/index.vue";
 
 const route = useRoute();
 </script>

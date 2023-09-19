@@ -33,6 +33,7 @@ export default (url = config.APP_API_URL) =>
                 authUser.updatePermissions(error.response);
                 useRouterService.redirectToRoute('Forbidden');
             }
+            console.log(error);
 
             // But, be SURE to return the rejected promise, so the caller still has 
             // the option of additional specialized handling at the call-site:

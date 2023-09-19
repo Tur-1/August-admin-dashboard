@@ -87,7 +87,7 @@ export default function useCustomersService()
     const deleteCustomer = async () =>
     {
 
-        useConfirmModal.showLoading()
+        useLoadingSpinner.show();
         try
         {
             let response = await useCustomersApi.deleteCustomer(CustomersStore.customer_id.id);
@@ -100,7 +100,7 @@ export default function useCustomersService()
         {
 
         }
-        useConfirmModal.hideLoading()
+        useLoadingSpinner.hide();
 
     };
     const showCustomer = async (customer_id) =>

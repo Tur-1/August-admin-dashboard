@@ -50,6 +50,7 @@ const router = createRouter({
       component: () => import('@/Auth/views/login.vue'),
       meta: {
         guest: true,
+
       },
 
 

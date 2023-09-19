@@ -11,17 +11,17 @@ const setCSRFCookie = () =>
 const login = (fields) =>
 {
     setCSRFCookie();
-    return api().post("/login", fields);
+    return api().post("login", fields);
 }
 const logout = () =>
 {
 
-    return api().post('/logout');
+    return api().post('logout');
 }
 const getAdminPermissions = () =>
 {
 
-    return api().get("/get-admin-permissions");
+    return api().get("get-admin-permissions");
 }
 
 export default {
