@@ -16,25 +16,33 @@ const BrandsStore = useBrandsStore();
   <transition-group name="list" v-if="!skeletonLoading.isLoading">
     <figure
       class="card border-1 m-3"
-      style="width: 170px; min-height: 150px"
       v-for="(Brand, index) in BrandsStore.brands"
       :key="Brand.id"
     >
       <div
-        style="min-height: 130px"
-        class="card-header bg-white text-center p-0 overflow-hidden d-flex justify-content-center align-items-center h-100 w-100"
+        style="width: 170px; height: 150px"
+        class="card-header bg-white text-center p-0 overflow-hidden d-flex justify-content-center align-items-center"
       >
         <img
-          height="76"
           :src="Brand.image_url ?? defultImage"
-          class="img-fluid"
+          class="img-fluid h-100 w-100"
           alt="Logo"
         />
       </div>
 
       <figcaption class="p-2 d-flex justify-content-between align-items-center">
         <div class="Brandname">
-          <h6 class="card-title m-0">{{ Brand.name }}</h6>
+          <h6
+            class="card-title m-0"
+            style="
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              width: 120px;
+            "
+          >
+            {{ Brand.name }}
+          </h6>
           <small style="font-size: 12px"
             >{{ Brand.products_count }} products</small
           >

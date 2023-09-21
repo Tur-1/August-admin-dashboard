@@ -7,10 +7,12 @@ import useConfirmModal from "@/components/ConfirmModal/useConfirmModal";
 import { FormStore } from "@/components/BaseForm";
 import useAdminsStore from "@/pages/AdminsPage/stores/AdminsStore";
 import { isNotFound, skeletonLoading } from "@/helpers";
+import useAuthStore from "@/Auth/store/AuthStore";
 
 export default function useAdminsService()
 {
     const adminsStore = useAdminsStore();
+    const authStore = useAuthStore();
 
 
     const getAllAdmins = async ({ url, search } = {}) =>
@@ -68,6 +70,7 @@ export default function useAdminsService()
 
             let response = await useAdminsApi.updateAdmin(FormStore.fields, id);
 
+            authStore.permissions = response.data.admin.permissions;
 
             FormStore.setFields(response.data.admin);
 

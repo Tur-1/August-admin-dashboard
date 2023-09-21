@@ -30,10 +30,9 @@ export default (url = config.APP_API_URL) =>
             }
             if (isNotAuthorized(error))
             {
-                authUser.updatePermissions(error.response);
+                authUser.permissions = error.response.data.data;
                 useRouterService.redirectToRoute('Forbidden');
             }
-            console.log(error);
 
             // But, be SURE to return the rejected promise, so the caller still has 
             // the option of additional specialized handling at the call-site:

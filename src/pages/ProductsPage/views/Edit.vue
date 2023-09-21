@@ -37,9 +37,9 @@ onMounted(async () => {
         <div
           class="card-header mx-lg-4 p-0 py-3 py-lg-3 mb-4 mb-md-0 d-flex justify-content-between"
         >
-          <h3 class="h5 mb-0">update product</h3>
+          <h3 class="h5 mb-0">Product</h3>
 
-          <SubmitButton title="update" />
+          <SubmitButton title="save changes" />
         </div>
         <div class="card-body p-0 p-md-4">
           <div class="row">

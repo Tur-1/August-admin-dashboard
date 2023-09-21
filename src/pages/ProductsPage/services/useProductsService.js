@@ -7,11 +7,9 @@ import { appendFormData, isNotFound, isNotNull, skeletonLoading } from "@/helper
 import useProductsApi from "@/pages/ProductsPage/api/useProductsApi";
 import useProductAttributesService from "@/pages/ProductsPage/services/useProductAttributesService";
 import useProductsStore from "@/pages/ProductsPage/stores/ProductsStore";
-import useRouterService from "@/router/useRouterService";
 
 export default function useProductsService()
 {
-
     const productsStore = useProductsStore();
     const getAllProducts = async () =>
     {
@@ -36,11 +34,9 @@ export default function useProductsService()
         try
         {
             let response = await useProductsApi.storeNewProduct();
-
-            await getAllProducts();
+            productsStore.products.unshift(response.data.product);
 
             useToastNotification.open().withMessage(response.data.message);
-
 
         } catch (error)
         {
@@ -103,6 +99,7 @@ export default function useProductsService()
             FormStore.setFields(response.data.product);
 
             useToastNotification.open().withMessage(response.data.message);
+
         } catch (error)
         {
 
@@ -114,7 +111,7 @@ export default function useProductsService()
     const deleteProduct = async () =>
     {
 
-        useConfirmModal.showLoading()
+        useLoadingSpinner.show();
         try
         {
             let response = await useProductsApi.deleteProduct(productsStore.product_id.id);
@@ -127,13 +124,13 @@ export default function useProductsService()
         {
 
         }
-        useConfirmModal.hideLoading()
+        useLoadingSpinner.hide();
 
     };
     const deleteProductImage = async (id) =>
     {
 
-        useConfirmModal.showLoading()
+        useLoadingSpinner.show();
 
         try
         {
@@ -146,8 +143,8 @@ export default function useProductsService()
         {
 
         }
+        useLoadingSpinner.hide();
 
-        useConfirmModal.hideLoading()
 
     };
     const changeProductMainImage = async (id) =>
@@ -188,7 +185,7 @@ export default function useProductsService()
     {
         useConfirmModal.open();
         productsStore.product_id.id = id;
-        roleStore.product_id.index = index;
+        productsStore.product_id.index = index;
     };
     return {
         updateProduct,

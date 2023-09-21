@@ -10,10 +10,9 @@ const useAuthStore = defineStore('AuthStore', () =>
     let user = ref([]);
     let permissions = ref([]);
 
-    const updatePermissions = (errorResponse) => 
+    const updatePermissions = (permissions) => 
     {
-        permissions.value = errorResponse.data.data;
-
+        permissions.value = permissions;
     }
     const userCan = (permission) => 
     {

@@ -5813,7 +5813,7 @@ fieldset:disabled .btn {
 .btn-check:focus+.btn-gray-800,
 .btn-gray-800:focus {
     color: #ffffff;
- 
+
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(17, 24, 39, 0.075), 0 0 0 0.18rem rgba(65, 73, 85, 0.5);
 }
 
