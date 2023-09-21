@@ -9,6 +9,7 @@ import {
 import useBannersService from "@/pages/BannersPage/services/useBannersService";
 
 import { onMounted } from "vue";
+import PageHeader from "@/components/PageHeader/index.vue";
 
 const { storeNewBanner } = useBannersService();
 
@@ -24,6 +25,11 @@ onMounted(() => {
 </script>
 <template>
   <section class="main-section">
+    <PageHeader title="create">
+      <template #breadcrumbItem>
+        <RouterLink :to="{ name: 'banners' }">banners</RouterLink>
+      </template>
+    </PageHeader>
     <BaseForm
       @onSubmit="storeNewBanner"
       submitTitle="create"

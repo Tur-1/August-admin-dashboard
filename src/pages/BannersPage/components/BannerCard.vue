@@ -84,7 +84,11 @@ const BannersStore = useBannersStore();
   <div class="container">
     <div class="row">
       <div class="d-flex justify-content-center align-items-center">
-        <div v-show="BannersStore.banners.length == 0">
+        <div
+          v-show="
+            !skeletonLoading.isLoading && BannersStore.banners.length == 0
+          "
+        >
           <h5 class="text-center">No Banners Found</h5>
         </div>
       </div>

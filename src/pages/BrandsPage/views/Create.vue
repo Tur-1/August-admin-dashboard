@@ -8,6 +8,7 @@ import {
 import useBrandsService from "@/pages/BrandsPage/services/useBrandsService";
 
 import { onMounted } from "vue";
+import PageHeader from "@/components/PageHeader/index.vue";
 
 const { storeNewBrand } = useBrandsService();
 
@@ -21,6 +22,11 @@ onMounted(() => {
 </script>
 <template>
   <section class="main-section">
+    <PageHeader title="create">
+      <template #breadcrumbItem>
+        <RouterLink :to="{ name: 'brands' }">Brands</RouterLink>
+      </template>
+    </PageHeader>
     <BaseForm @onSubmit="storeNewBrand" submitTitle="create" title="new Brand">
       <div class="row d-flex justify-content-center">
         <div class="col-12 col-lg-6">

@@ -1,5 +1,10 @@
 <template>
   <section class="main-section">
+    <PageHeader title="create">
+      <template #breadcrumbItem>
+        <RouterLink :to="{ name: 'admins' }">Admins list</RouterLink>
+      </template>
+    </PageHeader>
     <BaseForm @onSubmit="storeNewAdmin" submitTitle="create" title="new Admin">
       <div class="row">
         <div class="col-12 col-lg-6">
@@ -59,6 +64,7 @@ import {
 import useAdminsService from "@/pages/AdminsPage/services/useAdminsService";
 import { Roles, Permissions } from "@/pages/AdminsPage/components";
 import { onMounted } from "vue";
+import PageHeader from "@/components/PageHeader/index.vue";
 
 const { storeNewAdmin, getRoles } = useAdminsService();
 

@@ -1,5 +1,10 @@
 <template>
   <section class="main-section">
+    <PageHeader title="edit">
+      <template #breadcrumbItem>
+        <RouterLink :to="{ name: 'admins' }">Admins list</RouterLink>
+      </template>
+    </PageHeader>
     <BaseForm
       @onSubmit="updateAdmin(route.params.id)"
       submitTitle="update"
@@ -64,6 +69,7 @@ import { onMounted } from "vue";
 import useAdminsService from "@/pages/AdminsPage/services/useAdminsService";
 import { useRoute } from "vue-router";
 import { Roles, Permissions } from "@/pages/AdminsPage/components";
+import PageHeader from "@/components/PageHeader/index.vue";
 
 const route = useRoute();
 const { updateAdmin, showAdmin } = useAdminsService();

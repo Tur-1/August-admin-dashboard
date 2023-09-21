@@ -61,7 +61,7 @@ export default function useOrdersService()
     const deleteOrder = async () =>
     {
 
-        useConfirmModal.showLoading();
+        useLoadingSpinner.show();
         try
         {
             let response = await useOrdersApi.deleteOrder(ordersStore.order_id.id);
@@ -74,7 +74,7 @@ export default function useOrdersService()
         {
 
         }
-        useConfirmModal.hideLoading();
+        useLoadingSpinner.hide();
 
 
     }

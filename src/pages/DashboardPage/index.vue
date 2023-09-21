@@ -1,7 +1,9 @@
 <template>
   <section class="main-section">
-    <h1>august</h1>
+    <PageHeader title="Dashboard" />
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+import PageHeader from "@/components/PageHeader/index.vue";
+</script>

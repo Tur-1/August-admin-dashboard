@@ -6,6 +6,7 @@ import {
   FormFileUpload,
 } from "@/components/BaseForm";
 import useBrandsService from "@/pages/BrandsPage/services/useBrandsService";
+import PageHeader from "@/components/PageHeader/index.vue";
 
 import { onMounted } from "vue";
 
@@ -15,6 +16,11 @@ onMounted(showBrand);
 </script>
 <template>
   <section class="main-section">
+    <PageHeader title="Edit">
+      <template #breadcrumbItem>
+        <RouterLink :to="{ name: 'brands' }">Brands</RouterLink>
+      </template>
+    </PageHeader>
     <BaseForm @onSubmit="updateBrand" submitTitle="update" title="update Brand">
       <div class="row d-flex justify-content-center">
         <div class="col-12 col-lg-6">
