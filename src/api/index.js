@@ -7,17 +7,17 @@ import { FormStore } from "@/components/BaseForm";
 import { isNotAuthenticated, isNotAuthorized, isUnprocessableContent } from "@/helpers";
 
 
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-axios.defaults.withCredentials = true;
-
-export default (url = config.APP_API_URL) =>
+const api = (url = config.APP_API_URL) =>
 {
+    let Axios = axios.create({
+        baseURL: url,
+        withCredentials: true,
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+    });
 
     const authUser = useAuthStore();
-    let create = axios.create({
-        baseURL: url,
-    });
-    create.interceptors.response.use((response) => response,
+
+    Axios.interceptors.response.use((response) => response,
         (error) =>
         {
             if (isUnprocessableContent(error))
@@ -39,7 +39,7 @@ export default (url = config.APP_API_URL) =>
             return Promise.reject(error);
 
         });
-
-    return create;
-
+    return Axios;
 }
+
+export default api
