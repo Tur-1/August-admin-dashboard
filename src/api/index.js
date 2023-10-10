@@ -30,6 +30,7 @@ const api = (url = config.APP_API_URL) =>
             }
             if (isNotAuthorized(error))
             {
+
                 authUser.permissions = error.response.data.data;
                 useRouterService.redirectToRoute('Forbidden');
             }

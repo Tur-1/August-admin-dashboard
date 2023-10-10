@@ -76,10 +76,6 @@ router.beforeEach(async (to, from, next) =>
     return next({ name: 'dashboard' });
   }
 
-  if (to.meta.permission && !authStore.userCan(to.meta.permission))
-  {
-    return next({ name: 'Forbidden' });
-  }
 
   return next();
 })

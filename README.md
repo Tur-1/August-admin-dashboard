@@ -1,4 +1,4 @@
-# tur-august-dashboard
+# august-admin-dashboard
 
 This template should help get you started developing with Vue 3 in Vite.
 
@@ -20,5 +20,4 @@ npm install
 
 ```sh
 npm run dev
-``` 
- 
+```

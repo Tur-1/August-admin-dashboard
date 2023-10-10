@@ -7,6 +7,7 @@ import { appendFormData, isNotFound, isNotNull, skeletonLoading } from "@/helper
 import useProductsApi from "@/pages/ProductsPage/api/useProductsApi";
 import useProductAttributesService from "@/pages/ProductsPage/services/useProductAttributesService";
 import useProductsStore from "@/pages/ProductsPage/stores/ProductsStore";
+import useRouterService from "@/router/useRouterService";
 
 export default function useProductsService()
 {

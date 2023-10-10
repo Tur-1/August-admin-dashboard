@@ -1,4 +1,5 @@
 <script setup>
+import defultImage from "@/assets/img/defult-image.png";
 import DropdownMenu from "@/components/DropdownMenu/index.vue";
 import useBrandsStore from "@/pages/BrandsPage/stores/BrandsStore";
 import useBrandsService from "@/pages/BrandsPage/services/useBrandsService";
@@ -8,7 +9,6 @@ import BrandCardSkeleton from "@/pages/BrandsPage/components/BrandCardSkeleton.v
 
 const { deleteBrand, openConfirmModal } = useBrandsService();
 
-const defultImage = "./src/assets/img/defult-image.png";
 const BrandsStore = useBrandsStore();
 </script>
 
