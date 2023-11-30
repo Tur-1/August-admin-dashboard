@@ -68,7 +68,5 @@ const props = defineProps({
   </ConfirmModal>
 </template>
 <style scoped>
-table.table {
-  margin-bottom: 95px !important;
-}
+
 </style>

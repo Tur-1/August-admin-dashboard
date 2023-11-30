@@ -1,15 +1,15 @@
 <template>
-  <div class="col-12 col-lg-6">
+  <div class="col-xl-6">
     <div class="card border-0 shadow p-0 mb-4">
       <div class="card-body p-0 p-md-1">
         <div class="table-responsive">
           <table class="table table-centered table-nowrap mb-0 rounded">
             <thead>
               <tr>
-                <th>#</th>
-                <th>size</th>
-                <th>Stock</th>
-                <th>
+                <th class="w-5">#</th>
+                <th class="w-40">Size</th>
+                <th class="w-40">Stock</th>
+                <th class="w-15 text-center">
                   <button
                     type="button"
                     @click="addField"
@@ -27,8 +27,8 @@
                   v-for="(attr, index) in FormStore.fields.sizes"
                   :key="index"
                 >
-                  <td>{{ index + 1 }}</td>
-                  <td>
+                  <td >{{ index + 1 }}</td>
+                  <td class="w-40">
                     <FormSelect
                       v-model="attr.size_id"
                       id="section"
@@ -45,7 +45,7 @@
                       </option>
                     </FormSelect>
                   </td>
-                  <td>
+                  <td class="w-40">
                     <FormInput
                       v-model="attr.stock"
                       id="name1"
@@ -54,11 +54,11 @@
                       :error="FormStore.errors[`sizes.${index}.stock`]"
                     />
                   </td>
-                  <td>
+                  <td class="w-15 text-center">
                     <button
                       v-if="index != 0"
                       type="button"
-                      class="bg-transparent border-0 text-danger"
+                      class="bg-transparent border-0 text-danger p-0"
                       @click="removeField(index)"
                     >
                       <small>Delete</small>

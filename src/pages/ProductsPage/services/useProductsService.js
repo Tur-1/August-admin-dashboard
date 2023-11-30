@@ -1,9 +1,14 @@
-
 import useToastNotification from "@/components/Toast/useToastNotification";
-import { useLoadingSpinner } from '@/components/LoadingSpinner';
+import { useLoadingSpinner } from "@/components/LoadingSpinner";
 import { useConfirmModal } from "@/components/ConfirmModal";
 import { FormStore } from "@/components/BaseForm";
-import { appendFormData, isNotFound, isNotNull, skeletonLoading } from "@/helpers";
+import
+    {
+        appendFormData,
+        isNotFound,
+        isNotNull,
+        skeletonLoading,
+    } from "@/helpers";
 import useProductsApi from "@/pages/ProductsPage/api/useProductsApi";
 import useProductAttributesService from "@/pages/ProductsPage/services/useProductAttributesService";
 import useProductsStore from "@/pages/ProductsPage/stores/ProductsStore";
@@ -14,22 +19,16 @@ export default function useProductsService()
     const productsStore = useProductsStore();
     const getAllProducts = async () =>
     {
-
         try
         {
             let response = await useProductsApi.getAllProducts();
 
             productsStore.products = response.data.data;
             productsStore.paginationLinks = response.data.meta.pagination.links;
-        } catch (error)
-        {
-
-        }
-
-    }
+        } catch (error) { }
+    };
     const storeNewProduct = async () =>
     {
-
         useLoadingSpinner.show();
 
         try
@@ -38,13 +37,8 @@ export default function useProductsService()
             productsStore.products.unshift(response.data.product);
 
             useToastNotification.open().withMessage(response.data.message);
-
-        } catch (error)
-        {
-
-        }
+        } catch (error) { }
         useLoadingSpinner.hide();
-
     };
     const showProduct = async (id) =>
     {
@@ -68,69 +62,64 @@ export default function useProductsService()
 
                 await getAllCategoriesBySection(FormStore.fields.section_id);
             }
-
         } catch (error)
         {
             if (isNotFound(error))
             {
-                useRouterService.redirectToRoute('products');
+                useRouterService.redirectToRoute("products");
             }
         }
         useLoadingSpinner.hide();
-
     };
 
     const updateProduct = async () =>
     {
-
         FormStore.showProgress();
         FormStore.clearErrors();
 
-
         try
         {
-
             const formData = appendFormData(FormStore.fields);
+
+            FormStore.fields.product_images.forEach((fileObject, index) =>
+            {
+                formData.append(`product_images[${ index }][file]`, fileObject.file);
+                formData.append(
+                    `product_images[${ index }][is_main_image]`,
+                    fileObject.is_main_image
+                );
+            });
 
             let response = await useProductsApi.updateProduct({
                 id: FormStore.fields.id,
-                fields: formData
+                fields: formData,
             });
 
             FormStore.setFields(response.data.product);
 
             useToastNotification.open().withMessage(response.data.message);
-
-        } catch (error)
-        {
-
-        }
+        } catch (error) { }
 
         FormStore.hideProgress();
-
     };
     const deleteProduct = async () =>
     {
-
         useLoadingSpinner.show();
         try
         {
-            let response = await useProductsApi.deleteProduct(productsStore.product_id.id);
+            let response = await useProductsApi.deleteProduct(
+                productsStore.product_id.id
+            );
 
             productsStore.products.splice(productsStore.product_id.index, 1);
             useConfirmModal.close();
 
             useToastNotification.open().withMessage(response.data.message);
-        } catch (error)
-        {
-
-        }
+        } catch (error) { }
         useLoadingSpinner.hide();
-
     };
     const deleteProductImage = async (id) =>
     {
-
         useLoadingSpinner.show();
 
         try
@@ -140,47 +129,30 @@ export default function useProductsService()
             useConfirmModal.close();
 
             useToastNotification.open().withMessage(response.data.message);
-        } catch (error)
-        {
-
-        }
+        } catch (error) { }
         useLoadingSpinner.hide();
-
-
     };
     const changeProductMainImage = async (id) =>
     {
-
         useLoadingSpinner.show();
         try
         {
             let response = await useProductsApi.changeProductMainImage(id);
 
             useToastNotification.open().withMessage(response.data.message);
-        } catch (error)
-        {
-
-        }
+        } catch (error) { }
         useLoadingSpinner.hide();
-
     };
     const publishProduct = async (id, publish_value) =>
     {
-
-
         useLoadingSpinner.show();
         try
         {
-
             let response = await useProductsApi.publishProduct(id, publish_value);
 
             useToastNotification.open().withMessage(response.data.message);
-        } catch (error)
-        {
-
-        }
+        } catch (error) { }
         useLoadingSpinner.hide();
-
     };
     const openConfirmModal = ({ id, index }) =>
     {
@@ -197,7 +169,6 @@ export default function useProductsService()
         showProduct,
         changeProductMainImage,
         publishProduct,
-        openConfirmModal
-    }
-
+        openConfirmModal,
+    };
 }

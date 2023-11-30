@@ -32,7 +32,7 @@ onMounted(async () => {
 </script>
 <template>
   <section class="main-section">
-    <form @submit.prevent="updateProduct" enctype="multipart/form-data">
+    <form  @submit.prevent="updateProduct" enctype="multipart/form-data" class="mb-5 pb-5">
       <div class="card border-0 shadow p-2 pb-4 mb-4">
         <div
           class="card-header mx-lg-4 p-0 py-3 py-lg-3 mb-4 mb-md-0 d-flex justify-content-between"
@@ -152,6 +152,7 @@ onMounted(async () => {
         <ProductImages
           @onDelete="async (image_id) => await deleteProductImage(image_id)"
           :images="FormStore.fields.images"
+          :multiple="true"
         />
       </div>
     </form>

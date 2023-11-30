@@ -28722,8 +28722,8 @@ label {
 
 .card .table td,
 .card .table th {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .table [data-sort] {
