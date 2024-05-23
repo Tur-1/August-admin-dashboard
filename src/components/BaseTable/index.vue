@@ -33,6 +33,8 @@ const props = defineProps({
     type: Array,
   },
 });
+
+
 </script>
 <template>
   <TableSettings v-if="$slots.tableSettings" :searchable="searchable" @onSearch="(search) => $emit('onSearch', search)">

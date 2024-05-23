@@ -70,8 +70,6 @@ export default function useAdminsService()
 
             let response = await useAdminsApi.updateAdmin(FormStore.fields, id);
 
-            authStore.permissions = response.data.admin.permissions;
-
             FormStore.setFields(response.data.admin);
 
             useToastNotification.open().withMessage(response.data.message);

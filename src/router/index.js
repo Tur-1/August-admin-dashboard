@@ -66,6 +66,7 @@ router.beforeEach(async (to, from, next) =>
   useRouterService.setPageTitle(to.meta.title);
   const authStore = useAuthStore();
 
+
   if (!authStore.isAuthenticated && to.name !== 'login')
   {
     return next({ name: 'login' });

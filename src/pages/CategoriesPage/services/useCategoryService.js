@@ -33,9 +33,9 @@ export default function useCategoryService()
 
                 });
 
-
             categoriesStore.categories = response.data.data;
-            categoriesStore.paginationLinks = response.data.meta.pagination.links;
+            categoriesStore.paginationLinks = response.data.meta.links;
+
 
         } catch (error)
         {

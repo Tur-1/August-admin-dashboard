@@ -84,4 +84,4 @@ onMounted(async () => {
     </BaseForm>
   </section>
 </template>
-@/pages/CategoriesPage/stores/CategoriesStore
+

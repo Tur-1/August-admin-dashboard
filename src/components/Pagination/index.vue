@@ -12,8 +12,9 @@
             role="button"
             @click="changePage(link.url)"
             class="page-link"
+            v-html="link.label"
           >
-            {{ link.label }}
+
           </button>
         </li>
       </ul>
@@ -24,6 +25,7 @@
 const props = defineProps({
   links: Array,
 });
+
 
 const emits = defineEmits(["onPageChange"]);
 
