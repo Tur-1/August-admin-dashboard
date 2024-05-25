@@ -20,6 +20,7 @@ import useAuthStore from "@/Auth/store/AuthStore";
 import ColorsRoutes from '@/pages/ColorsPage/routes'
 import ErrorsRoutes from '@/pages/Errors/routes'
 import useAuthService from '@/Auth/services/useAuthService';
+import {  onlyGuestCanAccess } from '@/helpers'
 
 
 const router = createRouter({
@@ -72,7 +73,7 @@ router.beforeEach(async (to, from, next) =>
     return next({ name: 'login' });
   }
 
-  if (authStore.isAuthenticated && to.meta.guest)
+  if (onlyGuestCanAccess(to.meta))
   {
     return next({ name: 'dashboard' });
   }

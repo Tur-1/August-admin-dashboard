@@ -26,6 +26,7 @@ const api = (url = config.APP_API_URL) =>
             }
             if (isNotAuthenticated(error))
             {
+                authUser.reset();
                 useRouterService.redirectToRoute('login');
             }
 

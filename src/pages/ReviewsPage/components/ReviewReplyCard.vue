@@ -15,7 +15,7 @@ const reviewsStore = useReviewsStore();
       <div class="image-container-review">
         <img
           :src="
-            reviewsStore.reviews[1]?.user?.gender == 'Male'
+            reviewsStore.reviews[1]?.admin?.gender == 'Male'
               ? maleAvatar
               : femaleAvatar
           "
@@ -27,7 +27,7 @@ const reviewsStore = useReviewsStore();
       <div style="width: 90%" class="d-flex flex-column p-2">
         <div class="d-flex justify-content-between">
           <span class="card-title">
-            {{ reviewsStore.reviews[1]?.user?.name }}
+            {{ reviewsStore.reviews[1]?.admin?.name }}
           </span>
           <small class="text-muted">{{ reviewsStore.reviews[1]?.date }}</small>
         </div>

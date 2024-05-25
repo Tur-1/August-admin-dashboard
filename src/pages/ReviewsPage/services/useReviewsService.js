@@ -61,6 +61,8 @@ export default function useReviewsService()
         try
         {
             let response = await useReviewsApi.getReview(review_id);
+
+
             reviewsStore.reviews.push(response.data.review);
             reviewsStore.reviews.push(response.data.review?.reply);
         } catch (error)
@@ -89,6 +91,11 @@ export default function useReviewsService()
 
             reviewsStore.reviews[1] = response.data.review.reply;
             FormStore.clearFields();
+
+            const reviewReplyForm = new bootstrap.Collapse('#review-reply-form')
+        
+                reviewReplyForm.hide();
+        
         } catch (error)
         {
 

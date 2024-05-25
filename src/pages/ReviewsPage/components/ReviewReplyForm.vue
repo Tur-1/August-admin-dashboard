@@ -4,9 +4,12 @@ import maleAvatar from "@/assets/img/avatars/avatar_male.png";
 import femaleAvatar from "@/assets/img/avatars/avatar_female.png";
 import { useRoute } from "vue-router";
 import { FormStore } from "@/components/BaseForm";
+import useAuthStore from "@/Auth/store/AuthStore";
 
 const { replyReview } = useReviewsService();
 const route = useRoute();
+
+const authUser = useAuthStore();
 </script>
 
 <template>
@@ -25,7 +28,7 @@ const route = useRoute();
               width="40"
               class="rounded-circle me-2 mb-2"
             />
-            <small style="font-size: 12px">admin </small>
+            <small style="font-size: 12px">{{ authUser.user?.name }} </small>
           </div>
 
           <textarea

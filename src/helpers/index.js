@@ -1,4 +1,5 @@
 
+import useAuthStore from '@/Auth/store/AuthStore';
 import { reactive } from 'vue'
 export const isNotNull = (value) =>
 {
@@ -67,6 +68,10 @@ export const isUnprocessableContent = (error) =>
     return error && error.response?.status == 422
 }
 
+export const onlyGuestCanAccess = (toMetaRoute) =>
+{
+    return useAuthStore().isAuthenticated && toMetaRoute.guest
+}
 
 export const isNotAuthenticated = (error) =>
 {
