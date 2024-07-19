@@ -46,7 +46,7 @@ const props = defineProps({
       <div class="table-responsive">
         <table class="table table-hover">
           <TableHead :columns="columns" />
-          <tbody>
+          <tbody >
             <template v-if="!$slots.row">
               <TableRow :show="!skeletonLoading.isLoading" :columns="columns" :data="data"
                 @onDelete="(object) => $emit('onDelete', object)" />

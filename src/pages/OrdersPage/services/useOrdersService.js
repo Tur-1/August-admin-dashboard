@@ -23,7 +23,7 @@ export default function useOrdersService()
             });
 
             ordersStore.orders = response.data.data;
-            ordersStore.paginationLinks = response.data.meta.pagination.links;
+            ordersStore.paginationLinks = response.data.meta.links;
         } catch (error)
         {
 

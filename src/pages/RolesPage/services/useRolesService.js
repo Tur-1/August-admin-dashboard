@@ -38,7 +38,7 @@ export default function useRolesService()
             });
 
             roleStore.roles = response.data.data;
-            roleStore.pagination = response.data.meta.pagination.links;
+            roleStore.pagination = response.data.meta.links;
         } catch (error)
         {
 

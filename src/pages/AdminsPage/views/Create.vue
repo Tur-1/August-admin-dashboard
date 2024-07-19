@@ -49,7 +49,7 @@
         </div>
       </div>
 
-      <Permissions />
+      <Permissions v-if="FormStore.fields.role_id"/>
     </BaseForm>
   </section>
 </template>

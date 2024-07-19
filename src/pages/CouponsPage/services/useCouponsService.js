@@ -24,7 +24,7 @@ export default function useCouponsService()
             });
 
             couponStore.coupons = response.data.data;
-            couponStore.paginationLinks = response.data.meta.pagination.links;
+            couponStore.paginationLinks = response.data.meta.links;
         } catch (error)
         {
 

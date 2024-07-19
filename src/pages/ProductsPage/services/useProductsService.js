@@ -24,7 +24,7 @@ export default function useProductsService()
             let response = await useProductsApi.getAllProducts();
 
             productsStore.products = response.data.data;
-            productsStore.paginationLinks = response.data.meta.pagination.links;
+            productsStore.paginationLinks = response.data.meta.links;
         } catch (error) { }
     };
     const storeNewProduct = async () =>

@@ -23,7 +23,7 @@ export default function useCustomersService()
             });
 
             CustomersStore.customers = response.data.data;
-            CustomersStore.paginationLinks = response.data.meta.pagination.links;
+            CustomersStore.paginationLinks = response.data.meta.links;
         } catch (error)
         {
 

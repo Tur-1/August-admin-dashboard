@@ -23,7 +23,7 @@ export default function useReviewsService()
             });
 
             reviewsStore.reviews = response.data.data;
-            reviewsStore.paginationLinks = response.data.meta.pagination.links;
+            reviewsStore.paginationLinks = response.data.meta.links;
         } catch (error)
         {
 

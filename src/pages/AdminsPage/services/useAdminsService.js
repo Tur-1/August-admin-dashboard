@@ -26,7 +26,7 @@ export default function useAdminsService()
             });
 
             adminsStore.admins = response.data.data;
-            adminsStore.paginationLinks = response.data.meta.pagination.links;
+            adminsStore.paginationLinks = response.data.meta.links;
         } catch (error)
         {
 
@@ -41,21 +41,17 @@ export default function useAdminsService()
         FormStore.showProgress();
         FormStore.clearErrors();
 
-        try
-        {
-            let response = await useAdminsApi.storeNewAdmin(FormStore.fields);
-
-            FormStore.clearFields();
-
-            useRouterService.redirectBack();
-
-            useToastNotification.open().withMessage(response.data.message);
-
-        } catch (error)
-        {
 
 
-        }
+        let response = await useAdminsApi.storeNewAdmin(FormStore.fields);
+
+        FormStore.clearFields();
+
+        useRouterService.redirectBack();
+
+        useToastNotification.open().withMessage(response.data.message);
+
+
         FormStore.hideProgress();
 
     };

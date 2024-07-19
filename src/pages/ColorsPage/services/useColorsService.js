@@ -22,7 +22,7 @@ export default function useColorsService()
             let response = await useColorsApi.getAll();
 
             ColorsStore.colors = response.data.data;
-            ColorsStore.paginationLinks = response.data.meta.pagination.links;
+            ColorsStore.paginationLinks = response.data.meta.links;
         } catch (error)
         {
 

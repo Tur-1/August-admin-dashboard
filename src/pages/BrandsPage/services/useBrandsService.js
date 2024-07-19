@@ -25,7 +25,7 @@ export default function useBrandsService()
         {
 
             BrandsStore.brands = response.data.data;
-            BrandsStore.paginationLinks = response.data.meta.pagination.links;
+            BrandsStore.paginationLinks = response.data.meta.links;
 
         } catch (error)
         {
